@@ -7,6 +7,7 @@ using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Threading.Tasks.Dataflow;
+using Text_RPG;
 using Text_RPG_11;
 
 namespace Text_RPG_11
@@ -16,11 +17,11 @@ namespace Text_RPG_11
         private Player player;
         private Inventory inventory;
         private Shop shop;
-        //private Dungeon dungeon;
+        private Dungeon dungeon;
         //private SaveManager saveManager;
         private Skill skill;
         //private Quest quest;
-        //private Monster monster;
+        private Monster monster;
         private UIManager uiManager;
         private Battle battle;
 
@@ -30,7 +31,6 @@ namespace Text_RPG_11
         public GameManager()
         {
             GameItems = ItemDatabase.CreateItemsData();
-            //player = new Player($"{player.Name}", 1, $"{player.Job}", 10, 5, 100, 1500);
             inventory = new Inventory(this);
             shop = new Shop(this);
             battle = new Battle(this);
