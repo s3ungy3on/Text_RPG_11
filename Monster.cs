@@ -22,12 +22,12 @@ namespace Text_RPG_11
 
         public bool isDead => HP <= 0;
 
-        public Monster(string name, int level, int maxHP, int hP, int attack, int defense, int rewardExp, int rewardGold)
+        public Monster(string name, int level, int maxHP, int attack, int defense, int rewardExp = 0, int rewardGold = 0)
         {
             Name = name;
             Level = level;
             MaxHP = maxHP;
-            HP = hP;
+            HP = MaxHP;
             Attack = attack;
             Defense = defense;
             RewardExp = rewardExp;
