@@ -22,7 +22,7 @@ namespace Text_RPG_11
         //private Quest quest;
         //private Monster monster;
         private UIManager uiManager;
-        //private Battle battle;
+        private Battle battle;
 
         public Player Player => player;
         public Items[] GameItems { get; private set; }
@@ -33,6 +33,7 @@ namespace Text_RPG_11
             //player = new Player($"{player.Name}", 1, $"{player.Job}", 10, 5, 100, 1500);
             inventory = new Inventory(this);
             shop = new Shop(this);
+            battle = new Battle(this);
             uiManager = new UIManager(this);
         }
 
