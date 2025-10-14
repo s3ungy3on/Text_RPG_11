@@ -32,6 +32,7 @@ namespace Text_RPG_11
             player = new Player();
             inventory = new Inventory(this);
             shop = new Shop(this);
+            battle = new Battle(this);
         }
     }
 }
