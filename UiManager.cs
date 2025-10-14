@@ -10,15 +10,17 @@ namespace Text_RPG_11
 {
     internal class UIManager
     {
-        public string act;
+        public string act; // 행동 번호 입력
+
+        GameManager gameManager;
         public void Intro() // 시작시 초기 설정 및 스토리 화면
         {
             Console.WriteLine("스파르타 마을에 오신 용사님 환영합니다." +
                 "\n용사님의 이름은 무엇인가요.\n");
             Console.Write(">>");
-            string name = Console.ReadLine(); // 이름 입력 (Player 변수 정해지면 넣을 예정)
+            gameManager.Player.Name = Console.ReadLine(); // 이름 입력 (Player 변수 정해지면 넣을 예정)
             Console.Clear();
-            Console.WriteLine($"{name}이름이 맞으십니까?\n\n1. 맞습니다\n2. 아닙니다\n\n");
+            Console.WriteLine($"{gameManager.Player.Name}이름이 맞으십니까?\n\n1. 맞습니다\n2. 아닙니다\n\n");
             act = Console.ReadLine();
             Console.Clear();
             while (true)
@@ -31,46 +33,50 @@ namespace Text_RPG_11
                 {
                     Console.Clear();
                     Console.WriteLine("용사님의 이름을 다시 알려주십시오\n\n");
-                    name = Console.ReadLine();
+                    gameManager.Player.Name = Console.ReadLine();
                 }
                 else
                 {
                     Console.WriteLine("용사란 놈이 이거 하나 제대로 못하나\n\n");
-                    Console.WriteLine($"이름이 {name} 맞냐고 아니냐고\n\n1. 맞습니다\n2. 아닙니다.\n\n");
+                    Console.WriteLine($"이름이 {gameManager.Player.Name} 맞냐고 아니냐고\n\n1. 맞습니다\n2. 아닙니다.\n\n");
                     act = Console.ReadLine();
                     continue;
                 }
-                Console.WriteLine($"{name}이름이 맞으십니까?\n\n1. 맞습니다\n2. 아닙니다\n\n");
+                Console.WriteLine($"{gameManager.Player.Name}이름이 맞으십니까?\n\n1. 맞습니다\n2. 아닙니다\n\n");
                 act = Console.ReadLine();
             }
-            Console.WriteLine($"{name} 용사님 과연 이름부터가 휘황찬란하시군요\n헌데 용사님의 직업은 무엇인지요\n\n" +
+            Console.WriteLine($"{gameManager.Player.Name} 용사님 과연 이름부터가 휘황찬란하시군요\n헌데 용사님의 직업은 무엇인지요\n\n" +
                 $"1. 전사, 2. 마법사, 3. 궁수");
             Console.Write(">>");
-            string job = Console.ReadLine();
+            act = Console.ReadLine();
             while (true)
             {
-                if (job == "1")
+                if (act == "1")
                 {
-                    Console.Clear(); job = "전사";
+                    Console.Clear();
+                    gameManager.Player.Job = "전사";
                     break;
                 }
-                else if (job == "2")
+                else if (act == "2")
                 {
-                    Console.Clear(); job = "마법사";
+                    Console.Clear();
+                    gameManager.Player.Job = "마법사";
                     break;
                 }
-                else if (job == "3")
+                else if (act == "3")
                 {
-                    Console.Clear(); job = "궁수";
+                    Console.Clear();
+                    gameManager.Player.Job = "궁수";
                     break;
                 }
                 else
                 {
                     Console.Clear(); Console.WriteLine("마 니 용사 맞나?\n혹시 폐급 용사가?\n단디 해라이\n\n1. 전사, 2. 마법사, 3. 궁수");
-                    Console.Write(">>"); job = Console.ReadLine();
+                    Console.Write(">>");
+                    gameManager.Player.Job = Console.ReadLine();
                 }
             }
-            Console.WriteLine($"{job}시라니 정말 대단한 직업이군요.");
+            Console.WriteLine($"{gameManager.Player.Job}시라니 정말 대단한 직업이군요.");
         }
 
         public void MainScreen()
