@@ -33,5 +33,11 @@ namespace Text_RPG_11
             RewardExp = rewardExp;
             RewardGold = rewardGold;
         }
+
+        public void TakeDamage(int rawDamaage)
+        {
+            int dmg = Math.Max(0, rawDamaage);
+            HP = Math.Max(0, HP - dmg);
+        }
     }
 }
