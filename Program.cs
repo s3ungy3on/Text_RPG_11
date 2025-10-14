@@ -4,13 +4,18 @@
     {
         static void Main(string[] args)
         {
-            GameManager gameManager = new GameManager();
-            Console.WriteLine("Hello, World!");
-            Console.WriteLine("첫번째 작업");
-            Console.WriteLine("두번째 작업");
-            Console.WriteLine("세번째 작업");
-            Console.WriteLine("네번째 작업");
-            Console.WriteLine("마지막 작업");
+            Player player = new Player()
+            {
+                Name = "전사1",
+                Job = "전사",
+                Level = 1,
+                Attack = 10,
+                Defense = 5,
+                HP = 100,
+                Gold = 1000
+            };
+
+            player.DisplayInfo();
         }
     }
 }

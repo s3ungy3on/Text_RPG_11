@@ -11,17 +11,24 @@ namespace Text_RPG_11
 {
     internal class Player
     {
-        public void DisplayInfo()
-        {
-            Console.WriteLine("=== 플레이어 정보 ===");
-            Console.WriteLine($"이름: {Name}");
-            Console.WriteLine($"직업: {Job}");
-            Console.WriteLine($"레벨: {Level:00}"); 
-            Console.WriteLine($"공격력: {Attack}");
-            Console.WriteLine($"방어력: {Defense}");
-            Console.WriteLine($"체력: {HP}");
-            Console.WriteLine($"골드: {Gold}");
-            Console.WriteLine("====================");
-        }
+            public string Name { get; set; }
+            public int Level { get; set; }
+            public string Job { get; set; }
+            public int Attack { get; set; }
+            public int Defense { get; set; }
+            public int HP { get; set; }
+            public int Gold { get; set; }
+            public void DisplayInfo()
+            {
+                Console.WriteLine("=== 캐릭터의 정보가 표시됩니다 ===");
+                Console.WriteLine($"이름: {Name}");
+                Console.WriteLine($"직업: {Job}");
+                Console.WriteLine($"레벨: {Level:00}");
+                Console.WriteLine($"공격력: {Attack}");
+                Console.WriteLine($"방어력: {Defense}");
+                Console.WriteLine($"체력: {HP}");
+                Console.WriteLine($"골드: {Gold}");
+                Console.WriteLine("====================");
+            }
     }
 }
