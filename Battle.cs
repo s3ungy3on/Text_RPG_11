@@ -1,6 +1,6 @@
 namespace Text_RPG_11;
 
-public class Battle
+internal class Battle
 {
     public int stage = 1;
     
@@ -10,9 +10,11 @@ public class Battle
     public List<Monster> monsters = new List<Monster>();
     public List<Monster> enemies = new List<Monster>();
     
-    public Battle()
+    private GameManager _gameManager;
+    
+    public Battle(GameManager manager)
     {
-        
+        _gameManager = manager;
     }
 
     public void MonsterSpawn()
@@ -38,11 +40,11 @@ public class Battle
     
     public void WinCheck()
     {
-        if (enemies.All(m => m.Hp == 0) && GameManager.Player.Hp > 0)
+        if (enemies.All(m => m.Hp == 0) && _gameManager.Player.HP > 0)
         {
             Console.WriteLine("승리");
         }
-        else if (GameManager.Player.Hp <= 0)
+        else if (_gameManager.Player.HP <= 0)
         {
             Console.WriteLine("패배");
         }
@@ -78,20 +80,28 @@ public class Battle
         // 몬스터를 순회하면서 체력이 0이 된 몬스터가 제공하는 exp만큼 플레이어의 경험치를 상승
     }
     
-    public void UserPotion()
-    {
-        // 유저 포션 사용 기능
+    // public void UserPotion()
+    // {
+    //     // 유저 포션 사용 기능
+    //
+    //     // 프로퍼티 접근 체인 수정 필요
+    //     if (_gameManager.inventory.Potion.Count > 0)
+    //     {
+    //         GameManager.Player.Hp += GameManager.Player.Inventory.Potion.HealPower;
+    //         GameManager.Player.Inventory.Potion.Count--;
+    //         Console.WriteLine("회복을 완료했습니다.");
+    //     }
+    //     else
+    //     {
+    //         Console.WriteLine("포션이 부족합니다.");
+    //     }
+    // }
+}
 
-        // 프로퍼티 접근 체인 수정 필요
-        if (GameManager.Player.Inventory.Potion.Count > 0)
-        {
-            GameManager.Player.Hp += GameManager.Player.Inventory.Potion.HealPower;
-            GameManager.Plyaer.Inventory.Potion.Count--;
-            Console.WriteLine("회복을 완료했습니다.");
-        }
-        else
-        {
-            Console.WriteLine("포션이 부족합니다.");
-        }
+namespace Text_RPG_11
+{
+    internal class GameManager
+    {
+        
     }
 }
