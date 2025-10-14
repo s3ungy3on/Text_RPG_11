@@ -4,6 +4,7 @@
     {
         static void Main(string[] args)
         {
+            GameManager gameManager = new GameManager();
             Console.WriteLine("Hello, World!");
             Console.WriteLine("첫번째 작업");
             Console.WriteLine("두번째 작업");
