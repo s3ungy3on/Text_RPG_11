@@ -12,7 +12,13 @@ namespace Text_RPG_11
     {
         public string act; // 행동 번호 입력
 
-        GameManager gameManager;
+        private GameManager gameManager;
+
+        public UIManager(GameManager manager)
+        {
+            gameManager = manager;
+        }
+
         public void Intro() // 시작시 초기 설정 및 스토리 화면
         {
             Console.WriteLine("스파르타 마을에 오신 용사님 환영합니다." +
