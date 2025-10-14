@@ -29,9 +29,9 @@ namespace Text_RPG_11
                 Items items = gameManager.GameItems[i];
 
                 Console.Write("- ");
-                Messages.TextMagentaHlight($"{i + 1}");
+                Messages.TextMagentaHlight($"{i + 1} ");
                 Messages.Equipped(items.IsEquipped);
-                Console.WriteLine($"{items.Name}\t | {items.ItemStats()}\t | {items.Desc}");
+                Console.WriteLine($" {items.Name}\t | {items.ItemStats()}\t | {items.Desc}");
             }
 
             Console.WriteLine();
@@ -47,7 +47,7 @@ namespace Text_RPG_11
             switch (intNumber)
             {
                 case 0:
-                    //메인메뉴로
+                    gameManager.GameMain();
                     break;
 
                 case 1:
@@ -73,9 +73,16 @@ namespace Text_RPG_11
                 Items items = gameManager.GameItems[i];
 
                 Console.Write("- ");
-                Messages.TextMagentaHlight($"{i + 1}");
+                Messages.TextMagentaHlight($"{i + 1} ");
                 Messages.Equipped(items.IsEquipped);
-                Console.WriteLine($"{items.Name}\t | {items.ItemStats()}\t | {items.Desc} | {(items.IsEquipped ? "구매완료" : items.Price.ToString())}");
+                if (items is Potion potion)
+                {
+                    Console.WriteLine($" {items.Name} {(potion.PotionCount > 0 ? "x" + potion.PotionCount : "")}\t | {items.ItemStats()}\t | {items.Desc} | {items.Price}");
+                }
+                else
+                {
+                    Console.WriteLine($" {items.Name}\t | {items.ItemStats()}\t | {items.Desc} | {(items.IsPurchased ? "구매 완료" : items.Price)}");
+                }    
             }
 
             Console.WriteLine();
@@ -95,10 +102,19 @@ namespace Text_RPG_11
                     int itemIndex = intNumber - 1;
                     Items seletItem = gameManager.GameItems[itemIndex];
 
-                    if(!seletItem.IsPurchased && gameManager.Player.Gold >= seletItem.Price)
+                    if(gameManager.Player.Gold >= seletItem.Price)
                     {
-                        seletItem.IsPurchased = true;
-                        gameManager.Player.Gold -= seletItem.Price;
+                        if(seletItem is Potion potion)
+                        {
+                            potion.PotionCount++;
+                            potion.IsPurchased = true;
+                            gameManager.Player.Gold -= seletItem.Price;
+                        }
+                        else if (!seletItem.IsPurchased)
+                        {
+                            seletItem.IsPurchased = true;
+                            gameManager.Player.Gold -= seletItem.Price;
+                        }
                     }
                     else if(gameManager.Player.Gold < seletItem.Price)
                     {
@@ -125,9 +141,16 @@ namespace Text_RPG_11
                 if (items.IsPurchased == true)
                 {
                     Console.Write("- ");
-                    Messages.TextMagentaHlight($"{i + 1}");
+                    Messages.TextMagentaHlight($"{i + 1} ");
                     Messages.Equipped(items.IsEquipped);
-                    Console.WriteLine($"{items.Name}\t | {items.ItemStats()}\t | {items.Desc}");
+                    if (items is Potion potion)
+                    {
+                        Console.WriteLine($" {items.Name} {(potion.PotionCount > 0 ? "x" + potion.PotionCount : "")}\t | {items.ItemStats()}\t | {items.Desc} | {items.Price}");
+                    }
+                    else
+                    {
+                        Console.WriteLine($" {items.Name}\t | {items.ItemStats()}\t | {items.Desc} | {items.Price}");
+                    }
                 }
             }
 
@@ -147,7 +170,20 @@ namespace Text_RPG_11
                     int itemIndex = intNumber - 1;
                     Items seletItem = gameManager.GameItems[itemIndex];
 
-                    if (seletItem.IsPurchased)
+                    if(seletItem is Potion potion)
+                    {
+                        if(potion.PotionCount > 0)
+                        {
+                            potion.PotionCount--;
+                            gameManager.Player.Gold += seletItem.Price;
+                        }
+
+                        if(potion.PotionCount == 0)
+                        {
+                            potion.IsPurchased = false;
+                        }
+                    }
+                    else if(seletItem.IsPurchased)
                     {
                         seletItem.IsPurchased = false;
                         gameManager.Player.Gold += seletItem.Price;
@@ -156,9 +192,6 @@ namespace Text_RPG_11
 
                     ItemSell();
                     break;
-
-
-
             }
 
         }

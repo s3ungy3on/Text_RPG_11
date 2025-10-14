@@ -88,11 +88,12 @@ namespace Text_RPG_11
     public class Potion : Items
     {
         public int HealPower { get; }
-        public int PotionCount = 0;
+        public int PotionCount { get; set; }
 
-        public Potion(string name, string desc, int healPower, int price, bool isEquipped = false, bool isPurchased = false) : base(name, desc, price, isEquipped, isPurchased)
+        public Potion(string name, string desc, int healPower, int price, int potionCount = 0, bool isEquipped = false, bool isPurchased = false) : base(name, desc, price, isEquipped, isPurchased)
         {
             HealPower = healPower;
+            PotionCount = potionCount;
         }
 
         public override string ItemType()

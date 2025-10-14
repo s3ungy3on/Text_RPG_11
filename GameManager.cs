@@ -7,7 +7,6 @@ using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Threading.Tasks.Dataflow;
-using Text_RPG;
 using Text_RPG_11;
 
 namespace Text_RPG_11
@@ -18,9 +17,9 @@ namespace Text_RPG_11
         private Inventory inventory;
         private Shop shop;
         private Dungeon dungeon;
-        //private SaveManager saveManager;
+        private SaveManager saveManager;
         private Skill skill;
-        //private Quest quest;
+        private Quest quest;
         private Monster monster;
         private UIManager uiManager;
         private Battle battle;
@@ -41,7 +40,22 @@ namespace Text_RPG_11
         {
             player = new Player($"", 1, $"", 10, 5, 100, 1500);
             uiManager.Intro();
+            GameMain();
+        }
+
+        public void GameMain()
+        {
             uiManager.MainScreen();
+        }
+
+        public void InventoryOpen()
+        {
+            inventory.ShowInventoryDisplay();
+        }
+
+        public void ShopOpen()
+        {
+            shop.ShowShopDisplay();
         }
     }
 }
