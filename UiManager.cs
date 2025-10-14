@@ -11,6 +11,16 @@ namespace Text_RPG_11
     internal class UIManager
     {
         public string act; // 행동 번호 입력
+        public string name; // 플레이어 이름
+        public string job; // 플레이어 직업
+
+        public string logo = " .|'''.|                             .              '||''|.                                                      \r\n" +
+            " ||..  '  ... ...   ....   ... ..  .||.   ....       ||   ||  ... ...  .. ...     ... .   ....    ...   .. ...   \r\n" +
+            "  ''|||.   ||'  || '' .||   ||' ''  ||   '' .||      ||    ||  ||  ||   ||  ||   || ||  .|...|| .|  '|.  ||  ||  \r\n" +
+            ".     '||  ||    | .|' ||   ||      ||   .|' ||      ||    ||  ||  ||   ||  ||    |''   ||      ||   ||  ||  ||  \r\n" +
+            "|'....|'   ||...'  '|..'|' .||.     '|.' '|..'|'    .||...|'   '|..'|. .||. ||.  '||||.  '|...'  '|..|' .||. ||. \r\n" +
+            "           ||                                                                   .|....'                          \r\n" +
+            "          ''''                                                                                                   ";
 
         private GameManager gameManager;
 
@@ -21,13 +31,20 @@ namespace Text_RPG_11
 
         public void Intro() // 시작시 초기 설정 및 스토리 화면
         {
+            foreach (char ch in logo)
+            {
+                Console.Write(ch);
+                Thread.Sleep(8);
+            }
+
             Console.WriteLine("스파르타 마을에 오신 용사님 환영합니다." +
                 "\n용사님의 이름은 무엇인가요.\n");
             Console.Write(">>");
-            gameManager.Player.Name = Console.ReadLine(); // 이름 입력 (Player 변수 정해지면 넣을 예정)
+            name = Console.ReadLine(); // 이름 입력 
             Console.Clear();
-            Console.WriteLine($"{gameManager.Player.Name}이름이 맞으십니까?\n\n1. 맞습니다\n2. 아닙니다\n\n");
+            Console.WriteLine($"{name}이름이 맞으십니까?\n\n1. 맞습니다\n2. 아닙니다\n\n");
             act = Console.ReadLine();
+            gameManager.Player.Name = name; // 게임매니저에다가 이름 넣어주기
             Console.Clear();
             while (true)
             {
@@ -39,19 +56,19 @@ namespace Text_RPG_11
                 {
                     Console.Clear();
                     Console.WriteLine("용사님의 이름을 다시 알려주십시오\n\n");
-                    gameManager.Player.Name = Console.ReadLine();
+                    name = Console.ReadLine();
                 }
                 else
                 {
                     Console.WriteLine("용사란 놈이 이거 하나 제대로 못하나\n\n");
-                    Console.WriteLine($"이름이 {gameManager.Player.Name} 맞냐고 아니냐고\n\n1. 맞습니다\n2. 아닙니다.\n\n");
+                    Console.WriteLine($"이름이 {name} 맞냐고 아니냐고\n\n1. 맞습니다\n2. 아닙니다.\n\n");
                     act = Console.ReadLine();
                     continue;
                 }
-                Console.WriteLine($"{gameManager.Player.Name}이름이 맞으십니까?\n\n1. 맞습니다\n2. 아닙니다\n\n");
+                Console.WriteLine($"{name}이름이 맞으십니까?\n\n1. 맞습니다\n2. 아닙니다\n\n");
                 act = Console.ReadLine();
             }
-            Console.WriteLine($"{gameManager.Player.Name} 용사님 과연 이름부터가 휘황찬란하시군요\n헌데 용사님의 직업은 무엇인지요\n\n" +
+            Console.WriteLine($"{name} 용사님 과연 이름부터가 휘황찬란하시군요\n헌데 용사님의 직업은 무엇인지요\n\n" +
                 $"1. 전사, 2. 마법사, 3. 궁수");
             Console.Write(">>");
             act = Console.ReadLine();
@@ -60,29 +77,30 @@ namespace Text_RPG_11
                 if (act == "1")
                 {
                     Console.Clear();
-                    gameManager.Player.Job = "전사";
+                    job = "전사";
                     break;
                 }
                 else if (act == "2")
                 {
                     Console.Clear();
-                    gameManager.Player.Job = "마법사";
+                    job = "마법사";
                     break;
                 }
                 else if (act == "3")
                 {
                     Console.Clear();
-                    gameManager.Player.Job = "궁수";
+                    job = "궁수";
                     break;
                 }
                 else
                 {
                     Console.Clear(); Console.WriteLine("마 니 용사 맞나?\n혹시 폐급 용사가?\n단디 해라이\n\n1. 전사, 2. 마법사, 3. 궁수");
                     Console.Write(">>");
-                    gameManager.Player.Job = Console.ReadLine();
+                    act = Console.ReadLine();
                 }
             }
-            Console.WriteLine($"{gameManager.Player.Job}시라니 정말 대단한 직업이군요.");
+            Console.WriteLine($"{job}시라니 정말 대단한 직업이군요.");
+            gameManager.Player.Job = job;
         }
 
         public void MainScreen()
@@ -92,6 +110,13 @@ namespace Text_RPG_11
                 "\n3. 탐험하기\n4. 상점\n\n원하시는 행동을 입력해주세요");
             Console.Write(">>");
             act = Console.ReadLine();
+        }
+
+        public void Rest()
+        {
+            Console.Clear();
+            Console.WriteLine("지친 피로를 충분히 풀고 있습니다\n용사의 체력과 마나가 모두 찹니다.");
+            // 현재체력과 마나를 모두 최대치랑 똑같이 맞추기
         }
     }
 }
