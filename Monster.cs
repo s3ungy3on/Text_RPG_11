@@ -19,5 +19,19 @@ namespace Text_RPG_11
 
         public int RewardExp { get; set; }
         public int RewardGold { get; set; }
+
+        public bool isDead => HP <= 0;
+
+        public Monster(string name, int level, int maxHP, int hP, int attack, int defense, int rewardExp, int rewardGold)
+        {
+            Name = name;
+            Level = level;
+            MaxHP = maxHP;
+            HP = hP;
+            Attack = attack;
+            Defense = defense;
+            RewardExp = rewardExp;
+            RewardGold = rewardGold;
+        }
     }
 }
