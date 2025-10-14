@@ -6,7 +6,11 @@ using System.Threading.Tasks;
 
 namespace Text_RPG_11
 {
-    internal class UiManager
+    internal class UIManager
     {
+        public void Intro()
+        {
+
+        }
     }
 }
