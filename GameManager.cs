@@ -24,12 +24,14 @@ namespace Text_RPG_11
         private Battle battle;
 
         public Player Player => player;
+
         public Items[] GameItems { get; private set; }
 
         public GameManager()
         {
             GameItems = ItemDatabase.CreateItemsData();
-            player = new Player();
+            player = new Player
+            ("전사1", 1, "전사", 10, 5, 100, 1000);
             inventory = new Inventory(this);
             shop = new Shop(this);
         }
