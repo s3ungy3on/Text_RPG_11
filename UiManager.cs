@@ -14,6 +14,14 @@ namespace Text_RPG_11
         public string name; // 플레이어 이름
         public string job; // 플레이어 직업
 
+        public string logo = " .|'''.|                             .              '||''|.                                                      \r\n" +
+            " ||..  '  ... ...   ....   ... ..  .||.   ....       ||   ||  ... ...  .. ...     ... .   ....    ...   .. ...   \r\n" +
+            "  ''|||.   ||'  || '' .||   ||' ''  ||   '' .||      ||    ||  ||  ||   ||  ||   || ||  .|...|| .|  '|.  ||  ||  \r\n" +
+            ".     '||  ||    | .|' ||   ||      ||   .|' ||      ||    ||  ||  ||   ||  ||    |''   ||      ||   ||  ||  ||  \r\n" +
+            "|'....|'   ||...'  '|..'|' .||.     '|.' '|..'|'    .||...|'   '|..'|. .||. ||.  '||||.  '|...'  '|..|' .||. ||. \r\n" +
+            "           ||                                                                   .|....'                          \r\n" +
+            "          ''''                                                                                                   ";
+
         private GameManager gameManager;
 
         public UIManager(GameManager manager)
@@ -23,6 +31,12 @@ namespace Text_RPG_11
 
         public void Intro() // 시작시 초기 설정 및 스토리 화면
         {
+            foreach (char ch in logo)
+            {
+                Console.Write(ch);
+                Thread.Sleep(8);
+            }
+
             Console.WriteLine("스파르타 마을에 오신 용사님 환영합니다." +
                 "\n용사님의 이름은 무엇인가요.\n");
             Console.Write(">>");
