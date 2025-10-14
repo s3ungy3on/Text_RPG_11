@@ -45,19 +45,22 @@ namespace Text_RPG_11
             {
                 if (job == "1")
                 {
-                    Console.Clear(); job = "전사"; break;
+                    Console.Clear(); job = "전사";
+                    break;
                 }
                 else if (job == "2")
                 {
-                    Console.Clear(); job = "마법사"; break;
+                    Console.Clear(); job = "마법사";
+                    break;
                 }
                 else if (job == "3")
                 {
-                    Console.Clear(); job = "궁수"; break;
+                    Console.Clear(); job = "궁수";
+                    break;
                 }
                 else
                 {
-                    Console.Clear(); Console.WriteLine("잘못 입력하셨습니다. 다시 입력하십시오\n\n1. 전사, 2. 마법사, 3. 궁수");
+                    Console.Clear(); Console.WriteLine("마 니 용사 맞나?\n혹시 폐급 용사가?\n단디 해라이\n\n1. 전사, 2. 마법사, 3. 궁수");
                     Console.Write(">>"); job = Console.ReadLine();
                 }
             }
