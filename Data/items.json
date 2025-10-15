@@ -1,13 +1,110 @@
 {
-  "compilerOptions": {
-    "noImplicitAny": false,
-    "noEmitOnError": true,
-    "removeComments": false,
-    "sourceMap": true,
-    "target": "es5"
-  },
-  "exclude": [
-    "node_modules",
-    "wwwroot"
+  "weapons": [
+    {
+      "id": 1,
+      "name": "낡은 검",
+      "description": "쉽게 볼 수 있는 낡은 검 입니다.",
+      "attackPower": 2,
+      "price": 600,
+      "itemHp": 0,
+      "itemMp": 0,
+      "equipJob": null,
+      "requiredLevel": 1,
+      "obtainMethods": [ "shop" ]
+    },
+    {
+      "id": 2,
+      "name": "청동 도끼",
+      "description": "어디선가 사용됐던 것 같은 도끼입니다.",
+      "attackPower": 5,
+      "price": 1500,
+      "itemHp": 0,
+      "itemMp": 0,
+      "equipJob": null,
+      "requiredLevel": 5,
+      "obtainMethods": [ "shop" ]
+    },
+    {
+      "id": 3,
+      "name": "스파르타의 창",
+      "description": "스파르타의 전사들이 사용했다는 전설의 창입니다.",
+      "attackPower": 7,
+      "price": 2700,
+      "itemHp": 0,
+      "itemMp": 0,
+      "equipJob": ["전사"],
+      "requiredLevel": 10,
+      "obtainMethods": [ "shop" ]
+    }
+  ],
+
+  "armors": [
+    {
+      "id": 11,
+      "name": "수련자 갑옷",
+      "description": "수련에 도움을 주는 갑옷입니다.",
+      "defensePower": 5,
+      "price": 1000,
+      "itemHp": 0,
+      "itemMp": 0,
+      "equipJob": null,
+      "requiredLevel": 1,
+      "obtainMethods": [ "shop" ]
+    },
+    {
+      "id": 12,
+      "name": "무쇠갑옷",
+      "description": "무쇠로 만들어져 튼튼한 갑옷입니다.",
+      "defensePower": 9,
+      "price": 1800,
+      "itemHp": 0,
+      "itemMp": 0,
+      "equipJob": null,
+      "requiredLevel": 5,
+      "obtainMethods": [ "shop" ]
+    },
+    {
+      "id": 13,
+      "name": "스파르타의 갑옷",
+      "description": "스파르타의 전사들이 사용했다는 전설의 갑옷입니다.",
+      "defensePower": 15,
+      "price": 3500,
+      "itemHp": 0,
+      "itemMp": 0,
+      "equipJob": [ "전사" ],
+      "requiredLevel": 10,
+      "obtainMethods": [ "shop" ]
+    }
+  ],
+
+  "potions": [
+    {
+      "id": 21,
+      "name": "체력 물약(소)",
+      "description": "사용 시 체력을 30 회복합니다.",
+      "healPower": 30,
+      "price": 500,
+      "requiredLevel": 1,
+      "stackavle": true,
+      "maxStack": 99,
+      "obtainMethods": [ "shop", "monster", "dungeon" ],
+      "dropInfo": {
+        "dungeonId": 1,
+        "dropChance": 40
+      }
+    },
+    {
+      "id": 22,
+      "name": "체력 물약(중)",
+      "description": "사용 시 체력을 50 회복합니다.",
+      "healPower": 50,
+      "price": 1000,
+      "requiredLevel": 5,
+      "obtainMethods": [ "shop", "monster", "dungeon" ],
+      "dropInfo": {
+        "dungeonId": 1,
+        "dropChance": 10
+      }
+    }
   ]
 }
