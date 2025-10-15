@@ -31,7 +31,7 @@ namespace Text_RPG_11
         public List<Monster> Monsters = new List<Monster>()
         {
             Monster.Minion(),
-            Monster.Voidling(),
+            Monster.Voidgrub(),
             Monster.CanonMinion()
         };
         public List<Monster> Enemies = new List<Monster>();
