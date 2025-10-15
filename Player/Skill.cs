@@ -40,52 +40,52 @@ namespace Text_RPG_11
             IsCritical = isCritical;
         }
 
-        //팩토리: 요구사항 스킬
-        public static Skill AlphaStrike() =>
-            new Skill(
-                name: "알파 스트라이크",
-                useMP: 10,
-                type: SkillType.Damage,
-                powerMultiplier: 2.0f,
-                hits: 1,
-                desc: "공격력 *2 로 하나의 적을 공격합니다.");
+        //이하 가렌(전사) 스킬
 
-        public static Skill DoubleStrike() =>
-            new Skill(
-                name: "더블 스트라이크",
-                useMP: 15,
-                type: SkillType.Damage,
-                powerMultiplier: 1.5f,
-                hits: 2,
-                desc: "공격력 *1.5 로 두 명의 적을 랜덤으로 공격합니다.");
+        public static Skill Garen_DemacianJustice() =>
+            new Skill("Demacian Justice", 22, SkillType.Damage, 1.9f, 1,
+                "적을 처단하는 일격(×1.9, 반드시 치명타).", isCritical: true);
 
-        public static Skill SwordDance() =>
-            new Skill(
-                name: "칼춤",
-                useMP: 10,
-                type: SkillType.Buff,
-                powerMultiplier: 5f,
-                hits: 0,
-                desc: "격렬한 칼춤을 춰서 기세를 높입니다.");
+        public static Skill Garen_Courage() =>
+            new Skill("Courage", 10, SkillType.Buff, 4f, 0,
+                "자신의 방어를 +4 올립니다(전투 동안)."); // Battle에서 player.TempDefense += 4로 해석
 
-        public static Skill Recover() =>
-            new Skill(
-                name: "HP회복",
-                useMP: 12,
-                type: SkillType.Heal,
-                powerMultiplier: 30f,
-                hits: 0,
-                desc: "세포를 재생시켜 30만큼의 HP를 회복합니다.");
+        public static Skill Garen_Perseverance() =>
+            new Skill("Perseverance", 10, SkillType.Heal, 25f, 0,
+                "잠시 호흡을 고르며 체력을 25 회복.");
 
-        public static Skill Reer() =>
-            new Skill(
-                name: "째려보기",
-                useMP: 10,
-                type: SkillType.Debuff,
-                powerMultiplier: 3f,
-                hits: 0,
-                desc: "매섭게 째려보아 상대의 방어를 3만큼 낮춥니다.");
+        //이하 럭스 스킬
+        public static Skill Lux_LightBinding() =>
+            new Skill("Light Binding", 12, SkillType.Damage, 1.4f, 1,
+                "빛줄기로 적을 속박(×1.4). 맞은 적은 방어 -2."); // Battle에서 target.TempDefense -= 2 추가
 
+        public static Skill Lux_LucentSingularity() =>
+            new Skill("Lucent Singularity", 18, SkillType.Damage, 1.2f, 3,
+                "광휘 구체가 폭발하며 무작위 적 3회 타격(×1.2).");
 
+        public static Skill Lux_FinalSpark() =>
+            new Skill("Final Spark", 24, SkillType.Damage, 2.2f, 1,
+                "광선으로 선상 목표를 관통(×2.2, 치명타 확률 적용).");
+
+        public static Skill Lux_PrismaticBarrier() =>
+            new Skill("Prismatic Barrier", 10, SkillType.Heal, 30f, 0,
+                "지팡이를 휘둘러 자신을 치유(+30).");
+        
+        //이하 애쉬(궁수) 스킬
+        public static Skill Ashe_Volley() =>
+            new Skill("Volley", 12, SkillType.Damage, 1.1f, 4,
+                "화살비로 무작위 적 4회 타격(×1.1).");
+
+        public static Skill Ashe_Hawkshot() =>
+            new Skill("Hawkshot", 8, SkillType.Buff, 3f, 0,
+                "집중력을 높여 공격력 +3(전투 동안)."); // Battle에서 player.TempAttack += 3
+
+        public static Skill Ashe_EnchantedCrystalArrow() =>
+            new Skill("Enchanted Crystal Arrow", 20, SkillType.Damage, 1.7f, 1,
+                "거대한 얼음 화살(×1.7, 반드시 치명타·추가로 방어 -3 적용).", isCritical: true); // ※ target.TempDefense -= 3
+
+        public static Skill Ashe_FrostShot() =>
+            new Skill("Frost Shot", 10, SkillType.Debuff, 3f, 0,
+                "냉기 화살로 적의 방어 -3(전투 동안)."); // Battle에서 target.TempDefense -= 3
     }
 }
