@@ -11,11 +11,19 @@ namespace Text_RPG_11
     internal class Battle
     {
         public int Stage { get; }
+        
+        public int PlayerInitialHP;
         public int PlayerHP;
         public int EnemyHP;
+        
         public int Index;
         public int AtkRandInput;
         public int AtkRand;
+        
+        public int RewardExp;
+        public int RewardGold;
+
+        public bool IsWin;
         
         // 배틀 시작 후 몬스터 랜덤 등장
                 
@@ -26,11 +34,20 @@ namespace Text_RPG_11
         
         private GameManager _gameManager;
         
+        public enum BattleResult
+        {
+            InProgress,
+            Victory,
+            Defeat
+        }
+
+        public BattleResult BattleState { get; private set; } = BattleResult.InProgress;
+        
         public Battle(GameManager manager)
         {
             _gameManager = manager;
         }
-
+        
         public void EnemySpawn()
         {
             // 1. 몬스터 수 생성
@@ -45,11 +62,6 @@ namespace Text_RPG_11
                 
             // 3. 랜덤 선택된 몬스터 출력
             Console.WriteLine("Battle!!");
-                
-            foreach (var enemy in Enemies)
-            {
-                Console.WriteLine($"Lv. {enemy.Level} {enemy.Name}  HP {enemy.HP}");
-            }
         }
 
         public void EnemyInfo()
@@ -58,17 +70,20 @@ namespace Text_RPG_11
                 Console.WriteLine($"[{i + 1}] Lv. {Enemies[i].Level} {Enemies[i].Name}  HP {Enemies[i].HP}");
         }
         
-        public void WinCheck()
+        public BattleResult EndCheck()
         {
             if (Enemies.All(m => m.HP == 0) && _gameManager.Player.HP > 0)
             {
-                Console.WriteLine("승리");
+                BattleState = BattleResult.Victory;
+                return BattleState;
             }
             else if (_gameManager.Player.HP <= 0)
             {
-                Console.WriteLine("패배");
+                BattleState = BattleResult.Defeat;
+                return BattleState;
             }
-            // 승리 체크는 매 턴마다 해야 할 지, 아니면 반복문을 빠져나오는 순간에 해야 할 지 고민
+
+            return BattleState;
         }
         
         public void Attack(int enemyIndex)
@@ -122,10 +137,20 @@ namespace Text_RPG_11
                 Index = 0;
         }
         
-        public void RewardShow()
+        public void ClearReward()
         {
             // 체력이 0이 된 몬스터의 reward를 화면에 띄움
             // 해당 reward를 플레이어에게 할당(reward 메서드 사용)
+            
+            foreach (Monster monster in Enemies)
+            {
+                RewardExp += monster.RewardExp;
+                RewardGold += monster.RewardGold;
+            }
+            
+            _gameManager.Player.Gold += RewardGold;
+            _gameManager.Player.Exp += RewardExp;
+            
         }
         
         public void LevelUp()

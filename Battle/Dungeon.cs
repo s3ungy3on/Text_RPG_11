@@ -16,16 +16,17 @@ namespace Text_RPG_11
         
         public Dungeon(GameManager manager)
         {
-            while (true)
+            while (_battle.BattleState == Battle.BattleResult.InProgress)
             {
                 // 배틀 시작
                 _gameManager = manager;
                 _battle = new Battle(manager);
                 Console.WriteLine("Battle!!\n\n");
+                _battle.PlayerInitialHP = _gameManager.Player.HP;
                 _battle.EnemySpawn();
 
                 Console.WriteLine("[내 정보]");
-                Console.WriteLine($"Lv.{_gameManager.Player.Level} Chad ({_gameManager.Player.Job}) \n\n HP {_gameManager.Player.HP} / {_gameManager.Player.MaxHP}\n\n");
+                Console.WriteLine($"Lv.{_gameManager.Player.Level} Chad ({_gameManager.Player.Job}) \n\n HP {_gameManager.Player.HP} / {_gameManager.Player.MaxHP}\n\nMP {_gameManager.Player.MP} / {_gameManager.Player.MaxMP}\n\n");
 
                 Console.WriteLine("1. 공격");
                 Console.WriteLine("원하시는 행동을 입력해주세요.");
@@ -40,42 +41,52 @@ namespace Text_RPG_11
                     Console.WriteLine("잘못된 입력입니다.");
                 }
             }
+            
+            // 배틀 종료 후
+            if(_battle.BattleState == Battle.BattleResult.Victory)
+                Victory();
+            else if(_battle.BattleState == Battle.BattleResult.Defeat)
+                Defeat();
+        }
+
+        public void EnemyInfo()
+        {
+            for (int i = 0; i <= _battle.Enemies.Count - 1; i++)
+            {
+                Console.WriteLine($"[{i + 1}]Lv. {_battle.Enemies[i].Level} {_battle.Enemies[i].Name}  HP {_battle.Enemies[i].HP}");
+            }
         }
 
         // 공격 / 스킬 사용 선택
         public void PlayerTurn()
+        {
+            _battle.EndCheck();
+            Console.WriteLine("Battle!!\n\n");   
+            EnemyInfo();
+            
+            Console.WriteLine("[내 정보]");
+            Console.WriteLine($"Lv.{_gameManager.Player.Level} Chad ({_gameManager.Player.Job}) \n\n HP {_gameManager.Player.HP} / {_gameManager.Player.MaxHP}\n\nMP {_gameManager.Player.MP} / {_gameManager.Player.MaxMP}\n\n");
+            bool isWorked = int.TryParse(Console.ReadLine(), out int result);
+
+            switch (result)
+            {
+                case 1:
+                    PlayerTurnAttack();
+                    break;
+                case 2:
+                    PlayerTurnSkillSelect();
+                    break;
+            }
+        }
+        
+        // 공격
+        public void PlayerTurnAttack()
         {
             Console.WriteLine("Battle!!\n\n");   
             _battle.EnemyInfo();
             
             Console.WriteLine("[내 정보]");
             Console.WriteLine($"Lv.{_gameManager.Player.Level} Chad ({_gameManager.Player.Job}) \n\n HP {_gameManager.Player.HP} / {_gameManager.Player.MaxHP}\n\n");
-            bool isWorked = int.TryParse(Console.ReadLine(), out int result);
-
-            switch (result)
-            {
-                case 1:
-                    PlayerAttack();
-                    break;
-                case 2:
-                    PlayerSkill();
-                    break;
-            }
-        }
-        
-        // 공격
-        public void PlayerAttack()
-        {
-            Console.WriteLine("Battle!!\n\n");   
-            _battle.EnemyInfo();
-            
-            Console.WriteLine("[내 정보]");
-            // 추후 Player 클래스 수정 후 currentHP or HpMax로 추가 예정
-            Console.WriteLine($"Lv.{_gameManager.Player.Level} Chad ({_gameManager.Player.Job})  HP {_gameManager.Player.HP}\n\n");
-            
-            // 플레이어 턴 = 공격 입력
-            // 만약 1을 입력했다면 공격
-            // 만약 2를 입력했다면 스킬을 보여주고 > 스킬 공격
             
             Console.WriteLine("몬스터 숫자. 공격\n\n");
             Console.WriteLine("0. 취소\n\n");
@@ -97,17 +108,17 @@ namespace Text_RPG_11
         }
         
         // 스킬 선택
-        public void PlayerSkillSelect()
+        public void PlayerTurnSkillSelect()
         {
             
         }
         
-        // 스킬 공격
-        public void PlayerSkill()
+        // 스킬 사용
+        public void PlayerTurnSkill()
         {
             
         }
-
+        
         public void PlayerTurnEnd()
         {
             _battle.EnemyInfo();
@@ -152,6 +163,53 @@ namespace Text_RPG_11
             if (isWorked || result== 0)
             {
                 PlayerTurn();
+            }
+        }
+
+        public void Victory()
+        {
+            _battle.ClearReward();
+            Console.WriteLine("Battle!! - Result\n\n");
+            Console.WriteLine("Victory\n\n");
+            Console.WriteLine($"던전에서 몬스터 {_battle.Enemies.Count}마리를 잡았습니다.\n\n");
+            
+            Console.WriteLine("[캐릭터 정보]");
+            Console.WriteLine($"Lv.{_gameManager.Player.Level} Chad ({_gameManager.Player.Job})");
+            Console.WriteLine($"HP {_battle.PlayerInitialHP} -> {_gameManager.Player.HP}\n\n");
+            
+            Console.WriteLine("[획득 아이템]");
+            Console.WriteLine($"{_battle.RewardGold} Gold");
+            
+            Console.WriteLine($"0. 다음\n\n");
+            
+            Console.Write(">>");
+            
+            bool isWorked = int.TryParse(Console.ReadLine(), out int result);
+
+            if (isWorked || result== 0)
+            {
+                // 돌아가기
+            }
+        }
+
+        public void Defeat()
+        {
+            Console.WriteLine("Battle!! - Result\n\n");
+            Console.WriteLine("You Lose\n\n");
+            
+            Console.WriteLine("[캐릭터 정보]");
+            Console.WriteLine($"Lv.{_gameManager.Player.Level} Chad ({_gameManager.Player.Job})");
+            Console.WriteLine($"HP {_battle.PlayerInitialHP} -> {_gameManager.Player.HP}\n\n");
+            
+            Console.WriteLine($"0. 다음\n\n");
+            
+            Console.Write(">>");
+            
+            bool isWorked = int.TryParse(Console.ReadLine(), out int result);
+
+            if (isWorked || result== 0)
+            {
+                // 돌아가기
             }
         }
     }
