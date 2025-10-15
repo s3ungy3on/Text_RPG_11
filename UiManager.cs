@@ -129,8 +129,8 @@ namespace Text_RPG_11
             Console.WriteLine($"이름: {gameManager.Player.Name}");
             Console.WriteLine($"직업: {gameManager.Player.Job}");
             Console.WriteLine($"레벨: {gameManager.Player.Level}");
-            //경험치 라인
-            Console.WriteLine($"체력: {gameManager.Player.HP}"); // 최대체력 추가되면 현재체력/최대체력으로 표시
+            Console.WriteLine($"레벨: {gameManager.Player.Exp}");
+            Console.WriteLine($"체력: {gameManager.Player.HP}/{gameManager.Player.MaxHP}");
             //마나 라인
             Console.WriteLine($"공격력: {gameManager.Player.Attack}");
             Console.WriteLine($"방어력: {gameManager.Player.Defense}");
