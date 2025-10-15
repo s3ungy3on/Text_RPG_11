@@ -406,7 +406,7 @@ namespace Text_RPG_11
         }
 
 
-        // 전투 루프를 실행 (Battle이 이미 준비된 상태여야 함)
+        // 전투 루프를 실행 (Battle이 이미 준비된 상태여야 함 즉 몹을 생성한 뒤 돌려야 함)
         public void RunBattleLoop(Battle battle)
         {
             // 전투 시작 시 기본 렌더
