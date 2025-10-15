@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Google.Apis.Sheets.v4.Data;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
@@ -7,6 +8,8 @@ using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Threading.Tasks.Dataflow;
+using System.IO;
+using System.Text.Json;
 
 namespace Text_RPG_11
 {
@@ -43,7 +46,24 @@ namespace Text_RPG_11
 
         public void GameStart()
         {
-            player = new Player($"", 1, $"", 10, 5, 100, 1500);
+            string jsonString = File.ReadAllText("jobs.json");
+
+            JobData? jobData = JsonSerializer.Deserialize<JobData>(jsonString);
+
+            Job? selectedJob = jobData.jobs.Find(j => j.name == "전사");
+
+            player = new Player
+            (
+            name: $"",
+            level: 1,
+            job: selectedJob.name,
+            attack: selectedJob.baseStats.attack,
+            defense: selectedJob.baseStats.defense,
+            hp: selectedJob.baseStats.hp,
+            gold: selectedJob.baseStats.gold,
+            mp: selectedJob.baseStats.mp
+            );
+
             uiManager.Intro();
             GameMain();
         }
