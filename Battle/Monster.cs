@@ -74,5 +74,27 @@ namespace Text_RPG_11
 
         public static Monster CanonMinion()=>
             new Monster(name:"대포미니언",level:5, maxHP:25, attack:8,defense:5,rewardExp:5,rewardGold:6);
+
+        public static Monster SuperMinion() =>
+            new Monster(name: "슈퍼 미니언", level: 7, maxHP: 45, attack: 12, defense: 7, rewardExp: 8, rewardGold: 10);
+
+        //정글 몬스터
+        public static Monster Gromp() =>
+            new Monster(name: "그롬프 (Gromp)", level: 4, maxHP: 26, attack: 9, defense: 3, rewardExp: 5, rewardGold: 7);
+
+        public static Monster Raptors() =>
+            new Monster(name: "칼날부리 (Raptors)", level: 4, maxHP: 22, attack: 10, defense: 2, rewardExp: 5, rewardGold: 7);
+
+        public static Monster Krugs() =>
+            new Monster(name: "돌거북 (Krugs)", level: 4, maxHP: 30, attack: 8, defense: 4, rewardExp: 5, rewardGold: 7);
+
+        public static Monster BlueSentinel() =>
+            new Monster(name: "블루 센티널", level: 6, maxHP: 40, attack: 9, defense: 6, rewardExp: 7, rewardGold: 9);
+
+        public static Monster RedBrambleback() =>
+            new Monster(name: "레드 브램블백", level: 6, maxHP: 40, attack: 11, defense: 4, rewardExp: 7, rewardGold: 9);
+
+        public static Monster ScuttleCrab() =>
+            new Monster(name: "바위게 (Scuttle Crab)", level: 5, maxHP: 24, attack: 6, defense: 8, rewardExp: 6, rewardGold: 8);
     }
 }
