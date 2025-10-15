@@ -14,17 +14,22 @@ namespace Text_RPG_11
         public string Name { get; set; }
         public int UseMP { get; set; }
         public SkillType Type { get; set; }
+        // 타입별 해석:
+        // - Damage: 공격 배수(×값)
+        // - Heal  : 고정 회복량(+값)
+        // - Buff  : 공격력 +값(전투 동안 TempAttack에 누적)
+        // - Debuff: 방어력 -값(전투 동안 TempDefense에 누적)
 
-        // 공격/치명타/회복 배수 (예: 2.0f -> 공격력*2)
-        public float PowerMultiplier { get; set; } = 1.0f;
+        public float PowerMultiplier { get; set; } = 1.0f; // 공격/치명타/회복 배수 (예: 2.0f -> 공격력*2)
+        public bool IsCritical { get; set; } // Damage 한정: 확정 치명 스위치
 
-        //시전 횟수 (예: 더블 스트라이크 =2)
-        public int Hits { get; set; } = 1;
+        public int Hits { get; set; } = 1; 
+
 
         // 스킬 설명
         public string Description { get; set; }
 
-        public Skill(string name, int useMP, SkillType type, float powerMultiplier, int hits, string desc = "")
+        public Skill(string name, int useMP, SkillType type, float powerMultiplier, int hits, string desc = "",bool isCritical = false)
         {
             Name = name;
             UseMP = useMP;
@@ -32,6 +37,7 @@ namespace Text_RPG_11
             PowerMultiplier = powerMultiplier;
             Hits = hits;
             Description = desc;
+            IsCritical = isCritical;
         }
 
         //팩토리: 요구사항 스킬
