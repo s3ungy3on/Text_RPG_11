@@ -125,36 +125,142 @@ namespace Text_RPG_11
         public bool isDead => HP <= 0; //몬스터 사망 여부
 
 
-        //이하 몬스터 생성 메서드
-        public static Monster Minion()=>
-            new Monster(name:"미니언", level:2, maxHP:15, attack:5, defense:0,rewardExp:2, rewardGold:3);
-        
-        public static Monster Voidling()=>
-            new Monster(name:"공허충",level:3, maxHP:10, attack:9,defense:1,rewardExp:3,rewardGold:4);
+        //이하 몬스터 팩토리 메서드
+        public static Monster Minion() =>
+            new Monster(
+                id: 1,
+                name: "미니언",
+                description: "소환사의 협곡을 누비는 기본 병력.",
+                level: 2,
+                maxHP: 15, attack: 5, defense: 0,
+                dodgeChance: 5, criticalChance: 0,
+                rewards: new Rewards(2, 3)
+                {
+                    DropItems = new List<DropItem> { new DropItem(201, 30) } // 아이템 201을 30% 확률로 드랍
+                },
+                spawnLocations: new[] { "미드 라인", "탑 라인", "바텀 라인" }  // 스폰 위치 문자열 배열
+            );
 
-        public static Monster CanonMinion()=>
-            new Monster(name:"대포미니언",level:5, maxHP:25, attack:8,defense:5,rewardExp:5,rewardGold:6);
+        public static Monster Voidgrub() =>
+            new Monster(
+                id: 12,
+                name: "공허충 (Voidgrub)",
+                description: "공허에 물든 벌레형 몬스터. 군집으로 출몰해 성가시다.",
+                level: 3,
+                maxHP: 18,attack: 9,defense: 1,
+                dodgeChance: 10, criticalChance: 5,
+                rewards: new Rewards(4, 6)
+                {
+                    DropItems = new List<DropItem> { new DropItem(itemId: 201, dropChance: 40) } // 예: 재료 201을 40% 확률로 드랍
+                },
+                spawnLocations: new[] { "미드 라인", "탑 라인", "바텀 라인" }  // 스폰 위치 문자열 배열
+            );
 
+        public static Monster CanonMinion() =>
+            new Monster(
+                id: 4,
+                name: "대포 미니언",
+                description: "라인을 압박하는 포격 병력.",
+                level: 5,
+                maxHP: 28, attack: 8, defense: 5,
+                dodgeChance: 3, criticalChance: 0,
+                rewards: new Rewards(5, 6)
+                {
+                    DropItems = new List<DropItem> { new DropItem(201, 50) }
+                },
+                spawnLocations: new[] { "각 라인 포격 지점" }
+            );
         public static Monster SuperMinion() =>
-            new Monster(name: "슈퍼 미니언", level: 7, maxHP: 45, attack: 12, defense: 7, rewardExp: 8, rewardGold: 10);
-
-        //정글 몬스터
+            new Monster(
+                id: 5,
+                name: "슈퍼 미니언",
+                description: "억제기 파괴 후 출현하는 강력한 병력.",
+                level: 7,
+                maxHP: 45, attack: 12, defense: 7,
+                dodgeChance: 0, criticalChance: 5,
+                rewards: new Rewards(8, 10)
+                {
+                    DropItems = new List<DropItem> { new DropItem(202, 20) }
+                },
+                spawnLocations: new[] { "각 라인 전진 축" }
+            );
         public static Monster Gromp() =>
-            new Monster(name: "그롬프 (Gromp)", level: 4, maxHP: 26, attack: 9, defense: 3, rewardExp: 5, rewardGold: 7);
+            new Monster(
+                id: 6,
+                name: "그롬프 (Gromp)",
+                description: "수풀 속에 사는 커다란 두꺼비.",
+                level: 4,
+                maxHP: 26, attack: 9, defense: 3,
+                dodgeChance: 5, criticalChance: 0,
+                rewards: new Rewards(5, 7),
+                spawnLocations: new[] { "블루 정글" }
+            );
 
         public static Monster Raptors() =>
-            new Monster(name: "칼날부리 (Raptors)", level: 4, maxHP: 22, attack: 10, defense: 2, rewardExp: 5, rewardGold: 7);
+            new Monster(
+                id: 7,
+                name: "칼날부리 (Raptors)",
+                description: "무리 지어 다니는 새형 몬스터.",
+                level: 4,
+                maxHP: 22, attack: 10, defense: 2,
+                dodgeChance: 10, criticalChance: 0,
+                rewards: new Rewards(5, 7)
+                {
+                    DropItems = new List<DropItem> { new DropItem(201, 50) }
+                },
+                spawnLocations: new[] { "레드 정글" }
+            );
 
         public static Monster Krugs() =>
-            new Monster(name: "돌거북 (Krugs)", level: 4, maxHP: 30, attack: 8, defense: 4, rewardExp: 5, rewardGold: 7);
+            new Monster(
+                id: 8,
+                name: "돌거북 (Krugs)",
+                description: "단단한 바위 거북.",
+                level: 4,
+                maxHP: 30, attack: 8, defense: 4,
+                dodgeChance: 0, criticalChance: 0,
+                rewards: new Rewards(5, 7),
+                spawnLocations: new[] { "레드 정글" }
+            );
 
         public static Monster BlueSentinel() =>
-            new Monster(name: "블루 센티널", level: 6, maxHP: 40, attack: 9, defense: 6, rewardExp: 7, rewardGold: 9);
-
+            new Monster(
+                id: 9,
+                name: "블루 센티널",
+                description: "푸른 정령의 수호자.",
+                level: 6,
+                maxHP: 40, attack: 9, defense: 6,
+                dodgeChance: 0, criticalChance: 0,
+                rewards: new Rewards(7, 9)
+                {
+                    DropItems = new List<DropItem> { new DropItem(301, 100) } // 100% 드랍 예시
+                },
+                spawnLocations: new[] { "블루 정글 수호석" }
+            );
         public static Monster RedBrambleback() =>
-            new Monster(name: "레드 브램블백", level: 6, maxHP: 40, attack: 11, defense: 4, rewardExp: 7, rewardGold: 9);
-
+            new Monster(
+                id: 10,
+                name: "레드 브램블백",
+                description: "붉은 정령의 수호자.",
+                level: 6,
+                maxHP: 40, attack: 11, defense: 4,
+                dodgeChance: 0, criticalChance: 0,
+                rewards: new Rewards(7, 9)
+                {
+                    DropItems = new List<DropItem> { new DropItem(302, 100) }
+                },
+                spawnLocations: new[] { "레드 정글 수호석" }
+            );
         public static Monster ScuttleCrab() =>
-            new Monster(name: "바위게 (Scuttle Crab)", level: 5, maxHP: 24, attack: 6, defense: 8, rewardExp: 6, rewardGold: 8);
+            new Monster(
+                id: 11,
+                name: "바위게 (Scuttle Crab)",
+                description: "강가를 순찰하는 중립 몬스터.",
+                level: 5,
+                maxHP: 24, attack: 6, defense: 8,
+                dodgeChance: 20, criticalChance: 0,
+                rewards: new Rewards(6, 8),
+                spawnLocations: new[] { "강가, 협곡 중앙" }
+            );
     }
 }
