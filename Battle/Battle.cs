@@ -19,15 +19,15 @@ namespace Text_RPG_11
         
         public int Index; // Index는 몬스터가 자기자신을 지칭할 때 사용
         
-        public int AtkRandInput;
-        public int AtkRand;
+        public int AtkRandInput; // 공격력 별 오차 범위
+        public int AtkRand; // 오차 범위를 더한 공격력
         
         public int RewardExp; // 총 보상 계산
         public int RewardGold; // 총 보상 계산
         
-        // 배틀 시작 후 몬스터 랜덤 등장
+        public BattleResult BattleState { get; private set; }
                 
-        // 0. 몬스터 담을 리스트 생성(이후에 추가)
+        // 모든 몬스터 객체를 담을 리스트 생성
         public List<Monster> Monsters = new List<Monster>()
         {
             Monster.Minion(),
@@ -38,22 +38,23 @@ namespace Text_RPG_11
         
         private GameManager _gameManager;
         
-        public enum BattleResult
+        public enum BattleResult // 현재 배틀 상태
         {
-            InProgress,
-            Victory,
-            Defeat
+            InProgress, // 배틀 진행 중
+            Victory, // 플레이어 승리
+            Defeat // 플레이어 패배
         }
-
-        public BattleResult BattleState { get; private set; } = BattleResult.InProgress;
         
         public Battle(GameManager manager)
         {
             _gameManager = manager;
         }
         
+        // 배틀 시작 후 몬스터 랜덤 등장
         public void EnemySpawn()
         {
+            BattleState = BattleResult.InProgress; // 기본 배틀 상태는 InProgress
+            
             // 1. 몬스터 수 생성
             Random random = new Random();
             int spawnNum = random.Next(1, 5);
@@ -65,22 +66,7 @@ namespace Text_RPG_11
             }
         }
         
-        public BattleResult EndCheck()
-        {
-            if (Enemies.All(m => m.isDead) && _gameManager.Player.HP > 0)
-            {
-                BattleState = BattleResult.Victory;
-                return BattleState;
-            }
-            else if (_gameManager.Player.HP <= 0)
-            {
-                BattleState = BattleResult.Defeat;
-                return BattleState;
-            }
-
-            return BattleState;
-        }
-        
+        // 플레이어 공격(평타)
         public void Attack(int enemyIndex)
         {
             Random rand = new Random();
@@ -143,11 +129,26 @@ namespace Text_RPG_11
             }
         }
         
+        // 승리 조건 체크
+        public BattleResult EndCheck()
+        {
+            if (Enemies.All(m => m.isDead) && _gameManager.Player.HP > 0)
+            {
+                // 모든 에너미가 죽은 채로 플레이어의 체력이 0이상일 시 승리
+                BattleState = BattleResult.Victory;
+            }
+            else if (_gameManager.Player.HP <= 0)
+            {
+                // 플레이어의 체력이 0이하일 시 승리
+                BattleState = BattleResult.Defeat;
+            }
+
+            return BattleState;
+        }
+        
+        // 승리 시 보상 지급
         public void ClearReward()
         {
-            // 체력이 0이 된 몬스터의 reward를 화면에 띄움
-            // 해당 reward를 플레이어에게 할당(reward 메서드 사용)
-            
             foreach (Monster monster in Enemies)
             {
                 RewardExp += monster.RewardExp;
@@ -159,6 +160,7 @@ namespace Text_RPG_11
             Stage++;
         }
         
+        // exp 충족 시 레벨 업
         public void LevelUp()
         {
             // 전투 클리어 후 사냥한 몬스터만큼 경험치 증가
