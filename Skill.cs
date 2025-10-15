@@ -22,8 +22,16 @@ namespace Text_RPG_11
         public int Hits { get; set; } = 1;
 
         // 스킬 설명
-        public string Description { get; set; } = "";
+        public string Description { get; set; }
 
-        
+        public Skill(string name, int useMP, SkillType type, float powerMultiplier, int hits, string desc = "")
+        {
+            Name = name;
+            UseMP = useMP;
+            Type = type;
+            PowerMultiplier = powerMultiplier;
+            Hits = hits;
+            Description = desc;
+        }
     }
 }
