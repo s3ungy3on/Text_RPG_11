@@ -120,6 +120,7 @@ namespace Text_RPG_11
                         selectItem.IsEquipped = false; //장착된 걸 선택하면 장착 해제
                     }
 
+                    gameManager.Player.StatUpdate(gameManager);
                     ItemEquipped();
                     break;
 
