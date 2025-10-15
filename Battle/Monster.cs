@@ -17,11 +17,28 @@ namespace Text_RPG_11
         public int Attack { get; set; }
         public int Defense { get; set; }
 
+        // 전투 중 가감치(누적) — 버프/디버프는 여기에만 더하고 빼기
+        public int TempAttack { get; set; }
+        public int TempDefense { get; set; }
+
+        // 최종 전투 수치 (음수 방지)
+        public int AttackTotal => Math.Max(0, Attack + TempAttack);
+        public int DefenseTotal => Math.Max(0, Defense + TempDefense);
+
         public int RewardExp { get; set; }
         public int RewardGold { get; set; }
 
-        public bool isDead => HP <= 0; //몬스터 사망
+        public bool isDead => HP <= 0; //몬스터 사망 여부
+       
+        // 전투시 TempAttack/TempDefense의 값이 버프/디버프에 따라 변동되는 것을 구현
+        public void AddAttackBuff(int amount) => TempAttack += Math.Max(0, amount);
+        public void AddDefenseBuff(int amount) => TempDefense += Math.Max(0, amount);
+        public void AddAttackDebuff(int amount) => TempAttack -= Math.Max(0, amount);
+        public void AddDefenseDebuff(int amount) => TempDefense -= Math.Max(0, amount);
 
+
+
+        //몬스터 생성자
         public Monster(string name, int level, int maxHP, int attack, int defense, int rewardExp = 0, int rewardGold = 0)
         {
             Name = name;
@@ -32,8 +49,11 @@ namespace Text_RPG_11
             Defense = defense;
             RewardExp = rewardExp;
             RewardGold = rewardGold;
+            TempAttack = 0;
+            TempDefense = 0;
         }
 
+        //몬스터 피격시 데미지만큼 체력이 감소
         public void TakeDamage(int rawDamaage)
         {
             int dmg = Math.Max(0, rawDamaage);
