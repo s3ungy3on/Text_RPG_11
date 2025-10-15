@@ -45,11 +45,6 @@ namespace Text_RPG_11
                 
             // 3. 랜덤 선택된 몬스터 출력
             Console.WriteLine("Battle!!");
-                
-            foreach (var enemy in Enemies)
-            {
-                Console.WriteLine($"Lv. {enemy.Level} {enemy.Name}  HP {enemy.HP}");
-            }
         }
 
         public void EnemyInfo()

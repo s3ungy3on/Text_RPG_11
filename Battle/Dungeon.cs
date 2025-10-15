@@ -25,7 +25,7 @@ namespace Text_RPG_11
                 _battle.EnemySpawn();
 
                 Console.WriteLine("[내 정보]");
-                Console.WriteLine($"Lv.{_gameManager.Player.Level} Chad ({_gameManager.Player.Job}) \n\n HP {_gameManager.Player.HP} / {_gameManager.Player.MaxHP}\n\n");
+                Console.WriteLine($"Lv.{_gameManager.Player.Level} Chad ({_gameManager.Player.Job}) \n\n HP {_gameManager.Player.HP} / {_gameManager.Player.MaxHP}\n\nMP {_gameManager.Player.MP} / {_gameManager.Player.MaxMP}\n\n");
 
                 Console.WriteLine("1. 공격");
                 Console.WriteLine("원하시는 행동을 입력해주세요.");
@@ -42,40 +42,43 @@ namespace Text_RPG_11
             }
         }
 
+        public void EnemyInfo()
+        {
+            foreach (var enemy in _battle.Enemies)
+            {
+                Console.WriteLine($"Lv. {enemy.Level} {enemy.Name}  HP {enemy.HP}");
+            }
+        }
+
         // 공격 / 스킬 사용 선택
         public void PlayerTurn()
+        {
+            Console.WriteLine("Battle!!\n\n");   
+            EnemyInfo();
+            
+            Console.WriteLine("[내 정보]");
+            Console.WriteLine($"Lv.{_gameManager.Player.Level} Chad ({_gameManager.Player.Job}) \n\n HP {_gameManager.Player.HP} / {_gameManager.Player.MaxHP}\n\nMP {_gameManager.Player.MP} / {_gameManager.Player.MaxMP}\n\n");
+            bool isWorked = int.TryParse(Console.ReadLine(), out int result);
+
+            switch (result)
+            {
+                case 1:
+                    PlayerTurnAttack();
+                    break;
+                case 2:
+                    PlayerTurnSkillSelect();
+                    break;
+            }
+        }
+        
+        // 공격
+        public void PlayerTurnAttack()
         {
             Console.WriteLine("Battle!!\n\n");   
             _battle.EnemyInfo();
             
             Console.WriteLine("[내 정보]");
             Console.WriteLine($"Lv.{_gameManager.Player.Level} Chad ({_gameManager.Player.Job}) \n\n HP {_gameManager.Player.HP} / {_gameManager.Player.MaxHP}\n\n");
-            bool isWorked = int.TryParse(Console.ReadLine(), out int result);
-
-            switch (result)
-            {
-                case 1:
-                    PlayerAttack();
-                    break;
-                case 2:
-                    PlayerSkill();
-                    break;
-            }
-        }
-        
-        // 공격
-        public void PlayerAttack()
-        {
-            Console.WriteLine("Battle!!\n\n");   
-            _battle.EnemyInfo();
-            
-            Console.WriteLine("[내 정보]");
-            // 추후 Player 클래스 수정 후 currentHP or HpMax로 추가 예정
-            Console.WriteLine($"Lv.{_gameManager.Player.Level} Chad ({_gameManager.Player.Job})  HP {_gameManager.Player.HP}\n\n");
-            
-            // 플레이어 턴 = 공격 입력
-            // 만약 1을 입력했다면 공격
-            // 만약 2를 입력했다면 스킬을 보여주고 > 스킬 공격
             
             Console.WriteLine("몬스터 숫자. 공격\n\n");
             Console.WriteLine("0. 취소\n\n");
@@ -97,13 +100,13 @@ namespace Text_RPG_11
         }
         
         // 스킬 선택
-        public void PlayerSkillSelect()
+        public void PlayerTurnSkillSelect()
         {
             
         }
         
-        // 스킬 공격
-        public void PlayerSkill()
+        // 스킬 사용
+        public void PlayerTurnSkill()
         {
             
         }
