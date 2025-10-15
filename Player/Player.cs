@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Buffers.Text;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
@@ -16,10 +17,12 @@ namespace Text_RPG_11
         public string Job { get; set; }                                         //플레이어 직업
         public int Attack { get; set; }                                         //플레이어 공격력
         public int Defense { get; set; }                                        //플레이어 방어력
-        public int HP { get; set; }                                            //플레이어 체력
-        public int MP { get; set; }                                             //플레이어마나
+        public int HP { get; set; }                                            //현재 플레이어 체력
+        public int MP { get; set; }                                             //현재 플레이어마나
         public int Gold { get; set; }                                           //플레이어 골드
         public int Exp { get; set; }                                            //플레이어 경험치
+        public int BaseHP { get; private set; }                                 //기본 체력
+        public int BaseMP { get; private set; }                                 //기본 마나
 
 
         private int itemHP = 0;                                                 //장비로 추가된 체력
@@ -27,8 +30,8 @@ namespace Text_RPG_11
         public int itemAttack = 0;                                              //장비로 추가된 공격력
         public int itemDefense = 0;                                             //장비로 추가된 방어력
 
-        public int MaxHP { get { return HP + itemHP; } }                                //최대체력
-        public int MaxMP { get { return MP + itemMP; } }                                //최대 마나
+        public int MaxHP { get { return BaseHP  + itemHP; } }                                //최대체력
+        public int MaxMP { get { return BaseMP + itemMP; } }                                //최대 마나
         public int MaxAttack { get { return Attack + itemAttack; } }                   //최종 공격력
         public int MaxDefense { get { return Defense + itemDefense; } }                 //최종 방어력
 
@@ -40,7 +43,8 @@ namespace Text_RPG_11
             Job = job;
             Attack = attack;
             Defense = defense;
-            HP = hp;
+            BaseHP = hp;
+            HP = BaseHP;
             Gold = gold;
             Exp = exp;
             MP = mp;
