@@ -14,13 +14,17 @@ namespace Text_RPG_11
         public string name; // 플레이어 이름
         public string job; // 플레이어 직업
 
-        public string logo = " .|'''.|                             .              '||''|.                                                      \r\n" +
+        // 로고
+        public string logo =
+            " .|'''.|                             .              '||''|.                                                      \r\n" +
             " ||..  '  ... ...   ....   ... ..  .||.   ....       ||   ||  ... ...  .. ...     ... .   ....    ...   .. ...   \r\n" +
             "  ''|||.   ||'  || '' .||   ||' ''  ||   '' .||      ||    ||  ||  ||   ||  ||   || ||  .|...|| .|  '|.  ||  ||  \r\n" +
             ".     '||  ||    | .|' ||   ||      ||   .|' ||      ||    ||  ||  ||   ||  ||    |''   ||      ||   ||  ||  ||  \r\n" +
             "|'....|'   ||...'  '|..'|' .||.     '|.' '|..'|'    .||...|'   '|..'|. .||. ||.  '||||.  '|...'  '|..|' .||. ||. \r\n" +
             "           ||                                                                   .|....'                          \r\n" +
             "          ''''                                                                                                   ";
+        List<string> story  = new List<string>();
+
 
         private GameManager gameManager;
 
@@ -36,7 +40,7 @@ namespace Text_RPG_11
                 Console.Write(ch);
                 Thread.Sleep(4);
             }
-            Thread.Sleep(1000);
+            Thread.Sleep(2000);
 
             Console.WriteLine("스파르타 마을에 오신 용사님 환영합니다." +
                 "\n용사님의 이름은 무엇인가요.\n");
@@ -118,6 +122,19 @@ namespace Text_RPG_11
             Console.Clear();
             Console.WriteLine("지친 피로를 충분히 풀고 있습니다\n용사의 체력과 마나가 모두 찹니다.");
             // 현재체력과 마나를 모두 최대치랑 똑같이 맞추기
+        }
+
+        public void ViewStatus() // 상태보기
+        {
+            Console.WriteLine($"이름: {gameManager.Player.Name}");
+            Console.WriteLine($"직업: {gameManager.Player.Job}");
+            Console.WriteLine($"레벨: {gameManager.Player.Level}");
+            //경험치 라인
+            Console.WriteLine($"체력: {gameManager.Player.HP}"); // 최대체력 추가되면 현재체력/최대체력으로 표시
+            //마나 라인
+            Console.WriteLine($"공격력: {gameManager.Player.Attack}");
+            Console.WriteLine($"방어력: {gameManager.Player.Defense}");
+            Console.WriteLine($"골드: {gameManager.Player.Gold}G");
         }
     }
 }
