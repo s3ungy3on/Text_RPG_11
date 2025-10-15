@@ -11,15 +11,26 @@ namespace Text_RPG_11
 {
     internal class Player
     {
-            public string Name { get; set; }
-            public int Level { get; set; }
-            public string Job { get; set; }
-            public int Attack { get; set; }
-            public int Defense { get; set; }
-            public int HP { get; set; }
-            public int Gold { get; set; }
+        public string Name { get; set; }
+        public int Level { get; set; }
+        public string Job { get; set; }
+        public int Attack { get; set; }
+        public int Defense { get; set; }
+        public int HP { get; set; }
+        public int Gold { get; set; }
+        public int Exp { get; set; }
 
-        public Player(string name, int level, string job, int attack, int defense, int hP, int gold)
+        private int itemHP = 0;
+        public int itemAttack = 0;
+        public int itemDefense = 0;
+
+        public int MaxHP { get { return HP + itemHP; } }
+
+        public int MaxAttack { get { return Attack + itemAttack; } }
+        public int MaxDefense { get { return Defense + itemDefense; } }
+
+
+        public Player(string name, int level, string job, int attack, int defense, int hP, int gold, int exp = 0)
         {
             Name = name;
             Level = level;
@@ -28,19 +39,44 @@ namespace Text_RPG_11
             Defense = defense;
             HP = hP;
             Gold = gold;
+            Exp = exp;
         }
 
-        public void DisplayInfo()
+     
+
+        public void StatUpdate(GameManager gameManager)
+        {
+            itemHP = 0;
+            itemAttack = 0;
+            itemDefense = 0;
+
+            if(gameManager.GameItems == null)
             {
-                Console.WriteLine("=== 캐릭터의 정보가 표시됩니다 ===");
-                Console.WriteLine($"이름: {Name}");
-                Console.WriteLine($"레벨: {Level:00}");
-                Console.WriteLine($"직업: {Job}");
-                Console.WriteLine($"공격력: {Attack}");
-                Console.WriteLine($"방어력: {Defense}");
-                Console.WriteLine($"체력: {HP}");
-                Console.WriteLine($"골드: {Gold}");
-                Console.WriteLine("====================");
+                return;
             }
+
+            foreach (var item in gameManager.GameItems)
+            {
+                if(item != null && item.IsEquipped)
+                {
+                    if (item is Weapon weapon)
+                    {
+                        itemAttack += weapon.AttackPower;
+                        if(weapon.itemHp > 0)
+                        {
+                            itemHp += weapon.itemHp;
+                        }
+                    }
+                    else if (item is Armor armor)
+                    {
+                        itemDefense += armor.DefensePower;
+                        if(armor.itemHp > 0)
+                        {
+                            itemHp += armor.itemHp;
+                        }
+                    } 
+                }
+            }
+        }
     }
 }
