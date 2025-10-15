@@ -28,9 +28,17 @@ namespace Text_RPG_11
                 if (items.IsPurchased == true)
                 {
                     Console.Write("- ");
-                    Messages.TextMagentaHlight($"{i + 1}");
+                    Messages.TextMagentaHlight($"{i + 1} ");
                     Messages.Equipped(items.IsEquipped);
-                    Console.WriteLine($"{items.Name}\t | {items.ItemStats()}\t | {items.Desc}");
+
+                    if(items is Potion potion && potion.PotionCount > 0)
+                    {
+                        Console.WriteLine($"{items.Name} x{potion.PotionCount}\t | {items.ItemStats()}\t | {items.Desc}");
+                    }
+                    else
+                    {
+                        Console.WriteLine($" {items.Name}\t | {items.ItemStats()}\t | {items.Desc}");
+                    }
                 }
             }
 
@@ -47,7 +55,7 @@ namespace Text_RPG_11
             switch (intNumber)
             {
                 case 0:
-                    //메인메뉴
+                    gameManager.GameMain();
                     break;
 
                 case 1:
@@ -70,12 +78,12 @@ namespace Text_RPG_11
             {
                 Items items = gameManager.GameItems[i];
 
-                if (items.IsPurchased == true)
+                if (items.IsPurchased == true && items.ItemType() != "물약")
                 {
                     Console.Write("- ");
-                    Messages.TextMagentaHlight($"{i + 1}");
+                    Messages.TextMagentaHlight($"{i + 1} ");
                     Messages.Equipped(items.IsEquipped);
-                    Console.WriteLine($"{items.Name}\t | {items.ItemStats()}\t | {items.Desc}");
+                    Console.WriteLine($" {items.Name}\t | {items.ItemStats()}\t | {items.Desc}");
                 }
             }
 
@@ -88,8 +96,8 @@ namespace Text_RPG_11
             switch (intNumber)
             {
                 case 0:
-                    //메인메뉴로
-                    break;
+                    ShowInventoryDisplay();
+                    return;
 
                 default:
                     int itemIndex = intNumber - 1;
@@ -99,7 +107,10 @@ namespace Text_RPG_11
                     {
                         foreach(var items in gameManager.GameItems)
                         {
-                            items.IsEquipped = false;
+                            if(items.ItemType() == selectItem.ItemType())
+                            {
+                                items.IsEquipped = false;
+                            }
                         }
 
                         selectItem.IsEquipped = true;
