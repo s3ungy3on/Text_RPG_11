@@ -59,9 +59,9 @@ namespace Text_RPG_11
             job: selectedJob.name,
             attack: selectedJob.baseStats.attack,
             defense: selectedJob.baseStats.defense,
-            hp: selectedJob.baseStats.hp,
+            defaultHP: selectedJob.baseStats.hp,
             gold: selectedJob.baseStats.gold,
-            mp: selectedJob.baseStats.mp
+            defaultMP: selectedJob.baseStats.mp
             );
 
             uiManager.Intro();
