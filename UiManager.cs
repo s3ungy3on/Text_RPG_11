@@ -34,8 +34,9 @@ namespace Text_RPG_11
             foreach (char ch in logo)
             {
                 Console.Write(ch);
-                Thread.Sleep(8);
+                Thread.Sleep(4);
             }
+            Thread.Sleep(1000);
 
             Console.WriteLine("스파르타 마을에 오신 용사님 환영합니다." +
                 "\n용사님의 이름은 무엇인가요.\n");
