@@ -36,7 +36,12 @@ namespace Text_RPG_11
         public void AddAttackDebuff(int amount) => TempAttack -= Math.Max(0, amount);
         public void AddDefenseDebuff(int amount) => TempDefense -= Math.Max(0, amount);
 
-
+        //전투 종료시 Temp의 값 리셋
+        public void ResetTemps()
+        {
+            TempAttack = 0;
+            TempDefense = 0;
+        }
 
         //몬스터 생성자
         public Monster(string name, int level, int maxHP, int attack, int defense, int rewardExp = 0, int rewardGold = 0)
