@@ -77,7 +77,6 @@ namespace Text_RPG
             {
                 _battle.Attack(monsterNum - 1);
             }
-
         }
         
         // 스킬 선택
