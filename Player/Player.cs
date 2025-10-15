@@ -42,8 +42,6 @@ namespace Text_RPG_11
             Exp = exp;
         }
 
-     
-
         public void StatUpdate(GameManager gameManager)
         {
             itemHP = 0;
@@ -62,17 +60,17 @@ namespace Text_RPG_11
                     if (item is Weapon weapon)
                     {
                         itemAttack += weapon.AttackPower;
-                        if(weapon.itemHp > 0)
+                        if(weapon.ItemHp > 0)
                         {
-                            itemHp += weapon.itemHp;
+                            itemHP += weapon.ItemHp;
                         }
                     }
                     else if (item is Armor armor)
                     {
                         itemDefense += armor.DefensePower;
-                        if(armor.itemHp > 0)
+                        if(armor.ItemHp > 0)
                         {
-                            itemHp += armor.itemHp;
+                            itemHP += armor.ItemHp;
                         }
                     } 
                 }
