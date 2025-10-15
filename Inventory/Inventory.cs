@@ -25,13 +25,13 @@ namespace Text_RPG_11
             {
                 Items items = gameManager.GameItems[i];
 
-                if (items.IsPurchased == true)
+                if (items.IsPurchased == true) //보유중인 아이템만 출력
                 {
                     Console.Write("- ");
                     Messages.TextMagentaHlight($"{i + 1} ");
                     Messages.Equipped(items.IsEquipped);
 
-                    if(items is Potion potion && potion.PotionCount > 0)
+                    if(items is Potion potion && potion.PotionCount > 0) //포션을 0개 이상 보유중이면 개수 출력
                     {
                         Console.WriteLine($"{items.Name} x{potion.PotionCount}\t | {items.ItemStats()}\t | {items.Desc}");
                     }
@@ -55,7 +55,7 @@ namespace Text_RPG_11
             switch (intNumber)
             {
                 case 0:
-                    gameManager.GameMain();
+                    gameManager.GameMain(); //메인으로
                     break;
 
                 case 1:
@@ -78,7 +78,7 @@ namespace Text_RPG_11
             {
                 Items items = gameManager.GameItems[i];
 
-                if (items.IsPurchased == true && items.ItemType() != "물약")
+                if (items.IsPurchased == true && items.ItemType() != "물약") //물약 타입 제외하고 출력
                 {
                     Console.Write("- ");
                     Messages.TextMagentaHlight($"{i + 1} ");
@@ -96,7 +96,7 @@ namespace Text_RPG_11
             switch (intNumber)
             {
                 case 0:
-                    ShowInventoryDisplay();
+                    ShowInventoryDisplay(); //인벤토리로 돌아가기
                     return;
 
                 default:
@@ -109,15 +109,15 @@ namespace Text_RPG_11
                         {
                             if(items.ItemType() == selectItem.ItemType())
                             {
-                                items.IsEquipped = false;
+                                items.IsEquipped = false; //같은 타입 장착 해제
                             }
                         }
 
-                        selectItem.IsEquipped = true;
+                        selectItem.IsEquipped = true; //아이템 장착
                     }
                     else
                     {
-                        selectItem.IsEquipped = false;
+                        selectItem.IsEquipped = false; //장착된 걸 선택하면 장착 해제
                     }
 
                     ItemEquipped();
