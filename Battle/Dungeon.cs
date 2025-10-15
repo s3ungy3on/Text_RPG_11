@@ -16,12 +16,13 @@ namespace Text_RPG_11
         
         public Dungeon(GameManager manager)
         {
-            while (true)
+            while (_battle.BattleState == Battle.BattleResult.InProgress)
             {
                 // 배틀 시작
                 _gameManager = manager;
                 _battle = new Battle(manager);
                 Console.WriteLine("Battle!!\n\n");
+                _battle.PlayerInitialHP = _gameManager.Player.HP;
                 _battle.EnemySpawn();
 
                 Console.WriteLine("[내 정보]");
@@ -40,19 +41,25 @@ namespace Text_RPG_11
                     Console.WriteLine("잘못된 입력입니다.");
                 }
             }
+            
+            if(_battle.BattleState == Battle.BattleResult.Victory)
+                Victory();
+            else if(_battle.BattleState == Battle.BattleResult.Defeat)
+                Defeat();
         }
 
         public void EnemyInfo()
         {
-            foreach (var enemy in _battle.Enemies)
+            for (int i = 0; i <= _battle.Enemies.Count - 1; i++)
             {
-                Console.WriteLine($"Lv. {enemy.Level} {enemy.Name}  HP {enemy.HP}");
+                Console.WriteLine($"[{i + 1}]Lv. {_battle.Enemies[i].Level} {_battle.Enemies[i].Name}  HP {_battle.Enemies[i].HP}");
             }
         }
 
         // 공격 / 스킬 사용 선택
         public void PlayerTurn()
         {
+            _battle.EndCheck();
             Console.WriteLine("Battle!!\n\n");   
             EnemyInfo();
             
@@ -110,7 +117,7 @@ namespace Text_RPG_11
         {
             
         }
-
+        
         public void PlayerTurnEnd()
         {
             _battle.EnemyInfo();
@@ -155,6 +162,53 @@ namespace Text_RPG_11
             if (isWorked || result== 0)
             {
                 PlayerTurn();
+            }
+        }
+
+        public void Victory()
+        {
+            _battle.ClearReward();
+            Console.WriteLine("Battle!! - Result\n\n");
+            Console.WriteLine("Victory\n\n");
+            Console.WriteLine($"던전에서 몬스터 {_battle.Enemies.Count}마리를 잡았습니다.\n\n");
+            
+            Console.WriteLine("[캐릭터 정보]");
+            Console.WriteLine($"Lv.{_gameManager.Player.Level} Chad ({_gameManager.Player.Job})");
+            Console.WriteLine($"HP {_battle.PlayerInitialHP} -> {_gameManager.Player.HP}\n\n");
+            
+            Console.WriteLine("[획득 아이템]");
+            Console.WriteLine($"{_battle.RewardGold} Gold");
+            
+            Console.WriteLine($"0. 다음\n\n");
+            
+            Console.Write(">>");
+            
+            bool isWorked = int.TryParse(Console.ReadLine(), out int result);
+
+            if (isWorked || result== 0)
+            {
+                // 돌아가기
+            }
+        }
+
+        public void Defeat()
+        {
+            Console.WriteLine("Battle!! - Result\n\n");
+            Console.WriteLine("You Lose\n\n");
+            
+            Console.WriteLine("[캐릭터 정보]");
+            Console.WriteLine($"Lv.{_gameManager.Player.Level} Chad ({_gameManager.Player.Job})");
+            Console.WriteLine($"HP {_battle.PlayerInitialHP} -> {_gameManager.Player.HP}\n\n");
+            
+            Console.WriteLine($"0. 다음\n\n");
+            
+            Console.Write(">>");
+            
+            bool isWorked = int.TryParse(Console.ReadLine(), out int result);
+
+            if (isWorked || result== 0)
+            {
+                // 돌아가기
             }
         }
     }
