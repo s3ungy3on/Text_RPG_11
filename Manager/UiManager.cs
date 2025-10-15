@@ -23,7 +23,10 @@ namespace Text_RPG_11
 
 
 
-
+        private readonly List<string> battleLog = new List<string>();
+        private const int LogShowCount = 6;           // 화면에 보일 로그 줄 수
+        private const int HpBarLength = 24;           // HP바 길이
+        private const int MpBarLength = 24;           // MP바 길이
         private GameManager gameManager;
 
         public UIManager(GameManager manager)
@@ -33,6 +36,7 @@ namespace Text_RPG_11
 
         public void Intro() // 시작시 초기 설정 및 스토리 화면
         {
+            // 1차 제목
             logo.Add("      ...                                                                                                     ...                                                         ..          .x+=:.   \r\n");
             logo.Add("  .zf\"` `\"tu                                                                                  oec :       .zf\"` `\"tu                                                    dF           z`    ^%  \r\n");
             logo.Add(" x88      '8N.                                       x.    .                          u.     @88888      x88      '8N.                                      u.    u.   '88bu.           .   <k \r\n");
@@ -49,10 +53,13 @@ namespace Text_RPG_11
             logo.Add("                                      4888~  J8%                                              48                                  4888~  J8%                                                   \r\n");
             logo.Add("                                       ^\"===*\"`                                               '8                                   ^\"===*\"`                                                    ");
 
+            // 1차 소제목
             logo.Add("▗     ▛▀▖         ▜    ▐  ▗       \r\n");
             logo.Add("▄ ▛▀▖ ▙▄▘▞▀▖▌ ▌▞▀▖▐ ▌ ▌▜▀ ▄ ▞▀▖▛▀▖\r\n");
             logo.Add("▐ ▌ ▌ ▌▚ ▛▀ ▐▐ ▌ ▌▐ ▌ ▌▐ ▖▐ ▌ ▌▌ ▌\r\n");
             logo.Add("▀▘▘ ▘ ▘ ▘▝▀▘ ▘ ▝▀  ▘▝▀▘ ▀ ▀▘▝▀ ▘ ▘");
+
+
 
             story.Add("아 간만에 롤이나 해볼까");
             story.Add("솔킬머신 출동이요~"); // 이 글이 나간 이후 1차제목과 소제목을 넣음
@@ -103,7 +110,7 @@ namespace Text_RPG_11
             story.Add("시간이 지나도 돈은 들어오지 않으니 몹들을 잡으셔야 돈을 얻을 수 있습니다.");
             story.Add("아니 그럼 어떻게 해요 원래 게임도 500G는 주고 하는데");
             story.Add("그래서 쫄리신건가요? 쫄?");
-            story.Add("쫄긴 누가 쫄았다고 그래요 바로 갔다 오겠습니다.");
+            story.Add("쫄긴 누가 쫄았다고 그래요 바로 갔다 오겠습니다."); // 이후로 2차제목과 소제목 등장
 
 
 
@@ -309,7 +316,7 @@ namespace Text_RPG_11
             Console.Clear();
             Console.WriteLine($"{name}이름이 맞으십니까?\n\n1. 맞습니다\n2. 아닙니다\n\n");
             act = Console.ReadLine();
-            
+
             while (true)
             {
                 Console.Clear();
@@ -334,7 +341,7 @@ namespace Text_RPG_11
                 act = Console.ReadLine();
             }
             gameManager.Player.Name = name; // 게임매니저에다가 이름 넣어주기
-            Console.WriteLine($"{name} 용사님 과연 이름부터가 휘황찬란하시군요\n헌데 용사님의 직업은 무엇인지요\n\n" +
+            Console.WriteLine($"{name} 소환사님 과연 이름부터가 휘황찬란하시군요\n헌데 용사님의 직업은 무엇인지요\n\n" +
                 $"1. 가렌 (전사)\n2. 럭스 (마법사)\n3. 애쉬 (궁수)\n\n");
             Console.Write(">>");
             act = Console.ReadLine();
@@ -360,12 +367,12 @@ namespace Text_RPG_11
                 }
                 else
                 {
-                    Console.Clear(); Console.WriteLine("마 니 용사 맞나?\n혹시 폐급 용사가?\n단디 해라이\n\n1. 전사, 2. 마법사, 3. 궁수");
+                    Console.Clear(); Console.WriteLine("마 니 용사 맞나?\n혹시 폐급 용사가?\n단디 해라이\n\n1. 가렌 (전사)\n2. 럭스 (마법사)\n3. 애쉬 (궁수)\n\n");
                     Console.Write(">>");
                     act = Console.ReadLine();
                 }
             }
-            Console.WriteLine($"{job}시라니 정말 대단한 직업이군요.");
+            Console.WriteLine($"{job}을(를) 고르시다니 기대가 되는군요.");
             gameManager.Player.Job = job;
         }
 
@@ -381,7 +388,7 @@ namespace Text_RPG_11
         public void Rest()
         {
             Console.Clear();
-            Console.WriteLine("지친 피로를 충분히 풀고 있습니다\n용사의 체력과 마나가 모두 찹니다.");
+            Console.WriteLine("지친 피로를 충분히 풀고 있습니다\n챔피언의 체력과 마나가 모두 찹니다.");
             // 현재체력과 마나를 모두 최대치랑 똑같이 맞추기
         }
 
@@ -392,10 +399,290 @@ namespace Text_RPG_11
             Console.WriteLine($"레벨: {gameManager.Player.Level}");
             Console.WriteLine($"레벨: {gameManager.Player.Exp}");
             Console.WriteLine($"체력: {gameManager.Player.HP}/{gameManager.Player.MaxHP}");
-            //마나 라인
+            Console.WriteLine($"마나: {gameManager.Player.MP}/{gameManager.Player.MaxMP}");
             Console.WriteLine($"공격력: {gameManager.Player.Attack}");
             Console.WriteLine($"방어력: {gameManager.Player.Defense}");
             Console.WriteLine($"골드: {gameManager.Player.Gold}G");
+        }
+
+
+        // 전투 루프를 실행 (Battle이 이미 준비된 상태여야 함 즉 몹을 생성한 뒤 돌려야 함)
+        public void RunBattleLoop(Battle battle)
+        {
+            // 전투 시작 시 기본 렌더
+            AddLog("전투가 시작되었습니다!");
+            while (battle.BattleState == Battle.BattleResult.InProgress)
+            {
+                RenderBattleScreen(battle);
+
+                // 플레이어 입력 처리
+                ShowActionMenu();
+                string input = Console.ReadLine();
+
+                switch (input)
+                {
+                    case "1": // 일반 공격
+                        int idx = SelectEnemyIndex(battle);
+                        if (idx >= 0)
+                        {
+                            battle.Attack(idx);
+                            AddLog($"{gameManager.Player.Name}이(가) 적 [{idx + 1}]을(를) 공격했습니다. 피해: {battle.AtkRand}");
+                        }
+                        break;
+
+                    case "2":
+                        AddLog("스킬 사용(미구현)"); // 연결할 경우 battle.UserSkill() 호출
+                        // battle.UserSkill();
+                        break;
+
+                    case "3":
+                        AddLog("포션 사용(미구현)");
+                        // potion logic
+                        break;
+
+                    case "4":
+                        AddLog("도망 시도...");
+                        // 도망 기능이 있으면 처리. 여기서는 루프 탈출
+                        return;
+
+                    default:
+                        AddLog("올바른 입력을 해주세요 (1~4).");
+                        break;
+                }
+
+                // 전투 상태 확인 (플레이어의 행동 후)
+                battle.EndCheck();
+                if (battle.BattleState != Battle.BattleResult.InProgress)
+                {
+                    break;
+                }
+
+                // 적의 턴
+                battle.EnemyTurn();
+                AddLog("적의 턴이 진행되었습니다.");
+
+                // 전투 상태 재확인
+                battle.EndCheck();
+
+                // 플레이어의 공격으로 바로 넘어가지 않고 포켓몬처럼 살짝 쉬고 플레이어의 공격으로 넘어가 배틀의 흐름을 유지함 (0.15초 쉼)
+                Thread.Sleep(150);
+            }
+
+            // 전투 종료 처리
+            RenderBattleScreen(battle);
+            if (battle.BattleState == Battle.BattleResult.Victory)
+            {
+                battle.ClearReward();
+                AddLog($"전투 승리! 획득 EXP: {battle.RewardExp}, Gold: {battle.RewardGold}");
+            }
+            else if (battle.BattleState == Battle.BattleResult.Defeat)
+            {
+                AddLog("전투 패배... 게임 오버.");
+            }
+
+            RenderBattleScreen(battle);
+            Console.WriteLine("\n계속하려면 아무 키나 누르세요...");
+            Console.ReadKey(true);
+        }
+
+
+        private void RenderBattleScreen(Battle battle)
+        {
+            Console.Clear();
+
+            WriteLineDivider('=');
+            Console.WriteLine($"  ⚔️  Stage {battle.Stage} - 전투  ⚔️");
+            WriteLineDivider('=');
+            Console.WriteLine();
+
+            // 상단: 플레이어 상태
+            ShowPlayerStatus();
+
+            Console.WriteLine();
+            WriteLineDivider('-');
+
+            // 중단: 적 목록
+            ShowEnemies(battle);
+
+            WriteLineDivider('-');
+
+            // 하단: 로그와 액션 안내
+            ShowBattleLog();
+        }
+
+        private void ShowPlayerStatus()
+        {
+            var player = gameManager.Player;
+
+            Console.WriteLine("[소환사]");
+            Console.WriteLine($"{player.Name}  Lv.{player.Level}  ({player.Job})");
+            Console.Write("HP ");
+            ShowHPBar(player.HP, player.MaxHP);
+            Console.WriteLine();
+            Console.Write("MP ");
+            ShowMPBar(player.MP, player.MaxMP);
+
+            Console.WriteLine($"Gold: {player.Gold}  Exp: {player.Exp}");
+        }
+
+        private void ShowEnemies(Battle battle)
+        {
+            Console.WriteLine("[적 목록]");
+            if (battle.Enemies == null || battle.Enemies.Count == 0)
+            {
+                Console.WriteLine("적이 없습니다.");
+                return;
+            }
+
+            for (int i = 0; i < battle.Enemies.Count; i++)
+            {
+                var enemies = battle.Enemies[i];
+                string status = enemies.HP > 0 ? $"{enemies.HP}/{enemies.MaxHP}" : "💀 사망";
+                Console.Write($"[{i + 1}] Lv.{enemies.Level} {enemies.Name,-15} ");
+                ShowHPBarInline(enemies.HP, enemies.MaxHP);
+                Console.WriteLine($"  {status}");
+            }
+        }
+
+        private void ShowBattleLog()
+        {
+            Console.WriteLine("\n[Battle Log]");
+            foreach (var line in battleLog.Skip(Math.Max(0, battleLog.Count - LogShowCount)))
+            {
+                Console.WriteLine("- " + line);
+            }
+            Console.WriteLine();
+        }
+
+        private void ShowActionMenu()
+        {
+            Console.WriteLine();
+            Console.WriteLine("────────────────────────────");
+            Console.WriteLine("행동을 선택하세요:");
+            Console.WriteLine("1. 일반 공격");
+            Console.WriteLine("2. 스킬 사용");
+            Console.WriteLine("3. 포션 사용");
+            Console.WriteLine("4. 도망");
+            Console.Write(">> ");
+        }
+
+        private void ShowHPBar(int current, int max)
+        {
+            // 라인 단독 출력용 (바 + 숫자)
+            ShowHPBarInline(current, max);
+            Console.Write($"  {current}/{max}");
+        }
+
+        private void ShowHPBarInline(int current, int max)
+        {
+            double ratio = max <= 0 ? 0.0 : (double)current / max;
+            ratio = Math.Clamp(ratio, 0.0, 1.0);
+            int filled = (int)Math.Round(ratio * HpBarLength);
+            int empty = HpBarLength - filled;
+
+            // 색상: HP남은 상황에 따른 색깔 -> 초록(>40%), 노랑(20~40%), 빨강(<20%)
+            if (ratio > 0.4)
+            {
+                Console.ForegroundColor = ConsoleColor.Green;
+            }
+            else if (ratio > 0.2)
+            {
+                Console.ForegroundColor = ConsoleColor.Yellow;
+            }
+            else
+            {
+                Console.ForegroundColor = ConsoleColor.Red;
+            }
+            // 바 왼쪽 [
+            Console.Write("[");
+
+            Console.Write(new string('█', filled));
+            Console.ResetColor();
+            Console.Write(new string('░', empty));
+
+            // 바 오른쪽 ]
+            Console.Write("]");
+        }
+
+        private void ShowMPBar(int current, int max)
+        {
+            ShowMPBarInline(current, max);
+            Console.Write($"  {current}/{max}");
+        }
+
+        private void ShowMPBarInline(int current, int max)
+        {
+            double ratio = max <= 0 ? 0.0 : (double)current / max;
+            ratio = Math.Clamp(ratio, 0.0, 1.0);
+            int filled = (int)Math.Round(ratio * MpBarLength);
+            int empty = MpBarLength - filled;
+
+            // 바 왼쪽 [
+            Console.Write("[");
+
+            Console.ForegroundColor = ConsoleColor.Blue;
+            
+            Console.Write(new string('█', filled));
+            Console.ResetColor();
+            Console.Write(new string('░', empty));
+
+            // 바 오른쪽 ]
+            Console.Write("]");
+        }
+
+        private void WriteLineDivider(char c = '-', int repeat = 40)
+        {
+            Console.WriteLine(new string(c, repeat));
+        }
+
+
+
+        private void AddLog(string msg)
+        {
+            string time = DateTime.Now.ToString("HH:mm:ss");
+            battleLog.Add($"[{time}] {msg}");
+            // 로그 길이 제한
+            if (battleLog.Count > 200) battleLog.RemoveRange(0, 40);
+        }
+
+        private int SelectEnemyIndex(Battle battle)
+        {
+            if (battle.Enemies == null || battle.Enemies.Count == 0)
+            {
+                AddLog("공격할 적이 없습니다.");
+                return -1;
+            }
+
+            Console.WriteLine("대상을 선택하세요. (번호, 취소: 0)");
+            for (int i = 0; i < battle.Enemies.Count; i++)
+            {
+                var m = battle.Enemies[i];
+                Console.WriteLine($"{i + 1}. {m.Name} {(m.HP > 0 ? $"HP:{m.HP}/{m.MaxHP}" : "[사망]")}");
+            }
+            Console.Write(">> ");
+
+            string line = Console.ReadLine();
+            if (!int.TryParse(line, out int pick))
+            {
+                AddLog("잘못된 입력: 숫자를 입력하세요.");
+                return -1;
+            }
+
+            if (pick == 0) return -1;
+            if (pick < 1 || pick > battle.Enemies.Count)
+            {
+                AddLog("유효한 적 번호를 입력하세요.");
+                return -1;
+            }
+
+            // 선택한 적이 이미 죽었는지 체크
+            if (battle.Enemies[pick - 1].HP <= 0)
+            {
+                AddLog("이미 사망한 적입니다. 다른 대상을 선택하세요.");
+                return -1;
+            }
+
+            return pick - 1;
         }
     }
 }
