@@ -16,30 +16,35 @@ namespace Text_RPG_11
         
         public Dungeon(GameManager manager)
         {
+            _gameManager = manager;
+            _battle = new Battle(manager);
+        }
+
+        public void DungeonBattle()
+        {
             while (_battle.BattleState == Battle.BattleResult.InProgress)
             {
                 // 배틀 시작
-                _gameManager = manager;
-                _battle = new Battle(manager);
-                Console.WriteLine("Battle!!\n\n");
+                Console.WriteLine("\nBattle!!\n");
                 _battle.PlayerInitialHP = _gameManager.Player.HP;
+                // 몬스터 스폰
                 _battle.EnemySpawn();
+                EnemyInfo();
+                Console.WriteLine();
 
                 Console.WriteLine("[내 정보]");
-                Console.WriteLine($"Lv.{_gameManager.Player.Level} Chad ({_gameManager.Player.Job}) \n\n HP {_gameManager.Player.HP} / {_gameManager.Player.MaxHP}\n\nMP {_gameManager.Player.MP} / {_gameManager.Player.MaxMP}\n\n");
+                Console.WriteLine($"Lv.{_gameManager.Player.Level} Chad ({_gameManager.Player.Job})\n\nHP {_gameManager.Player.HP} / {_gameManager.Player.MaxHP}\nMP {_gameManager.Player.MP} / {_gameManager.Player.MaxMP}\n");
 
-                Console.WriteLine("1. 공격");
+                Console.WriteLine("1. 공격\n");
                 Console.WriteLine("원하시는 행동을 입력해주세요.");
-                Console.Write(">>");
+                Console.Write(">> ");
 
-                int.TryParse(Console.ReadLine(), out int playerInput);
+                int.TryParse(Console.ReadLine(), out int result);
 
-                if (playerInput == 1)
+                if (result == 1)
                     PlayerTurn();
                 else
-                {
                     Console.WriteLine("잘못된 입력입니다.");
-                }
             }
             
             // 배틀 종료 후
@@ -49,61 +54,88 @@ namespace Text_RPG_11
                 Defeat();
         }
 
+        // 몬스터 정보
         public void EnemyInfo()
         {
-            for (int i = 0; i <= _battle.Enemies.Count - 1; i++)
+            for (int i = 0; i < _battle.Enemies.Count; i++)
             {
-                Console.WriteLine($"[{i + 1}]Lv. {_battle.Enemies[i].Level} {_battle.Enemies[i].Name}  HP {_battle.Enemies[i].HP}");
+                if(_battle.Enemies[i].isDead)
+                    Console.WriteLine($"[{i + 1}] Lv. {_battle.Enemies[i].Level} {_battle.Enemies[i].Name}  Dead");
+                // 회색 처리 필요
+                else
+                    Console.WriteLine($"[{i + 1}] Lv. {_battle.Enemies[i].Level} {_battle.Enemies[i].Name}  HP {_battle.Enemies[i].HP}");
             }
         }
 
         // 공격 / 스킬 사용 선택
         public void PlayerTurn()
         {
-            _battle.EndCheck();
-            Console.WriteLine("Battle!!\n\n");   
-            EnemyInfo();
-            
-            Console.WriteLine("[내 정보]");
-            Console.WriteLine($"Lv.{_gameManager.Player.Level} Chad ({_gameManager.Player.Job}) \n\n HP {_gameManager.Player.HP} / {_gameManager.Player.MaxHP}\n\nMP {_gameManager.Player.MP} / {_gameManager.Player.MaxMP}\n\n");
-            bool isWorked = int.TryParse(Console.ReadLine(), out int result);
-
-            switch (result)
+            while (true)
             {
-                case 1:
-                    PlayerTurnAttack();
-                    break;
-                case 2:
-                    PlayerTurnSkillSelect();
-                    break;
+                // 배틀 종료 조건 확인
+                _battle.EndCheck();
+                
+                Console.WriteLine("\nBattle!!\n");   
+                EnemyInfo();
+                Console.WriteLine();
+            
+                Console.WriteLine("[내 정보]");
+                Console.WriteLine($"Lv.{_gameManager.Player.Level} Chad ({_gameManager.Player.Job})\n\nHP {_gameManager.Player.HP} / {_gameManager.Player.MaxHP}\nMP {_gameManager.Player.MP} / {_gameManager.Player.MaxMP}\n");
+            
+                Console.WriteLine("1. 공격");
+                Console.WriteLine("2. 스킬\n");
+            
+                Console.WriteLine("원하시는 행동을 입력해주세요.");
+                Console.Write(">> ");
+                bool isWorked = int.TryParse(Console.ReadLine(), out int result);
+
+                switch (result)
+                {
+                    case 1:
+                        PlayerTurnAttack();
+                        break;
+                    case 2:
+                        PlayerTurnSkillSelect();
+                        break;
+                    default:
+                        Console.WriteLine("잘못된 입력입니다.");
+                        break;
+                }
             }
         }
         
-        // 공격
+        // 공격 선택 > 공격할 몬스터 선택
         public void PlayerTurnAttack()
         {
-            Console.WriteLine("Battle!!\n\n");   
-            _battle.EnemyInfo();
-            
-            Console.WriteLine("[내 정보]");
-            Console.WriteLine($"Lv.{_gameManager.Player.Level} Chad ({_gameManager.Player.Job}) \n\n HP {_gameManager.Player.HP} / {_gameManager.Player.MaxHP}\n\n");
-            
-            Console.WriteLine("몬스터 숫자. 공격\n\n");
-            Console.WriteLine("0. 취소\n\n");
-
-            Console.WriteLine("대상을 선택해주세요.");
-            Console.Write(">>");
-            
-            bool isWorked = int.TryParse(Console.ReadLine(), out _monsterNum);
-
-            if (isWorked || _monsterNum == 0)
+            while (true)
             {
-                // 나가기
-            }
-            else if(_monsterNum > 0 && _monsterNum <= _battle.Enemies.Count)
-            {
-                _battle.Attack(_monsterNum - 1);
-                PlayerTurnEnd();
+                Console.WriteLine("\nBattle!!\n");   
+                EnemyInfo();
+                Console.WriteLine();
+            
+                Console.WriteLine("[내 정보]");
+                Console.WriteLine($"Lv.{_gameManager.Player.Level} Chad ({_gameManager.Player.Job})\nHP {_gameManager.Player.HP} / {_gameManager.Player.MaxHP}\n");
+            
+                Console.WriteLine("몬스터 숫자. 공격");
+                Console.WriteLine("0. 취소\n");
+
+                Console.WriteLine("대상을 선택해주세요.");
+                Console.Write(">> ");
+            
+                bool isWorked = int.TryParse(Console.ReadLine(), out _monsterNum);
+
+                
+                if(_monsterNum > 0 && _monsterNum <= _battle.Enemies.Count)
+                {
+                    _battle.Attack(_monsterNum - 1);
+                    PlayerTurnEnd();
+                }
+                else if (isWorked || _monsterNum == 0)
+                {
+                    // 나가기
+                }
+                else
+                    Console.WriteLine("잘못된 입력입니다.");
             }
         }
         
@@ -113,7 +145,7 @@ namespace Text_RPG_11
             
         }
         
-        // 스킬 사용
+        // 스킬 사용할 몬스터 선택
         public void PlayerTurnSkill()
         {
             
@@ -121,95 +153,129 @@ namespace Text_RPG_11
         
         public void PlayerTurnEnd()
         {
-            _battle.EnemyInfo();
-            Console.WriteLine("Battle!!\n\n");
-            
-            Console.WriteLine($"{_gameManager.Player.Name}의 공격!");
-            Console.WriteLine($"Lv.{_battle.Enemies[_monsterNum - 1].Level} {_battle.Enemies[_monsterNum - 1].Name}을(를) 맞췄습니다. [데미지 : {_battle.AtkRand}\n\n");
-            
-            Console.WriteLine($"Lv. {_battle.Enemies[_monsterNum - 1].Level} {_battle.Enemies[_monsterNum - 1].Name}");
-            Console.WriteLine($"HP {_battle.EnemyHP} -> {_battle.Enemies[_monsterNum - 1].HP}\n\n");
-            
-            Console.WriteLine($"0. 다음\n\n");
-            
-            Console.WriteLine("대상을 선택해주세요.");
-            Console.Write(">>");
-            
-            bool isWorked = int.TryParse(Console.ReadLine(), out int result);
-
-            if (isWorked || result== 0)
+            while (true)
             {
-                EnemyTurnToPlayerTurn();
+                EnemyInfo();
+                Console.WriteLine("\nBattle!!\n");
+            
+                Console.WriteLine($"{_gameManager.Player.Name}의 공격!");
+                Console.WriteLine($"Lv.{_battle.Enemies[_monsterNum - 1].Level} {_battle.Enemies[_monsterNum - 1].Name}을(를) 맞췄습니다. [데미지 : {_battle.AtkRand}]\n");
+
+                if (_battle.Enemies[_monsterNum - 1].isDead)
+                {
+                    Console.WriteLine($"Lv. {_battle.Enemies[_monsterNum - 1].Level} {_battle.Enemies[_monsterNum - 1].Name}");
+                    Console.WriteLine($"HP {_battle.EnemyHP} -> Dead\n");
+                }
+            
+                Console.WriteLine($"0. 다음\n");
+            
+                Console.WriteLine("원하시는 행동을 입력해주세요.\n");
+                Console.Write(">> ");
+            
+                bool isWorked = int.TryParse(Console.ReadLine(), out int result);
+
+                if (isWorked || result== 0)
+                {
+                    EnemyTurn();
+                }
+                else
+                    Console.WriteLine("잘못된 입력입니다.");
             }
         }
 
-        public void EnemyTurnToPlayerTurn()
+        // 에너미 턴 진행
+        public void EnemyTurn()
         {
-            _battle.EnemyInfo();
-            Console.WriteLine("Battle!!\n\n");
-            Console.WriteLine($"Lv. {_battle.Enemies[_battle.Index].Level} {_battle.Enemies[_battle.Index].Name}의 공격!");
-            Console.WriteLine($"{_gameManager.Player.Job} 을(를) 맞췄습니다.    [데미지 : {_battle.Enemies[_battle.Index].Attack}\n\n");
-            
-            Console.WriteLine($"Lv.{_gameManager.Player.Level} Chad ({_gameManager.Player.Job})");
-            Console.WriteLine($"HP {_battle.PlayerHP} -> {_gameManager.Player.HP}\n\n");
-            
-            Console.WriteLine($"0. 다음\n\n");
-            
-            Console.WriteLine("대상을 선택해주세요.");
-            Console.Write(">>");
-            
-            bool isWorked = int.TryParse(Console.ReadLine(), out int result);
-
-            if (isWorked || result== 0)
+            while (true)
             {
-                PlayerTurn();
+                EnemyInfo();
+                Console.WriteLine("\nBattle!!\n");
+                // 공격받기 전, 플레이어의 체력을 저장
+                _battle.PlayerHP = _gameManager.Player.HP;
+                
+                // 살아있는 모든 몬스터가 플레이어를 공격
+                for (_battle.Index = 0; _battle.Index < _battle.Enemies.Count; _battle.Index++)
+                {
+                    _battle.EnemyTurn();
+                    Console.WriteLine($"Lv. {_battle.Enemies[_battle.Index].Level} {_battle.Enemies[_battle.Index].Name}의 공격!");
+                    Console.WriteLine($"{_gameManager.Player.Name} 을(를) 맞췄습니다.    [데미지 : {_battle.Enemies[_battle.Index].Attack}]\n");
+                }
+                
+                // 결과
+                Console.WriteLine($"Lv.{_gameManager.Player.Level} Chad ({_gameManager.Player.Job})");
+                Console.WriteLine($"HP {_battle.PlayerHP} -> {_gameManager.Player.HP}\n");
+                
+                // 진행
+                Console.WriteLine($"0. 다음\n");
+            
+                Console.WriteLine("원하시는 행동을 입력해주세요.");
+                Console.Write(">> ");
+            
+                bool isWorked = int.TryParse(Console.ReadLine(), out int result);
+
+                if (isWorked || result== 0)
+                {
+                    PlayerTurn();
+                }
+                else
+                    Console.WriteLine("잘못된 입력입니다.");
             }
         }
 
         public void Victory()
         {
-            _battle.ClearReward();
-            Console.WriteLine("Battle!! - Result\n\n");
-            Console.WriteLine("Victory\n\n");
-            Console.WriteLine($"던전에서 몬스터 {_battle.Enemies.Count}마리를 잡았습니다.\n\n");
-            
-            Console.WriteLine("[캐릭터 정보]");
-            Console.WriteLine($"Lv.{_gameManager.Player.Level} Chad ({_gameManager.Player.Job})");
-            Console.WriteLine($"HP {_battle.PlayerInitialHP} -> {_gameManager.Player.HP}\n\n");
-            
-            Console.WriteLine("[획득 아이템]");
-            Console.WriteLine($"{_battle.RewardGold} Gold");
-            
-            Console.WriteLine($"0. 다음\n\n");
-            
-            Console.Write(">>");
-            
-            bool isWorked = int.TryParse(Console.ReadLine(), out int result);
-
-            if (isWorked || result== 0)
+            while (true)
             {
-                // 돌아가기
+                _battle.ClearReward();
+                Console.WriteLine("Battle!! - Result\n\n");
+                Console.WriteLine("Victory\n\n");
+                Console.WriteLine($"던전에서 몬스터 {_battle.Enemies.Count}마리를 잡았습니다.\n");
+            
+                Console.WriteLine("[캐릭터 정보]");
+                Console.WriteLine($"Lv.{_gameManager.Player.Level} Chad ({_gameManager.Player.Job})");
+                Console.WriteLine($"HP {_battle.PlayerInitialHP} -> {_gameManager.Player.HP}\n");
+            
+                Console.WriteLine("[획득 아이템]");
+                Console.WriteLine($"{_battle.RewardGold} Gold\n");
+            
+                Console.WriteLine($"0. 다음\n");
+            
+                Console.Write(">> ");
+            
+                bool isWorked = int.TryParse(Console.ReadLine(), out int result);
+
+                if (isWorked || result== 0)
+                {
+                    // 돌아가기
+                }
+                else
+                    Console.WriteLine("잘못된 입력입니다.");
             }
         }
 
         public void Defeat()
         {
-            Console.WriteLine("Battle!! - Result\n\n");
-            Console.WriteLine("You Lose\n\n");
-            
-            Console.WriteLine("[캐릭터 정보]");
-            Console.WriteLine($"Lv.{_gameManager.Player.Level} Chad ({_gameManager.Player.Job})");
-            Console.WriteLine($"HP {_battle.PlayerInitialHP} -> {_gameManager.Player.HP}\n\n");
-            
-            Console.WriteLine($"0. 다음\n\n");
-            
-            Console.Write(">>");
-            
-            bool isWorked = int.TryParse(Console.ReadLine(), out int result);
-
-            if (isWorked || result== 0)
+            while (true)
             {
-                // 돌아가기
+                Console.WriteLine("Battle!! - Result\n");
+                Console.WriteLine("You Lose\n");
+            
+                Console.WriteLine("[캐릭터 정보]");
+                Console.WriteLine($"Lv.{_gameManager.Player.Level} Chad ({_gameManager.Player.Job})");
+                Console.WriteLine($"HP {_battle.PlayerInitialHP} -> {_gameManager.Player.HP}\n");
+            
+                Console.WriteLine($"0. 다음\n");
+            
+                Console.Write(">> ");
+            
+                bool isWorked = int.TryParse(Console.ReadLine(), out int result);
+
+                if (isWorked || result== 0)
+                {
+                    // 돌아가기
+                }
+                else
+                    Console.WriteLine("잘못된 입력입니다.");
             }
         }
     }
