@@ -3,7 +3,7 @@
     {
       "name": "전사",
       "description": "높은 체력을 가진 근접 클래스",
-      "beseStats": {
+      "baseStats": {
         "hp": 120,
         "mp": 40,
         "attack": 10,
@@ -16,7 +16,7 @@
     {
       "name": "마법사",
       "description": "강력한 공격력을 가진 원거리 클래스",
-      "beseStats": {
+      "baseStats": {
         "hp": 80,
         "mp": 80,
         "attack": 18,
@@ -29,7 +29,7 @@
     {
       "name": "도적",
       "description": "높은 회피율을 가진 민첩한 근접 클래스",
-      "bestStats": {
+      "baseStats": {
         "hp": 100,
         "mp": 50,
         "attack": 12,
@@ -42,7 +42,7 @@
     {
       "name": "궁수",
       "description": "자연의 힘을 빌려 멀리 있는 적을에게 정확한 공격을 가하는 원거리 클래스",
-      "beseStats": {
+      "baseStats": {
         "hp": 90,
         "mp": 70,
         "attack": 14,

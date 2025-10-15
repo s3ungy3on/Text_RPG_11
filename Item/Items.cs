@@ -27,33 +27,35 @@ namespace Text_RPG_11
         public abstract string ItemStats();
     }
 
-    public static class ItemDatabase
-    {
-        public static Items[] CreateItemsData()
-        {
-            return new Items[]
-            {
-                //무기
-                new Weapon("낡은 검", "쉽게 볼 수 있는 낡은 검 입니다.", 2, 600, 0),
+    //public static class ItemDatabase
+    //{
+    //    public static Items[] CreateItemsData()
+    //    {
+    //        return new Items[]
+    //        {
+    //            //무기
+    //            new Weapon("낡은 검", "쉽게 볼 수 있는 낡은 검 입니다.", 2, 600, 0),
 
-                //방어구
-                new Armor("수련자 갑옷", "수련에 도움을 주는 갑옷입니다.", 5, 1000, 10),
+    //            //방어구
+    //            new Armor("수련자 갑옷", "수련에 도움을 주는 갑옷입니다.", 5, 1000, 10),
 
-                //포션
-                new Potion("체력 물약", "체력을 30 회복시켜줍니다.", 30, 500),
-            };
-        }
-    }
+    //            //포션
+    //            new Potion("체력 물약", "체력을 30 회복시켜줍니다.", 30, 500),
+    //        };
+    //    }
+
 
     public class Weapon : Items
     {
         public int AttackPower { get; }
         public int ItemHp { get; }
+        public int ItemMp { get; }
 
-        public Weapon(string name, string desc, int attackPower, int price, int itemhp, bool isEquipped = false, bool isPurchased = false) : base(name, desc, price, isEquipped, isPurchased)
+        public Weapon(string name, string desc, int attackPower, int price, int itemHp, int itemMp, bool isEquipped = false, bool isPurchased = false) : base(name, desc, price, isEquipped, isPurchased)
         {
             AttackPower = attackPower;
-            ItemHp = itemhp;
+            ItemHp = itemHp;
+            ItemMp = itemMp;
 
         }
 
@@ -72,11 +74,13 @@ namespace Text_RPG_11
     {
         public int DefensePower { get; }
         public int ItemHp { get; }
+        public int ItemMp { get; }
 
-        public Armor(string name, string desc, int defensePower, int price, int hp, bool isEquipped = false, bool isPurchased = false) : base(name, desc, price, isEquipped, isPurchased)
+        public Armor(string name, string desc, int defensePower, int price, int itemHp, int itemMp, bool isEquipped = false, bool isPurchased = false) : base(name, desc, price, isEquipped, isPurchased)
         {
             DefensePower = defensePower;
-            ItemHp = hp;
+            ItemHp = itemHp;
+            ItemMp = itemMp;
         }
 
         public override string ItemType()
@@ -110,5 +114,8 @@ namespace Text_RPG_11
         {
             return $"체력 회복 +{HealPower}";
         }
+
+        //포션 기능 추가
     }
 }
+

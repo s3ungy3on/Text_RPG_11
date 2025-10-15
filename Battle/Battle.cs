@@ -10,26 +10,30 @@ namespace Text_RPG_11
 {
     internal class Battle
     {
-        public int Stage { get; }
+        // 담은 몬스터에 관련된 변수명은 enemy로 통일, 담기 전 몬스터에 관련된 변수명은 monster로 통일
+        public int Stage { get; set; } // 던전 층
         
-        public int PlayerInitialHP;
-        public int PlayerHP;
-        public int EnemyHP;
+        public int PlayerInitialHP; // 플레이어 던전 진입 시 체력
+        public int PlayerHP; // 플레이어 던전 진입 이후 턴 별 체력(에너미에게 공격 당하기 전)
+        public int EnemyHP; // 에너미 턴 별 체력(플레이어에게 공격 당하기 전)
         
-        public int Index;
+        public int Index; // Index는 몬스터가 자기자신을 지칭할 때 사용
+        
         public int AtkRandInput;
         public int AtkRand;
         
-        public int RewardExp;
-        public int RewardGold;
-
-        public bool IsWin;
+        public int RewardExp; // 총 보상 계산
+        public int RewardGold; // 총 보상 계산
         
         // 배틀 시작 후 몬스터 랜덤 등장
                 
         // 0. 몬스터 담을 리스트 생성(이후에 추가)
-        // 담은 몬스터에 관련된 변수명은 enemy로 통일, 담기 전 몬스터에 관련된 변수명은 monster로 통일
-        public List<Monster> Monsters = new List<Monster>();
+        public List<Monster> Monsters = new List<Monster>()
+        {
+            Monster.Minion(),
+            Monster.Voidling(),
+            Monster.CanonMinion()
+        };
         public List<Monster> Enemies = new List<Monster>();
         
         private GameManager _gameManager;
@@ -55,24 +59,15 @@ namespace Text_RPG_11
             int spawnNum = random.Next(1, 5);
             
             // 2. 등장할 몬스터 랜덤 선택
-            for (int i = 0; i < spawnNum - 1; i++)
+            for (int i = 0; i < spawnNum; i++)
             {
                 Enemies.Add(Monsters[random.Next(0, Monsters.Count)]);
             }
-                
-            // 3. 랜덤 선택된 몬스터 출력
-            Console.WriteLine("Battle!!");
-        }
-
-        public void EnemyInfo()
-        {
-            for(int i = 0; i < Enemies.Count - 1; i++)
-                Console.WriteLine($"[{i + 1}] Lv. {Enemies[i].Level} {Enemies[i].Name}  HP {Enemies[i].HP}");
         }
         
         public BattleResult EndCheck()
         {
-            if (Enemies.All(m => m.HP == 0) && _gameManager.Player.HP > 0)
+            if (Enemies.All(m => m.isDead) && _gameManager.Player.HP > 0)
             {
                 BattleState = BattleResult.Victory;
                 return BattleState;
@@ -93,7 +88,8 @@ namespace Text_RPG_11
             int criticalPercent = rand.Next(1, 100);
             // 공격 오차 범위
             AtkRandInput = (int)Math.Round(_gameManager.Player.MaxAttack * 0.1);
-            AtkRand = rand.Next((int)Math.Round(_gameManager.Player.MaxAttack * (1.0 - AtkRandInput)), (int)Math.Round(_gameManager.Player.MaxAttack * (1.0 + AtkRandInput)));
+            // 공격 값
+            AtkRand = rand.Next(_gameManager.Player.MaxAttack - AtkRandInput, _gameManager.Player.MaxAttack + AtkRandInput);
 
             // 치명타
             if (criticalPercent <= 10)
@@ -105,7 +101,14 @@ namespace Text_RPG_11
             // 그 외
             else
             {
+                EnemyHP = Enemies[enemyIndex].HP;
                 Enemies[enemyIndex].HP -= AtkRand;
+            }
+            
+            // 에너미가 죽었다면 HP를 0으로(마이너스가 되지 않도록)
+            if (Enemies[enemyIndex].HP <= 0)
+            {
+                Enemies[enemyIndex].HP = 0;
             }
         }
 
@@ -114,27 +117,30 @@ namespace Text_RPG_11
             // 스킬을 사용해 에너미 공격
         }
 
+        // Enemy가 사용자 공격
         public void EnemyTurn()
         {
-            // Enemy가 사용자 공격
-            // 10퍼센트 확률로 적중하지 않을 수 있음
-            Index = 0;
-                
-            if (Enemies[Index].HP > 0)
+            Random rand = new Random();
+            int missPercent = rand.Next(1, 101);
+
+            // 10퍼센트 확률로 공격 미스
+            if (missPercent <= 10)
             {
-                // 플레이어 체력 > 깎인 체력
-                PlayerHP = _gameManager.Player.HP;
-                _gameManager.Player.HP -= Enemies[Index].Attack;
-                Index++;
+                // 무사히 지나갔다! 이런 걸 출력해줘야 할 것 같은데 고민
             }
             else
             {
-                // 죽은 미니언은 공격하지 않음
-                // 회색처리
+                if (Enemies[Index].HP > 0)
+                {
+                    // 플레이어 체력 > 깎인 체력
+                    _gameManager.Player.HP -= Enemies[Index].Attack;
+                }
+                else
+                {
+                    // 죽은 미니언은 공격하지 않음
+                    // 회색처리
+                }
             }
-            
-            if(Index == Enemies.Count - 1)
-                Index = 0;
         }
         
         public void ClearReward()
@@ -150,7 +156,7 @@ namespace Text_RPG_11
             
             _gameManager.Player.Gold += RewardGold;
             _gameManager.Player.Exp += RewardExp;
-            
+            Stage++;
         }
         
         public void LevelUp()
