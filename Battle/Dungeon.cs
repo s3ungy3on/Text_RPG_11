@@ -14,14 +14,30 @@ namespace Text_RPG_11
         
         public Dungeon(GameManager manager)
         {
-            // 배틀 시작
-            _gameManager = manager;
-            _battle = new Battle(manager);
-            Console.WriteLine("Battle!!\n\n");
-            _battle.MonsterSpawn();
-            Console.WriteLine("[내 정보]");
-            // 추후 Player 클래스 수정 후 currentHP or HpMax로 추가 예정
-            Console.WriteLine($"Lv.{_gameManager.Player.Level} Chad ({_gameManager.Player.Job}) \n\n HP {_gameManager.Player.HP}");
+            while (true)
+            {
+                // 배틀 시작
+                _gameManager = manager;
+                _battle = new Battle(manager);
+                Console.WriteLine("Battle!!\n\n");
+                _battle.MonsterSpawn();
+
+                Console.WriteLine("[내 정보]");
+                Console.WriteLine($"Lv.{_gameManager.Player.Level} Chad ({_gameManager.Player.Job}) \n\n HP {_gameManager.Player.HP} / {_gameManager.Player.MaxHP}\n\n");
+
+                Console.WriteLine("1. 공격");
+                Console.WriteLine("원하시는 행동을 입력해주세요.");
+                Console.Write(">>");
+
+                int.TryParse(Console.ReadLine(), out int playerInput);
+
+                if (playerInput == 1)
+                    PlayerTurn();
+                else
+                {
+                    Console.WriteLine("잘못된 입력입니다.");
+                }
+            }
         }
 
         // 공격 / 스킬 사용 선택
@@ -31,9 +47,7 @@ namespace Text_RPG_11
             _battle.MonsterInfo();
             
             Console.WriteLine("[내 정보]");
-            // 추후 Player 클래스 수정 후 currentHP or HpMax로 추가 예정
-            Console.WriteLine($"Lv.{_gameManager.Player.Level} Chad ({_gameManager.Player.Job})  HP {_gameManager.Player.HP}\n\n");
-
+            Console.WriteLine($"Lv.{_gameManager.Player.Level} Chad ({_gameManager.Player.Job}) \n\n HP {_gameManager.Player.HP} / {_gameManager.Player.MaxHP}\n\n");
             bool isWorked = int.TryParse(Console.ReadLine(), out int result);
 
             switch (result)
@@ -73,9 +87,10 @@ namespace Text_RPG_11
             {
                 // 나가기
             }
-            else if(monsterNum > 0 && monsterNum <= _battle.enemies.Count)
+            else if(monsterNum > 0 && monsterNum <= _battle.Enemies.Count)
             {
                 _battle.Attack(monsterNum - 1);
+                PlayerTurnEnd();
             }
         }
         
@@ -91,9 +106,32 @@ namespace Text_RPG_11
             
         }
 
+        public void PlayerTurnEnd()
+        {
+            
+        }
+
         public void EnemyTurnToPlayerTurn()
         {
-            // 에너미 턴 이후 플레이어 턴 진행
+            _battle.MonsterInfo();
+            Console.WriteLine("Battle!!\n\n");
+            Console.WriteLine($"Lv. {_battle.Enemies[_battle.Index].Level} {_battle.Enemies[_battle.Index].Name}의 공격!");
+            Console.WriteLine($"{_gameManager.Player.Job} 을(를) 맞췄습니다.    [데미지 : {_battle.Enemies[_battle.Index].Attack}\n\n");
+            
+            Console.WriteLine($"Lv.{_gameManager.Player.Level} Chad ({_gameManager.Player.Job})");
+            Console.WriteLine($"HP {_battle.PlayerHP} -> {_gameManager.Player.HP}\n\n");
+            
+            Console.WriteLine($"0. 다음\n\n");
+            
+            Console.WriteLine("대상을 선택해주세요.");
+            Console.Write(">>");
+            
+            bool isWorked = int.TryParse(Console.ReadLine(), out int result);
+
+            if (isWorked || result== 0)
+            {
+                PlayerTurn();
+            }
         }
     }
 }

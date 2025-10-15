@@ -10,13 +10,15 @@ namespace Text_RPG_11
 {
     internal class Battle
     {
-        public int stage = 1;
+        public int Stage { get; }
+        public int PlayerHP;
+        public int Index;
         
         // 배틀 시작 후 몬스터 랜덤 등장
                 
         // 0. 몬스터 담을 리스트 생성(이후에 추가)
-        public List<Monster> monsters = new List<Monster>();
-        public List<Monster> enemies = new List<Monster>();
+        public List<Monster> Monsters = new List<Monster>();
+        public List<Monster> Enemies = new List<Monster>();
         
         private GameManager _gameManager;
         
@@ -34,13 +36,13 @@ namespace Text_RPG_11
             // 2. 등장할 몬스터 랜덤 선택
             for (int i = 0; i < spawnNum - 1; i++)
             {
-                enemies.Add(monsters[random.Next(0, monsters.Count)]);
+                Enemies.Add(Monsters[random.Next(0, Monsters.Count)]);
             }
                 
             // 3. 랜덤 선택된 몬스터 출력
             Console.WriteLine("Battle!!");
                 
-            foreach (var enemy in enemies)
+            foreach (var enemy in Enemies)
             {
                 Console.WriteLine($"Lv. {enemy.Level} {enemy.Name}  HP {enemy.HP}");
             }
@@ -48,13 +50,13 @@ namespace Text_RPG_11
 
         public void MonsterInfo()
         {
-            for(int i = 0; i < enemies.Count - 1; i++)
-                Console.WriteLine($"[{i + 1}] Lv. {enemies[i].Level} {enemies[i].Name}  HP {enemies[i].HP}");
+            for(int i = 0; i < Enemies.Count - 1; i++)
+                Console.WriteLine($"[{i + 1}] Lv. {Enemies[i].Level} {Enemies[i].Name}  HP {Enemies[i].HP}");
         }
         
         public void WinCheck()
         {
-            if (enemies.All(m => m.HP == 0) && _gameManager.Player.HP > 0)
+            if (Enemies.All(m => m.HP == 0) && _gameManager.Player.HP > 0)
             {
                 Console.WriteLine("승리");
             }
@@ -67,20 +69,23 @@ namespace Text_RPG_11
         
         public void Attack(int enemyIndex)
         {
-            Random percent = new Random();
-            percent.Next(1, 100);
+            Random rand = new Random();
+            
+            int criticalPercent = rand.Next(1, 100);
+            // 공격 오차 범위
+            int atkRandInput = (int)Math.Round(_gameManager.Player.MaxAttack * 0.1);
+            int atkRand = rand.Next((int)Math.Round(_gameManager.Player.MaxAttack * (1.0 - atkRandInput)), (int)Math.Round(_gameManager.Player.MaxAttack * (1.0 + atkRandInput)));
 
-            if (percent.Next(1, 100) < 0)
+            // 치명타
+            if (criticalPercent <= 10)
             {
-                enemies[enemyIndex].HP -= (int)Math.Round(_gameManager.Player.Attack * 1.6);
+                Enemies[enemyIndex].HP -= (int)Math.Round(atkRand * 1.6);
             }
+            // 그 외
             else
             {
-                enemies[enemyIndex].HP -= _gameManager.Player.Attack;
+                Enemies[enemyIndex].HP -= atkRand;
             }
-            
-            // 사용자가 에너미를 공격
-            // 10퍼센트 확률로 160% 딜
         }
 
         public void UserSkill()
@@ -92,6 +97,23 @@ namespace Text_RPG_11
         {
             // Enemy가 사용자 공격
             // 10퍼센트 확률로 적중하지 않을 수 있음
+            Index = 0;
+                
+            if (Enemies[Index].HP > 0)
+            {
+                // 플레이어 체력 > 깎인 체력
+                PlayerHP = _gameManager.Player.HP;
+                _gameManager.Player.HP -= Enemies[Index].Attack;
+                Index++;
+            }
+            else
+            {
+                // 죽은 미니언은 공격하지 않음
+                // 회색처리
+            }
+            
+            if(Index == Enemies.Count - 1)
+                Index = 0;
         }
         
         public void RewardShow()
