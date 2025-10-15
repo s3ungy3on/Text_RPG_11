@@ -7,7 +7,6 @@ using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Threading.Tasks.Dataflow;
-using Text_RPG;
 
 namespace Text_RPG_11
 {
@@ -34,9 +33,9 @@ namespace Text_RPG_11
             shop = new Shop(this);
             dungeon = new Dungeon(this);
             saveManager = new SaveManager(this);
-            skill = new Skill(this);
-            quest = new Quest(this);
-            monster = new Monster(this);
+            // skill = new Skill(this);
+            // quest = new Quest(this);
+            // monster = new Monster(this);
             uiManager = new UIManager(this);
             battle = new Battle(this);
 

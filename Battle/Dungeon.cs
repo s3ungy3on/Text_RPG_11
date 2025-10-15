@@ -11,6 +11,8 @@ namespace Text_RPG_11
     {
         private GameManager _gameManager;
         private Battle _battle;
+
+        private int _monsterNum;
         
         public Dungeon(GameManager manager)
         {
@@ -20,7 +22,7 @@ namespace Text_RPG_11
                 _gameManager = manager;
                 _battle = new Battle(manager);
                 Console.WriteLine("Battle!!\n\n");
-                _battle.MonsterSpawn();
+                _battle.EnemySpawn();
 
                 Console.WriteLine("[내 정보]");
                 Console.WriteLine($"Lv.{_gameManager.Player.Level} Chad ({_gameManager.Player.Job}) \n\n HP {_gameManager.Player.HP} / {_gameManager.Player.MaxHP}\n\n");
@@ -44,7 +46,7 @@ namespace Text_RPG_11
         public void PlayerTurn()
         {
             Console.WriteLine("Battle!!\n\n");   
-            _battle.MonsterInfo();
+            _battle.EnemyInfo();
             
             Console.WriteLine("[내 정보]");
             Console.WriteLine($"Lv.{_gameManager.Player.Level} Chad ({_gameManager.Player.Job}) \n\n HP {_gameManager.Player.HP} / {_gameManager.Player.MaxHP}\n\n");
@@ -65,7 +67,7 @@ namespace Text_RPG_11
         public void PlayerAttack()
         {
             Console.WriteLine("Battle!!\n\n");   
-            _battle.MonsterInfo();
+            _battle.EnemyInfo();
             
             Console.WriteLine("[내 정보]");
             // 추후 Player 클래스 수정 후 currentHP or HpMax로 추가 예정
@@ -81,15 +83,15 @@ namespace Text_RPG_11
             Console.WriteLine("대상을 선택해주세요.");
             Console.Write(">>");
             
-            bool isWorked = int.TryParse(Console.ReadLine(), out int monsterNum);
+            bool isWorked = int.TryParse(Console.ReadLine(), out _monsterNum);
 
-            if (isWorked || monsterNum == 0)
+            if (isWorked || _monsterNum == 0)
             {
                 // 나가기
             }
-            else if(monsterNum > 0 && monsterNum <= _battle.Enemies.Count)
+            else if(_monsterNum > 0 && _monsterNum <= _battle.Enemies.Count)
             {
-                _battle.Attack(monsterNum - 1);
+                _battle.Attack(_monsterNum - 1);
                 PlayerTurnEnd();
             }
         }
@@ -108,12 +110,31 @@ namespace Text_RPG_11
 
         public void PlayerTurnEnd()
         {
+            _battle.EnemyInfo();
+            Console.WriteLine("Battle!!\n\n");
             
+            Console.WriteLine($"{_gameManager.Player.Name}의 공격!");
+            Console.WriteLine($"Lv.{_battle.Enemies[_monsterNum - 1].Level} {_battle.Enemies[_monsterNum - 1].Name}을(를) 맞췄습니다. [데미지 : {_battle.AtkRand}\n\n");
+            
+            Console.WriteLine($"Lv. {_battle.Enemies[_monsterNum - 1].Level} {_battle.Enemies[_monsterNum - 1].Name}");
+            Console.WriteLine($"HP {_battle.EnemyHP} -> {_battle.Enemies[_monsterNum - 1].HP}\n\n");
+            
+            Console.WriteLine($"0. 다음\n\n");
+            
+            Console.WriteLine("대상을 선택해주세요.");
+            Console.Write(">>");
+            
+            bool isWorked = int.TryParse(Console.ReadLine(), out int result);
+
+            if (isWorked || result== 0)
+            {
+                EnemyTurnToPlayerTurn();
+            }
         }
 
         public void EnemyTurnToPlayerTurn()
         {
-            _battle.MonsterInfo();
+            _battle.EnemyInfo();
             Console.WriteLine("Battle!!\n\n");
             Console.WriteLine($"Lv. {_battle.Enemies[_battle.Index].Level} {_battle.Enemies[_battle.Index].Name}의 공격!");
             Console.WriteLine($"{_gameManager.Player.Job} 을(를) 맞췄습니다.    [데미지 : {_battle.Enemies[_battle.Index].Attack}\n\n");

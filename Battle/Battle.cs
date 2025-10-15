@@ -12,11 +12,15 @@ namespace Text_RPG_11
     {
         public int Stage { get; }
         public int PlayerHP;
+        public int EnemyHP;
         public int Index;
+        public int AtkRandInput;
+        public int AtkRand;
         
         // 배틀 시작 후 몬스터 랜덤 등장
                 
         // 0. 몬스터 담을 리스트 생성(이후에 추가)
+        // 담은 몬스터에 관련된 변수명은 enemy로 통일, 담기 전 몬스터에 관련된 변수명은 monster로 통일
         public List<Monster> Monsters = new List<Monster>();
         public List<Monster> Enemies = new List<Monster>();
         
@@ -27,7 +31,7 @@ namespace Text_RPG_11
             _gameManager = manager;
         }
 
-        public void MonsterSpawn()
+        public void EnemySpawn()
         {
             // 1. 몬스터 수 생성
             Random random = new Random();
@@ -48,7 +52,7 @@ namespace Text_RPG_11
             }
         }
 
-        public void MonsterInfo()
+        public void EnemyInfo()
         {
             for(int i = 0; i < Enemies.Count - 1; i++)
                 Console.WriteLine($"[{i + 1}] Lv. {Enemies[i].Level} {Enemies[i].Name}  HP {Enemies[i].HP}");
@@ -64,7 +68,7 @@ namespace Text_RPG_11
             {
                 Console.WriteLine("패배");
             }
-            
+            // 승리 체크는 매 턴마다 해야 할 지, 아니면 반복문을 빠져나오는 순간에 해야 할 지 고민
         }
         
         public void Attack(int enemyIndex)
@@ -73,18 +77,20 @@ namespace Text_RPG_11
             
             int criticalPercent = rand.Next(1, 100);
             // 공격 오차 범위
-            int atkRandInput = (int)Math.Round(_gameManager.Player.MaxAttack * 0.1);
-            int atkRand = rand.Next((int)Math.Round(_gameManager.Player.MaxAttack * (1.0 - atkRandInput)), (int)Math.Round(_gameManager.Player.MaxAttack * (1.0 + atkRandInput)));
+            AtkRandInput = (int)Math.Round(_gameManager.Player.MaxAttack * 0.1);
+            AtkRand = rand.Next((int)Math.Round(_gameManager.Player.MaxAttack * (1.0 - AtkRandInput)), (int)Math.Round(_gameManager.Player.MaxAttack * (1.0 + AtkRandInput)));
 
             // 치명타
             if (criticalPercent <= 10)
             {
-                Enemies[enemyIndex].HP -= (int)Math.Round(atkRand * 1.6);
+                AtkRand = (int)Math.Round(AtkRand * 1.6);
+                EnemyHP = Enemies[enemyIndex].HP;
+                Enemies[enemyIndex].HP -= (int)Math.Round(AtkRand * 1.6);
             }
             // 그 외
             else
             {
-                Enemies[enemyIndex].HP -= atkRand;
+                Enemies[enemyIndex].HP -= AtkRand;
             }
         }
 
