@@ -33,5 +33,24 @@ namespace Text_RPG_11
             Hits = hits;
             Description = desc;
         }
+
+        //팩토리: 요구사항 스킬
+        public static Skill AlphaStrike() =>
+            new Skill(
+                name: "알파 스트라이크",
+                useMP: 10,
+                type: SkillType.Damage,
+                powerMultiplier: 2.0f,
+                hits: 1,
+                desc: "공격력 *2 로 하나의 적을 공격합니다.");
+
+        public static Skill DoubleStrike() =>
+            new Skill(
+                name: "더블 스트라이크",
+                useMP: 15,
+                type: SkillType.Damage,
+                powerMultiplier: 1.5f,
+                hits: 2,
+                desc: "공격력 *1.5 로 두 명의 적을 랜덤으로 공격합니다.");
     }
 }
