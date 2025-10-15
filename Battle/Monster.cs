@@ -6,6 +6,24 @@ using System.Threading.Tasks;
 
 namespace Text_RPG_11
 {
+    internal sealed class DropItem //몬스터가 사망시 드랍하는 아이템을 식별하는 Id와 드롭확률입니다
+                                    //sealed->상속금지, 다른 클래스에서의 상속을 막아두었습니다.
+    {
+        public int ItemId { get; set; } //드랍하는 아이템의 식별자
+        public int DropChance { get; set; } // %로 표시할 예정이라 int타입으로 기재했습니다. ex) Dropchance = 90 => 드랍확률 90%
+        public DropItem(int itemId, int dropChance) { ItemId = itemId; DropChance = dropChance; } //DropItem의 생성자입니다.
+                                                                                                  //생성자: 필수값 두 개를 받아 필드 초기화 
+    }
+
+    internal sealed class Rewards //몬스터 사망시 경험치와 골드 획득량입니다.
+    {
+        public int Exp { get; set; }    // 처치 시 주는 경험치
+        public int Gold { get; set; }   // 처치 시 주는 골드
+        public List<DropItem> DropItems { get; set; } = new List<DropItem>();    // 드랍 아이템 목록(기본값: 빈 리스트)
+                                                                                // null 회피를 위해 초기화 사용
+        public Rewards(int exp, int gold) { Exp = exp; Gold = gold; }   // 생성자: 경험치/골드  
+    }
+
     internal class Monster
     {
         public string Name { get; set; } 
