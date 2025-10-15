@@ -6,19 +6,19 @@ using System.Threading.Tasks;
 
 namespace Text_RPG_11
 {
-    internal sealed class DropItem //몬스터가 사망시 드랍하는 아이템을 식별하는 Id와 드롭확률입니다
-                                    //sealed->상속금지, 다른 클래스에서의 상속을 막아두었습니다.
+    internal sealed class DropItem                          //몬스터가 사망시 드랍하는 아이템을 식별하는 Id와 드롭확률입니다
+                                                            //sealed->상속금지, 다른 클래스에서의 상속을 막아두었습니다.
     {
-        public int ItemId { get; set; } //드랍하는 아이템의 식별자
-        public int DropChance { get; set; } // %로 표시할 예정이라 int타입으로 기재했습니다. ex) Dropchance = 90 => 드랍확률 90%
-        public DropItem(int itemId, int dropChance) { ItemId = itemId; DropChance = dropChance; } //DropItem의 생성자입니다.
-                                                                                                  //생성자: 필수값 두 개를 받아 필드 초기화 
+        public int ItemId { get; set; }                     //드랍하는 아이템의 식별자
+        public int DropChance { get; set; }                 // %로 표시할 예정이라 int타입으로 기재했습니다. ex) Dropchance = 90 => 드랍확률 90%
+        public DropItem(int itemId, int dropChance)         //DropItem의 생성자입니다.
+        { ItemId = itemId; DropChance = dropChance; }       //생성자: 필수값 두 개를 받아 필드 초기화 
     }
 
-    internal sealed class Rewards //몬스터 사망시 경험치와 골드 획득량입니다.
+    internal sealed class Rewards                           //몬스터 사망시 경험치와 골드 획득량입니다.
     {
-        public int Exp { get; set; }    // 처치 시 주는 경험치
-        public int Gold { get; set; }   // 처치 시 주는 골드
+        public int Exp { get; set; }                        // 처치 시 주는 경험치
+        public int Gold { get; set; }                       // 처치 시 주는 골드
         public List<DropItem> DropItems { get; set; } = new List<DropItem>();    // 드랍 아이템 목록(기본값: 빈 리스트)
                                                                                 // null 회피를 위해 초기화 사용
         public Rewards(int exp, int gold) { Exp = exp; Gold = gold; }   // 생성자: 경험치/골드  
@@ -26,25 +26,45 @@ namespace Text_RPG_11
 
     internal class Monster
     {
-        public string Name { get; set; } 
-        public int Level { get; set; }
+        public int Id { get; set; }                             //몬스터 식별자(식별ID)
+        public string Name { get; set; }                        //이름
+        public string Description { get; set; }                //설명
+        public int Level { get; set; }                          //레벨
 
-        public int MaxHP { get; set; } //최대체력
-        public int HP { get; set; } //체력
+        public int MaxHP { get; set; }                          //최대체력
+        public int HP { get; set; }                             //체력
 
-        public int Attack { get; set; }
-        public int Defense { get; set; }
+        public int Attack { get; set; }                         //기본 공격력
+        public int Defense { get; set; }                        //기본 방어력
+
+        public int DodgeChance { get; set; }            // 회피 확률(%)
+        public int CriticalChance { get; set; }         // 치명타 확률(%)
 
         // 전투 중 가감치(누적) — 버프/디버프는 여기에만 더하고 빼기
-        public int TempAttack { get; set; }
-        public int TempDefense { get; set; }
+        public int TempAttack { get; set; }                     // 공격 보정(버프+, 디버프-)
+        public int TempDefense { get; set; }                    // 방어 보정(버프+, 디버프-)
+
+        // 보상/드랍/스폰 정보                                    // Rewards 객체와 스폰 위치 목록
+        public Rewards Rewards { get; set; }                // 보상 묶음(경험치/골드/드랍)
+        public IReadOnlyList<string> SpawnLocations => _spawnLocations;         // 읽기 전용 뷰 제공
+        private readonly List<string> _spawnLocations = new List<string>();     // 내부 보관 리스트
+
+
+        // 이하 람다식 프로퍼티로 Rewards가 null일 때 0을 반환해서 NullReferenceException을 방지합니다.
+        /* if(Exp == 0)
+             {
+                get {
+                      if (Rewards == null) return 0;
+                      else return Rewards.Exp;
+             } 와 동치입니다. Reward가 0이 아니면, Rewards.Exp를 반환합니다.
+        */            
+        public int RewardExp => Rewards?.Exp ?? 0;
+        // 람다식 프로퍼티로 마찬가지로 Reward가 null일 때 0을 반환해서 NullReferenceException을 방지합니다.(0아니면 Rewards.Gold 반환)
+        public int RewardGold => Rewards?.Gold ?? 0;
 
         // 최종 전투 수치 (음수 방지)
-        public int AttackTotal => Math.Max(0, Attack + TempAttack);
+        public int AttackTotal => Math.Max(0, Attack + TempAttack);     
         public int DefenseTotal => Math.Max(0, Defense + TempDefense);
-
-        public int RewardExp { get; set; }
-        public int RewardGold { get; set; }
 
         public bool isDead => HP <= 0; //몬스터 사망 여부
        
