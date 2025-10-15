@@ -14,25 +14,28 @@ namespace Text_RPG_11
         public string Name { get; set; }
         public int Level { get; set; }
         public string Job { get; set; }
+
         public int Attack { get; set; }
         public int Defense { get; set; }
         public int HP { get; set; }
         public int MP { get; set; }
+
         public int Gold { get; set; }
         public int Exp { get; set; }
 
+
         private int itemHP = 0;
-        private int iteMP = 0;
-        public int itemAttack = 0;
-        public int itemDefense = 0;
+        private int itemMP = 0;
+        private int itemAttack = 0;
+        private int itemDefense = 0;
 
-        public int MaxHP { get { return HP + itemHP; } }
-        public int MaxMP { get { return MP + itemMP; } }
-        public int MaxAttack { get { return Attack + itemAttack; } }
-        public int MaxDefense { get { return Defense + itemDefense; } }
+        public int MaxHP => HP + itemHP;
+        public int MaxMP => MP + itemMP;
+        public int MaxAttack => Attack + itemAttack;
+        public int MaxDefense => Defense + itemDefense;
 
 
-        public Player(string name, int level, string job, int attack, int defense, int hp, int gold, int exp = 0, int mp = 50)
+        public Player(string name, int level, string job, int attack, int defense, int hp, int mp, int gold, int exp = 0,)
         {
             Name = name;
             Level = level;
@@ -40,9 +43,9 @@ namespace Text_RPG_11
             Attack = attack;
             Defense = defense;
             HP = hp;
+            MP = mp;
             Gold = gold;
             Exp = exp;
-            MP = mp;
         }
 
         public void StatUpdate(GameManager gameManager)
@@ -64,29 +67,25 @@ namespace Text_RPG_11
                     if (item is Weapon weapon)
                     {
                         itemAttack += weapon.AttackPower;
-
-                        if(weapon.ItemHp > 0)
-                            itemHP += weapon.ItemHp;
-
-                        if (weapon.ItemMp > 0)          
-                            itemMP += weapon.ItemMp;
+                        itemHP += weapon.ItemHp;      
+                        itemMP += weapon.ItemMp;
                         
 
                     }
                     else if (item is Armor armor)
                     {
                         itemDefense += armor.DefensePower;
-
-                        if(armor.ItemHp > 0)
-                        
-                            itemHP += armor.ItemHp;
-
-                        if (armor.ItemMp > 0)           
-                            itemMP += armor.ItemMp;
+                        itemHP += armor.ItemHp;        
+                        itemMP += armor.ItemMp;
 
                         
                     } 
                 }
+            }
+
+            if(HP > MaxHP)
+            {
+                HP = MaxHP;
             }
         }
     }
