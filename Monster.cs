@@ -8,11 +8,11 @@ namespace Text_RPG_11
 {
     internal class Monster
     {
-        public string Name { get; set; }
+        public string Name { get; set; } 
         public int Level { get; set; }
 
-        public int MaxHP { get; set; }
-        public int HP { get; set; }
+        public int MaxHP { get; set; } //최대체력
+        public int HP { get; set; } //체력
 
         public int Attack { get; set; }
         public int Defense { get; set; }
@@ -20,7 +20,7 @@ namespace Text_RPG_11
         public int RewardExp { get; set; }
         public int RewardGold { get; set; }
 
-        public bool isDead => HP <= 0;
+        public bool isDead => HP <= 0; //몬스터 사망
 
         public Monster(string name, int level, int maxHP, int attack, int defense, int rewardExp = 0, int rewardGold = 0)
         {
@@ -40,6 +40,7 @@ namespace Text_RPG_11
             HP = Math.Max(0, HP - dmg);
         }
 
+        //이하 몬스터 생성 메서드
         public static Monster Minion()=>
             new Monster(name:"미니언", level:2, maxHP:15, attack:5, defense:0,rewardExp:2, rewardGold:3);
         
