@@ -1,0 +1,56 @@
+{
+  "jobs": [
+    {
+      "name": "전사",
+      "description": "높은 체력을 가진 근접 클래스",
+      "beseStats": {
+        "hp": 120,
+        "mp": 40,
+        "attack": 10,
+        "defense": 8,
+        "criticalChance": 15,
+        "dodgeChance": 5,
+        "gold": 1000
+      }
+    },
+    {
+      "name": "마법사",
+      "description": "강력한 공격력을 가진 원거리 클래스",
+      "beseStats": {
+        "hp": 80,
+        "mp": 80,
+        "attack": 18,
+        "defense": 3,
+        "criticalChance": 20,
+        "dodgeChance": 8,
+        "gold": 1000
+      }
+    },
+    {
+      "name": "도적",
+      "description": "높은 회피율을 가진 민첩한 근접 클래스",
+      "bestStats": {
+        "hp": 100,
+        "mp": 50,
+        "attack": 12,
+        "defense": 5,
+        "criticalChance": 30,
+        "dodgeChance": 20,
+        "gold": 1000
+      }
+    },
+    {
+      "name": "궁수",
+      "description": "자연의 힘을 빌려 멀리 있는 적을에게 정확한 공격을 가하는 원거리 클래스",
+      "beseStats": {
+        "hp": 90,
+        "mp": 70,
+        "attack": 14,
+        "defense": 4,
+        "criticalChance": 25,
+        "dodgeChance": 15,
+        "gold": 1000
+      }
+    }
+  ]
+}
