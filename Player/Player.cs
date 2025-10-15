@@ -47,9 +47,7 @@ namespace Text_RPG_11
             Job = job;
             Attack = attack;
             Defense = defense;
-            DefaultHP = defaultHP;
             HP = DefaultHP;                                                         //생성시 현재 체력 = 최대 체력
-            DefaultMP = defaultMP;
             MP = DefaultMP;                                                         //생성시 현재 마나 = 최대 마나
             Gold = gold;
             Exp = exp;
