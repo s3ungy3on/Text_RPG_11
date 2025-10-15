@@ -52,5 +52,34 @@ namespace Text_RPG_11
                 powerMultiplier: 1.5f,
                 hits: 2,
                 desc: "공격력 *1.5 로 두 명의 적을 랜덤으로 공격합니다.");
+
+        public static Skill SwordDance() =>
+            new Skill(
+                name: "칼춤",
+                useMP: 10,
+                type: SkillType.Buff,
+                powerMultiplier: 5f,
+                hits: 0,
+                desc: "격렬한 칼춤을 춰서 기세를 높입니다.");
+
+        public static Skill Recover() =>
+            new Skill(
+                name: "HP회복",
+                useMP: 12,
+                type: SkillType.Heal,
+                powerMultiplier: 30f,
+                hits: 0,
+                desc: "세포를 재생시켜 30만큼의 HP를 회복합니다.");
+
+        public static Skill Reer() =>
+            new Skill(
+                name: "째려보기",
+                useMP: 10,
+                type: SkillType.Debuff,
+                powerMultiplier: 3f,
+                hits: 0,
+                desc: "매섭게 째려보아 상대의 방어를 3만큼 낮춥니다.");
+
+
     }
 }
