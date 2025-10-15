@@ -14,5 +14,16 @@ namespace Text_RPG_11
         public string Name { get; set; }
         public int UseMP { get; set; }
         public SkillType Type { get; set; }
+
+        // 공격/치명타/회복 배수 (예: 2.0f -> 공격력*2)
+        public float PowerMultiplier { get; set; } = 1.0f;
+
+        //시전 횟수 (예: 더블 스트라이크 =2)
+        public int Hits { get; set; } = 1;
+
+        // 스킬 설명
+        public string Description { get; set; } = "";
+
+        
     }
 }
