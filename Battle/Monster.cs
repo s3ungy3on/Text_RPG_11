@@ -62,17 +62,58 @@ namespace Text_RPG_11
         // 람다식 프로퍼티로 마찬가지로 Reward가 null일 때 0을 반환해서 NullReferenceException을 방지합니다.(0아니면 Rewards.Gold 반환)
         public int RewardGold => Rewards?.Gold ?? 0;
 
-        // 최종 전투 수치 (음수 방지)
+        /* 
+          최종 전투 수치 
+          TempAttack, TempDefense에는 디버프와 버프로 인한 수치가 누적됩니다. (예: 공격감소 2 -> temp = -2)
+          이는 각각 Attack, Defense에 더해져서 최종적으로 AttackTotal, DefenseTotal에 저장됩니다. 
+          (예: 원래공격력 + 템프공격력 = 최종공격력 -> 5 + (-2) = 3)
+          음수가 나오는 것을 방지하기 위하여 Math.Max함수를 사용했습니다.괄호안에서 더 큰 값이 반환됩니다.
+        */
         public int AttackTotal => Math.Max(0, Attack + TempAttack);     
         public int DefenseTotal => Math.Max(0, Defense + TempDefense);
 
-        public bool isDead => HP <= 0; //몬스터 사망 여부
-       
-        // 전투시 TempAttack/TempDefense의 값이 버프/디버프에 따라 변동되는 것을 구현
-        public void AddAttackBuff(int amount) => TempAttack += Math.Max(0, amount);
-        public void AddDefenseBuff(int amount) => TempDefense += Math.Max(0, amount);
-        public void AddAttackDebuff(int amount) => TempAttack -= Math.Max(0, amount);
-        public void AddDefenseDebuff(int amount) => TempDefense -= Math.Max(0, amount);
+        //몬스터 생성자 new Monster(...)로 호출
+        public Monster(
+           int id,
+           string name,
+           string description,
+           int level,
+           int maxHP,
+           int attack,
+           int defense,
+           int dodgeChance,
+           int criticalChance,
+           Rewards rewards,
+           IEnumerable<string> spawnLocations)
+        {
+            Id = id;                                               // 식별자 설정
+            Name = name;                                           // 이름 설정
+            Description = description;                             // 설명 설정
+            Level = level;                                         // 레벨 설정
+
+            MaxHP = maxHP;                                         // 최대 HP
+            HP = maxHP;                                            // 시작 체력은 최대치
+            Attack = attack;                                       // 공격력
+            Defense = defense;                                     // 방어력
+
+            DodgeChance = Math.Clamp(dodgeChance, 0, 100);         // 0~100 범위로 클램프(변수,최솟값,최댓값)
+                                                                   // 확률이 0보다 작거나 100보다 큰 경우를 방지합니다(퍼센트 기준 예시1: -1% 예시2: 105%)
+            CriticalChance = Math.Clamp(criticalChance, 0, 100);   // 0~100 범위로 클램프
+
+            Rewards = rewards ?? new Rewards(0, 0);                // null 방지: 기본 보상 0,0
+            if (spawnLocations != null) _spawnLocations.AddRange(spawnLocations); // 스폰 위치 복사
+                                                                                  // AddRange(더할것들)로 Add()와 달리 복수의 대상을 추가가능
+
+            TempAttack = 0;                                        // 전투 시작 시 보정 0
+            TempDefense = 0;
+        }
+
+        //몬스터 피격시 데미지만큼 체력이 감소
+        public void TakeDamage(int dmg)
+        {
+            int taken = Math.Max(0, dmg);       //0과 dmg중 큰것을 반환합니다 ->피해량이 음수인 경우 방지
+            HP = Math.Max(0, HP - dmg);         //0과 HP-dmg중 큰것을 반환합니다 ->Hp가 음수인 경우 방지
+        }
 
         //전투 종료시 Temp의 값 리셋
         public void ResetTemps()
@@ -81,27 +122,8 @@ namespace Text_RPG_11
             TempDefense = 0;
         }
 
-        //몬스터 생성자
-        public Monster(string name, int level, int maxHP, int attack, int defense, int rewardExp = 0, int rewardGold = 0)
-        {
-            Name = name;
-            Level = level;
-            MaxHP = maxHP;
-            HP = MaxHP;
-            Attack = attack;
-            Defense = defense;
-            RewardExp = rewardExp;
-            RewardGold = rewardGold;
-            TempAttack = 0;
-            TempDefense = 0;
-        }
+        public bool isDead => HP <= 0; //몬스터 사망 여부
 
-        //몬스터 피격시 데미지만큼 체력이 감소
-        public void TakeDamage(int rawDamaage)
-        {
-            int dmg = Math.Max(0, rawDamaage);
-            HP = Math.Max(0, HP - dmg);
-        }
 
         //이하 몬스터 생성 메서드
         public static Monster Minion()=>
