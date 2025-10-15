@@ -42,6 +42,7 @@ namespace Text_RPG_11
                 }
             }
             
+            // 배틀 종료 후
             if(_battle.BattleState == Battle.BattleResult.Victory)
                 Victory();
             else if(_battle.BattleState == Battle.BattleResult.Defeat)
