@@ -24,22 +24,46 @@ namespace Text_RPG_11
         public int AtkRandInput; // 공격력 별 오차 범위
         public int AtkRand; // 오차 범위를 더한 공격력
         
-        
         public int RewardExp; // 총 보상 계산
         public int RewardGold; // 총 보상 계산
         
         public BattleResult BattleState { get; private set; }
-                
-        // 모든 몬스터 객체를 담을 리스트 생성
-        public List<Monster> Monsters = new List<Monster>()
+        
+        public List<Monster> Monsters = new List<Monster>() // 모든 몬스터 객체를 담을 리스트 생성(임시: 차후 Monster 클래스로 옮기거나, 더 좋은 방법을 찾아볼 예정)
         {
             Monster.Minion(),
             Monster.Voidgrub(),
-            Monster.CanonMinion()
+            Monster.CanonMinion(),
+            Monster.SuperMinion(),
+            Monster.Gromp(),
+            Monster.Raptors(),
+            Monster.Krugs(),
+            Monster.BlueSentinel(),
+            Monster.RedBrambleback(),
+            Monster.ScuttleCrab()
         };
         public List<Monster> Enemies = new List<Monster>();
         
+        public List<Skill> Skills = new List<Skill>() // 모든 스킬 담을 리스트 생성(임시: 차후 Skill 클래스로 옮기거나, 더 좋은 방법을 찾아볼 예정)
+        {
+            Text_RPG_11.Skill.Ashe_EnchantedCrystalArrow(),
+            Text_RPG_11.Skill.Ashe_FrostShot(),
+            Text_RPG_11.Skill.Ashe_Hawkshot(),
+            Text_RPG_11.Skill.Ashe_Volley(),
+            Text_RPG_11.Skill.Garen_Courage(),
+            Text_RPG_11.Skill.Garen_DemacianJustice(),
+            Text_RPG_11.Skill.Garen_Judgment(),
+            Text_RPG_11.Skill.Garen_Perseverance(),
+            Text_RPG_11.Skill.Lux_FinalSpark(),
+            Text_RPG_11.Skill.Lux_LightBinding(),
+            Text_RPG_11.Skill.Lux_LucentSingularity(),
+            Text_RPG_11.Skill.Lux_PrismaticBarrier()
+        };
+        public List<Skill> PlayerSkills = new List<Skill>(); // 모든 스킬 중 플레이어의 직업, 레벨에 맞는 스킬을 담을 리스트 생성
+        
         private GameManager _gameManager;
+
+        private Skill skillForAttack;
         
         public enum BattleResult // 현재 배틀 상태
         {
@@ -79,8 +103,9 @@ namespace Text_RPG_11
             AtkRandInput = (int)Math.Round(_gameManager.Player.MaxAttack * 0.1);
             // 공격 값
             AtkRand = rand.Next(_gameManager.Player.MaxAttack - AtkRandInput, _gameManager.Player.MaxAttack + AtkRandInput);
-
+            
             // 치명타
+            // 차후 Player CriticalChance에 맞춰 수정 예정
             if (criticalPercent <= 10)
             {
                 AtkRand = (int)Math.Round(AtkRand * 1.6);
@@ -101,9 +126,25 @@ namespace Text_RPG_11
             }
         }
 
-        public void UserSkill()
+        // 플레이어가 사용 가능한 Skill만 불러온다
+        public void Skill(int skillIndex)
         {
-            // 스킬을 사용해 에너미 공격
+            // Player가 사용할 수 있는 스킬만 PlayerSkills에 입력
+            PlayerSkills.AddRange(
+                Skills.Where(skill =>
+                    skill.RequiredJob == _gameManager.Player.Job &&
+                    skill.RequiredLevel == _gameManager.Player.Level
+                )
+            );
+            
+            // 플레이어가 선택한 스킬을 저장
+            skillForAttack = PlayerSkills[skillIndex];
+        }
+        
+        // 스킬을 사용해 에너미 공격
+        public void SkillUse(int enemyIndex)
+        {
+            
         }
 
         // Enemy가 사용자 공격
@@ -113,6 +154,7 @@ namespace Text_RPG_11
             int missPercent = rand.Next(1, 101);
 
             // 10퍼센트 확률로 공격 미스
+            // 차후 Player dodgeChance에 맞춰 수정 예정
             if (missPercent <= 10)
             {
                 // 무사히 지나갔다! 이런 걸 출력해줘야 할 것 같은데 고민
@@ -203,7 +245,7 @@ namespace Text_RPG_11
                                     .Where(item => item.Tier == ItemTier.Common)
                                     .OrderBy(_ => rand.Next()).First()
                                 : GetItems
-                                    .Where(item => item.Tier != ItemTier.Rare)
+                                    .Where(item => item.Tier == ItemTier.Rare)
                                     .OrderBy(_ => rand.Next()).First());
                             break;
                         
@@ -230,6 +272,7 @@ namespace Text_RPG_11
         {
             // 전투 클리어 후 사냥한 몬스터만큼 경험치 증가
             // 몬스터를 순회하면서 체력이 0이 된 몬스터가 제공하는 exp만큼 플레이어의 경험치를 상승
+            
         }
         
         // public void UserPotion()
