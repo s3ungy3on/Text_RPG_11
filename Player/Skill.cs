@@ -37,15 +37,14 @@ namespace Text_RPG_11
 
     internal class Skill
     {
-        public int Id { get; set; }                     //스킬 고유 번호
-        public string Name { get; set; }                //스킬 이름
-        public string Description { get; set; }         //스킬에 대한 설명
-        public string RequiredJob { get; set; }         // "전사" / "마법사" / "궁수" … 해당 스킬 사용하기 위해 요구되는 직업
-        public int RequiredLevel { get; set; }          // 해당스킬 사용하기 위해 요구되는 레벨
-        public string TypeText { get; set; }            // "attack" / "buff" / "heal" / "debuff"
-        public int ManaCost { get; set; }               //마나 소비량
-        public int Cooldown { get; set; }               //쿨타임 우리게임은 턴제이므로 턴으로 표기, 턴마다 1씩 감소
-        public SkillEffects Effects { get; set; }       
+        public int Id { get; private set; }                     //스킬 고유 번호
+        public string Name { get; private set; }                //스킬 이름
+        public string Description { get; private set; }         //스킬에 대한 설명
+        public string RequiredJob { get; private set; }         // "전사" / "마법사" / "궁수" … 해당 스킬 사용하기 위해 요구되는 직업
+        public int RequiredLevel { get; private set; }          // 해당스킬 사용하기 위해 요구되는 레벨
+        public int ManaCost { get; private set; }               //마나 소비량
+        public int Cooldown { get; private set; }               //쿨타임 우리게임은 턴제이므로 턴으로 표기, 턴마다 1씩 감소
+        public SkillEffects Effects { get; private set; }       
         
         
         public SkillType Type { get; private set; }
@@ -53,7 +52,9 @@ namespace Text_RPG_11
         public int Hits { get; private set; }             // 다타격 횟수(0/1 = 단일)
         public bool GuaranteedCritical { get; private set; }
         public string Desc { get; private set; }
+        
         public int CurrentCooldown { get; set; } = 0;       // 런타임 쿨다운(턴)
+        public int LeftDuration { get; set; } = 0;      // 남은 지속(턴)
 
         private Skill(
             int id, string name, string description,
@@ -66,7 +67,6 @@ namespace Text_RPG_11
             Description = description;
             RequiredJob = requiredJob;
             RequiredLevel = requiredLevel;
-            TypeText = typeText;
             ManaCost = manaCost;
             Cooldown = cooldown;
             Effects = effects ?? new SkillEffects();        // effects가 널이면 => new SkillEffects 실행해서 널 방지
