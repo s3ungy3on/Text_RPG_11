@@ -54,14 +54,14 @@ namespace Text_RPG_11
 
             player = new Player
             (
-            name: $"",
-            level: 1,
-            job: selectedJob.name,
-            attack: selectedJob.baseStats.attack,
-            defense: selectedJob.baseStats.defense,
-            defaultHP: selectedJob.baseStats.hp,
-            gold: selectedJob.baseStats.gold,
-            defaultMP: selectedJob.baseStats.mp
+            name: "",
+        level: 1,
+        job: selectedJob.name,
+        attack: selectedJob.baseStats.attack,
+        defense: selectedJob.baseStats.defense,
+        defaultHP: selectedJob.baseStats.hp,
+        defaultMP: selectedJob.baseStats.mp,
+        gold: selectedJob.baseStats.gold
             );
 
             uiManager.Intro();
