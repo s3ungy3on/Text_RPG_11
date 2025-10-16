@@ -61,6 +61,11 @@ namespace Text_RPG_11
         };
         public List<Skill> PlayerSkills = new List<Skill>(); // 모든 스킬 중 플레이어의 직업, 레벨에 맞는 스킬을 담을 리스트 생성
         
+        public List<(Skill skill, int remainingCooldown)> CooldownList = new List<(Skill, int)>(); // 쿨타임이 남은 스킬 저장
+        public List<(Skill skill, int remainingDuration, int buffvalue)> BuffdurationList = new List<(Skill, int, int)>(); // 지속 시간이 남은 스킬 저장
+        public List<(Skill skill, int remainingDuration, int debuffvalue)> DebuffdurationList = new List<(Skill, int, int)>(); // 지속 시간이 남은 스킬 저장
+
+        
         private GameManager _gameManager;
 
         private Skill skillForAttack;
@@ -110,13 +115,13 @@ namespace Text_RPG_11
             {
                 AtkRand = (int)Math.Round(AtkRand * 1.6);
                 EnemyHP = Enemies[enemyIndex].HP;
-                Enemies[enemyIndex].HP -= (int)Math.Round(AtkRand * 1.6);
+                Enemies[enemyIndex].HP -= ((int)Math.Round(AtkRand * 1.6) - Enemies[enemyIndex].Defense);
             }
             // 그 외
             else
             {
                 EnemyHP = Enemies[enemyIndex].HP;
-                Enemies[enemyIndex].HP -= AtkRand;
+                Enemies[enemyIndex].HP -= (AtkRand - Enemies[enemyIndex].Defense);
             }
             
             // 에너미가 죽었다면 HP를 0으로(마이너스가 되지 않도록)
@@ -139,10 +144,110 @@ namespace Text_RPG_11
             
             // 플레이어가 선택한 스킬을 저장
             skillForAttack = PlayerSkills[skillIndex];
+            // 만약 스킬의 hit가 랜덤 타겟이라면 몬스터 선택 X, 매개변수는 null
         }
         
         // 스킬을 사용해 에너미 공격
         public void SkillUse(int enemyIndex)
+        {
+            // 스킬을 사용한다 
+            
+            // 사용할 스킬은 쿨타임에 할당
+            skillForAttack.CurrentCooldown = skillForAttack.Cooldown;
+            CooldownList.Add((skillForAttack, skillForAttack.Cooldown));
+            // 만약 플레이어가 선택한 스킬의 currentCooldown != 0이라면 사용 불가
+            // 플레이어가 선택한 스킬의 currentCooldown == 0이라면 사용 가능
+            
+            // 만약 사용한 스킬에 Duration이 있는 경우 해당 내용을 함께 List에 저장
+            // enemyIndex == null일 경우 랜덤 타겟 진행
+
+            switch (skillForAttack.Type)
+            {
+                case SkillType.Damage:
+                    // 스킬 타입이 공격일 시 powerMultiplier을 사용자 공격력에 적용
+                    // Duration이 없다고 가정
+                    int finalDamage = (int)Math.Round(AtkRand * skillForAttack.Effects.DamageMultiplier);
+                    
+                    List<Monster> skillHitsEnemies = new List<Monster>();
+                    
+                    // hits가 양수일 시 랜덤 에너미 타격
+                    if (skillForAttack.Hits > 0)
+                    {
+                        // 랜덤 에너미 선택
+                        skillHitsEnemies.AddRange(Enemies.OrderBy(enemy => Guid.NewGuid()).Take(skillForAttack.Hits));
+                        // 선택된 에너미 공격
+                        foreach (Monster hitsEnemies in skillHitsEnemies)
+                        {
+                            hitsEnemies.HP -= finalDamage;
+                        }
+                    }
+                    // 그 외 일시 입력받은 enemy를 타격
+                    else
+                    {
+                        Enemies[enemyIndex].HP -= finalDamage;
+                    }
+                    break;
+                
+                case SkillType.Heal:
+                    // 스킬 타입이 힐일 시 powerMultiplier 만큼 플레이어 체력에 추가
+                    // 힐량이 플레이어 최대 체력을 넘을 시 HP = MaxHP
+                    // Duration이 없다고 가정
+                    if(_gameManager.Player.HP + (int)Math.Round(skillForAttack.PowerMultiplier) > _gameManager.Player.MaxHP)
+                        _gameManager.Player.HP = _gameManager.Player.MaxHP;
+                    else    
+                        _gameManager.Player.HP += (int)Math.Round(skillForAttack.PowerMultiplier);
+                    break;
+
+                case SkillType.Buff:
+                    // 본인 타겟
+                    // powerMultiplier에 따라 effect 실행
+                    if (skillForAttack.Effects.AttackBonus > 0)
+                    {
+                        // Attack일 경우 Player.Atk에 추가
+                        _gameManager.Player.Attack += (int)Math.Round(skillForAttack.Effects.AttackBonus);
+                        
+                        // 지속 시간 추가
+                        if (skillForAttack.Effects.Duration > 0)
+                        {
+                            skillForAttack.LeftDuration = skillForAttack.Effects.Duration;
+                            BuffdurationList.Add((skillForAttack, skillForAttack.LeftDuration, (int)Math.Round(skillForAttack.Effects.AttackBonus)));
+                        }
+                    }
+                    break;
+                
+                case SkillType.Debuff:
+                    // 상대 타겟
+                    // powerMultiplier에 따라 effect 실행
+                    if (skillForAttack.Effects.AttackMinus > 0)
+                    {
+                        // Attack일 경우 에너미 공격 마이너스
+                        Enemies[enemyIndex].Attack -= skillForAttack.Effects.AttackMinus;
+                        
+                        // 지속 시간 추가
+                        if (skillForAttack.Effects.Duration > 0)
+                        {
+                            skillForAttack.LeftDuration = skillForAttack.Effects.Duration;
+                            DebuffdurationList.Add((skillForAttack, skillForAttack.LeftDuration, (int)Math.Round(skillForAttack.Effects.AttackMinus)));
+                        }
+                    }
+                    else if (skillForAttack.Effects.DefenseMinus > 0)
+                    {
+                        // Defense추가 일 경우 에너미 방어 마이너스
+                        Enemies[enemyIndex].Defense -= skillForAttack.Effects.DefenseMinus;
+                        
+                        // 지속 시간 추가
+                        if (skillForAttack.Effects.Duration > 0)
+                        {
+                            skillForAttack.LeftDuration = skillForAttack.Effects.Duration;
+                            DebuffdurationList.Add((skillForAttack, skillForAttack.LeftDuration,(int)Math.Round(skillForAttack.Effects.DefenseMinus)));
+                        }
+                    }
+                    break;
+            }
+        }
+        
+        // 지속시간 끝나면
+        public void DurationEnd()
         {
             
         }
