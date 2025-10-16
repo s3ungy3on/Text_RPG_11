@@ -100,13 +100,13 @@ namespace Text_RPG_11
                 {
                     DefenseBonus = 4,
                     Duration = 3,
-                    AdditionalEffects = new List<string> // [ADDED] 누락 보강(로그/UI 일관성)
+                    AdditionalEffects = new List<string> 
                     {
                         "defense+4", "duration:3"
                     }
                 },
                 type: SkillType.Buff,
-                powerMultiplier: 4f, // 전투 해석: TempDefense += 4 (지속은 Duration으로 관리)
+                powerMultiplier: 0,                     // 버프/디버프는 SkillEffects 의 Attack/DefenseBonus 로 처리합니다
                 hits: 0,
                 desc: "자신의 방어력 +4 (3턴)."
             );
@@ -271,10 +271,11 @@ namespace Text_RPG_11
                 effects: new SkillEffects
                 {
                     Duration = 3,
-                    AdditionalEffects = new List<string> { "attack+3" }
+                    AttackBonus = 3,        
+                    AdditionalEffects = new List<string> { "attack+3", "duration:3" }
                 },
                 type: SkillType.Buff,
-                powerMultiplier: 3f, // 전투 해석: TempAttack += 3 (3턴)
+                powerMultiplier: 0f,        // 버프/디버프는 SkillEffects 의 Attack/DefenseBonus 로 처리합니다
                 hits: 0,
                 desc: "자신의 공격력 +3 (3턴)."
             );
@@ -316,10 +317,11 @@ namespace Text_RPG_11
                 effects: new SkillEffects
                 {
                     Duration = 3,
+                    DefenseBonus = -3,
                     AdditionalEffects = new List<string> { "defense-3" }
                 },
                 type: SkillType.Debuff,
-                powerMultiplier: 3f, // 전투 해석: target.TempDefense -= 3 (3턴)
+                powerMultiplier: 0f,                //버프/디버프는 SkillEffects 의 Attack/DefenseBonus 로 처리합니다
                 hits: 0,
                 desc: "대상 방어 -3 (3턴)."
             );
@@ -385,10 +387,11 @@ namespace Text_RPG_11
                 effects: new SkillEffects
                 {
                     Duration = 3,
-                    AdditionalEffects = new List<string> { "attack+4" }
+                    AttackBonus = 4,
+                    AdditionalEffects = new List<string> { "attack+4", "duration:3" }
                 },
                 type: SkillType.Buff,
-                powerMultiplier: 4f, // 전투 해석: TempAttack += 4 (3턴)
+                powerMultiplier: 0f,            // 버프/디버프는 SkillEffects 의 Attack/DefenseBonus 로 처리합니다 
                 hits: 0,
                 desc: "자신의 공격력 +4 (3턴)."
             );
@@ -407,6 +410,8 @@ namespace Text_RPG_11
                 effects: new SkillEffects
                 {
                     DamageMultiplier = 1.8f,
+                    DefenseBonus = -4,
+                    Duration = 3,
                     AdditionalEffects = new List<string> { "guaranteed-crit", "apply:defense-4", "duration:3" }
                 },
                 type: SkillType.Damage,
