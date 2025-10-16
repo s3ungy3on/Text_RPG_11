@@ -18,7 +18,7 @@ namespace Text_RPG_11
         public string Job { get; set; }                                             //직업 이름
 
         public int Attack { get; set; }                                             //기본 공격력
-        public int Defense { get; set; }                                            //기본 방어력
+        public float Defense { get; set; }                                            //기본 방어력
         public int HP { get; set; }                                                 //플레이어 현재 체력
         public int MP { get; set; }                                                //플레이어 현재 마나
 
@@ -112,7 +112,33 @@ namespace Text_RPG_11
             }
 
     }
-    }
+
+        public void GainExp(int amount)
+        {
+            Exp += amount; // 경험치 추가
+            int maxExp = Level * 20 + Level;
+
+            // 경험치가 충분하면 레벨업 반복 가능
+            while (Exp >= maxExp)
+            {
+                Exp -= maxExp;
+                LevelUp();
+                maxExp = Level * 20 + Level;                    // 레벨업 후 새로운 요구 경험치 갱신
+            }
+        }
+
+        // 실제 레벨업 처리
+        private void LevelUp()
+        {
+            Level++;
+            DefaultHP += 10;                                                        //레벨업시 기본 체력 증가
+            DefaultMP += 5;                                                         //레벨업시 기본 마나 증가
+            Attack += 1;                                                            //레벨업시 기본 공격력 증가
+            Defense += 0.5f;                                                        //레벨업시 기본 방어력 증가
+
+            HP = MaxHP;                                                         //레벨업시 체력회복
+            MP = MaxMP;                                                         //레벨업시 마나회복
+        }
 
     public class JobData
     {
