@@ -9,6 +9,14 @@ namespace Text_RPG_11
 
     internal enum SkillType { Damage, Heal, Buff, Debuff }
 
+    internal sealed class SkillEffects
+    {
+        public float DamageMultiplier { get; set; } = 0f;   // 0이면 미사용, >0이면 배수로 사용
+        public int DefenseBonus { get; set; } = 0;         // 0이면 미사용, >0이면 방어 +X
+        public int Duration { get; set; } = 0;             // 0이면 비지속, >0이면 N턴 지속
+        public List<string> AdditionalEffects { get; set; } = new List<string>(); // UI/로깅용 태그
+    }
+
     internal class Skill
     {
         public string Name { get; set; }
