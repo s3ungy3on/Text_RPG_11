@@ -56,6 +56,16 @@ namespace Text_RPG_11
         public int CurrentCooldown { get; set; } = 0;       // 런타임 쿨다운(턴)
         public int LeftDuration { get; set; } = 0;      // 남은 지속(턴)
 
+        public IEnumerable<string> GetEffectTags()
+        {
+            if (GuaranteedCritical) yield return "guaranteed-crit";
+            if (Effects.AttackBonus > 0) yield return $"attack+{Effects.AttackBonus}";
+            if (Effects.DefenseBonus > 0) yield return $"defense+{Effects.DefenseBonus}";
+            if (Effects.AttackMinus > 0) yield return $"attack-{Effects.AttackMinus}";
+            if (Effects.DefenseMinus > 0) yield return $"defense-{Effects.DefenseMinus}";
+            if (Effects.Duration > 0) yield return $"duration:{Effects.Duration}";
+        }
+
         private Skill(
             int id, string name, string description,
             string requiredJob, int requiredLevel,
