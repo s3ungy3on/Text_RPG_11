@@ -20,7 +20,7 @@ namespace Text_RPG_11
 
         public List<string> story = new List<string>(); // 시작 스토리
 
-        public List<string> intro = new List<string>(); // 인트로 아스키아트
+        public List<string> introArt = new List<string>(); // 인트로 아스키아트
 
 
 
@@ -80,61 +80,64 @@ namespace Text_RPG_11
             logo2.Add("                                                                                                  \r\n");
             logo2.Add("                                                                                                  ");
 
-
-            story.Add("아 간만에 롤이나 해볼까");
-            story.Add("솔킬머신 출동이요~"); // 이 글이 나간 이후 1차제목과 소제목을 넣음
-            story.Add("어 뭐지? 원래 롤에 이런 문구가 있었나..??");
-            story.Add("하도 패치 하니까 뭐가 바꼈는지도 모르겠네");
-            story.Add("암튼 게임만 잘 하면 되지");
-            story.Add("자 드가자~");
-            story.Add("소환사의 협곡에 오신것을 화ㄴ.영...ㅎ.ㅏ...ㅂ..");
+            //시작시 컴퓨터 하는 모습이 나감
+            story.Add("변대섭: 아 간만에 롤이나 해볼까"); 
+            story.Add("변대섭: 솔킬머신 변대섭 출동이요~"); // 이 글이 나간 이후 1차제목과 소제목을 넣음 [1]
+            story.Add("변대섭: 어 뭐지? 원래 롤에 이런 문구가 있었나..??");
+            story.Add("변대섭: 하도 패치 하니까 뭐가 바꼈는지도 모르겠네");
+            story.Add("변대섭: 암튼 게임만 잘 하면 되지");
+            story.Add("변대섭: 자 드가자~"); // 이 글이 나간 이후 다시 컴퓨터 하는 모습 [5]
+            story.Add("System: 소환사의 협곡에 오신것을 화ㄴ.영...ㅎ.ㅏ...ㅂ..");
             story.Add("치지지...치직......치지지지직.....");
-            story.Add("뭐야 이거 왜 이래..???");
-            story.Add("소환사 한 명이 게임을 종료했습니다");
-            story.Add("아 콩순이 1명 때문에 렉 걸린건가");
-            story.Add("진짜 시작부터 조짐이 안 좋네");
-            story.Add("소환사 한 명이 게임을 종료했습니다");
-            story.Add("와 우리팀 ㄹㅈㄷ ㅋㅋㅋㅋㅋㅋㅋㅋㅋ");
-            story.Add("시작하자마자 2명이 튕기냐");
-            story.Add("소환사 한 명이 게임을 종료했습니다");
-            story.Add("소환사 한 명이 게임을 종료했습니다");
-            story.Add("뭐지...롤 서버가 지금 맛탱이가 간건가");
-            story.Add("플레이어들이 게임에 접속하지 않았습니다. 60초 내에 /다시하기를 입력하여 게임을 재시작 할 수 있습니다.");
-            story.Add("아 시간만 버렸네 다시하기 gg");
-            story.Add("게임을 재시작합니다");
-            story.Add("챔피언 구성 중....");
-            story.Add("미니언 구성 중....");
+            story.Add("변대섭: 뭐야 이거 왜 이래..???");
+            story.Add("System: 소환사 한 명이 게임을 종료했습니다");
+            story.Add("변대섭: 아 콩순이 1명 때문에 렉 걸린건가");
+            story.Add("변대섭: 진짜 시작부터 조짐이 안 좋네");
+            story.Add("System: 소환사 한 명이 게임을 종료했습니다");
+            story.Add("변대섭: 와 우리팀 ㄹㅈㄷ ㅋㅋㅋㅋㅋㅋㅋㅋㅋ");
+            story.Add("변대섭: 시작하자마자 2명이 튕기냐");
+            story.Add("System: 소환사 한 명이 게임을 종료했습니다");
+            story.Add("System: 소환사 한 명이 게임을 종료했습니다");
+            story.Add("변대섭: 뭐지...롤 서버가 지금 맛탱이가 간건가");
+            story.Add("System: 플레이어들이 게임에 접속하지 않았습니다. 60초 내에 /다시하기를 입력하여 게임을 재시작 할 수 있습니다.");
+            story.Add("변대섭: 아 시간만 버렸네 다시하기 gg");
+            story.Add("System: 게임을 재시작합니다");
+            story.Add("System: 챔피언 구성 중....");
+            story.Add("System: 미니언 구성 중....");
             story.Add("삐------삐-------");
-            story.Add("에러 발생 소환사를 불러옵니다");
-            story.Add("이게 뭔 말이......으아아아아아아");
+            story.Add("System: 에러 발생 소환사를 불러옵니다");
+            story.Add("변대섭: 이게 뭔 말이......으아아아아아아");
+            story.Add("............................................................"); // [26]
             story.Add("............................................................");
-            story.Add("............................................................");
-            story.Add("영웅은 죽지 않아요"); // 메르시 아트 출력
-            story.Add("드디어 일어나셨군요");
-            story.Add("아니 당신은 메르시 아닌가요?");
-            story.Add("네?? 저는 소라카 입니다만...."); // 소라카 아트 출력
-            story.Add("아 그렇군요");
-            story.Add("근데 제가 왜 여기 있는거죠??");
-            story.Add("지금 현재 미니언과 중립몹 즉 정글과 용 바론 등이 손을 잡고 반란을 일으켰습니다");
-            story.Add("그래서 게임 시스템이 비상사태를 인지하고 소환사님을 부른겁니다.");
-            story.Add("아마 들어오기 전에 문구가 있었을텐데 못 보셨을까요??");
-            story.Add("(아 들어오기 전에 처음 본 문구가 그건가 보네)");
-            story.Add("본거 같아요");
-            story.Add("그래서 제가 뭘 하면 되는거죠");
-            story.Add("소환사님은 여기서 직접 챔피언을 골라 플레이 하시면서 반란을 일으킨 몹들을 잡으시면 됩니다");
-            story.Add("(뭐야 롤 현실판 아니야? 이거 완전 개꿀 체험이자나)");
-            story.Add("그런거라면 맡겨만 주세요 제가 다 해결하겠습니다");
-            story.Add("어디보자 골드가....??????");
-            story.Add("아 이걸 말을 안 해줬네요");
-            story.Add("지금 시스템 에러때문에 싸우시고 직접 얻으셔야 합니다.");
-            story.Add("시간이 지나도 돈은 들어오지 않으니 몹들을 잡으셔야 돈을 얻을 수 있습니다.");
-            story.Add("아니 그럼 어떻게 해요 원래 게임도 500G는 주고 하는데");
+            story.Add("???: 영웅은 죽지 않아요"); // 메르시 아트 출력 [28]
+            story.Add("변대섭: 으...으윽...머리야...");
+            story.Add("???: 드디어 일어나셨군요");
+            story.Add("변대섭: 으..어???? 아니 당신은 메르시 아닌가요?");
+            story.Add("소라카: 네?? 저는 소라카 입니다만...."); // 소라카 아트 출력 [32]
+            story.Add("변대섭: 아 그렇군요");
+            story.Add("변대섭: 근데 제가 왜 여기 있는거죠??");
+            story.Add("소라카: 지금 현재 미니언과 중립몹 즉 정글과 용 바론 등이 손을 잡고 반란을 일으켰습니다");
+            story.Add("소라카: 그래서 게임 시스템이 비상사태를 인지하고 소환사님을 부른겁니다.");
+            story.Add("소라카: 아마 들어오기 전에 문구가 있었을텐데 못 보셨을까요??");
+            story.Add("변대섭: (아 들어오기 전에 처음 본 문구가 그건가 보네)");
+            story.Add("변대섭: 본거 같아요");
+            story.Add("변대섭: 그래서 제가 뭘 하면 되는거죠");
+            story.Add("소라카: 소환사님은 여기서 직접 챔피언을 골라 플레이 하시면서 반란을 일으킨 몹들을 잡으시면 됩니다");
+            story.Add("변대섭: (뭐야 롤 현실판 아니야? 이거 완전 개꿀 체험이자나)");
+            story.Add("변대섭: 그런거라면 맡겨만 주세요 제가 다 해결하겠습니다");
+            story.Add("변대섭: 어디보자 골드가....??????");
+            story.Add("소라카: 아 이걸 말을 안 해줬네요");
+            story.Add("소라카: 지금 시스템 에러때문에 싸우시고 직접 얻으셔야 합니다.");
+            story.Add("소라카: 시간이 지나도 돈은 들어오지 않으니 몹들을 잡으셔야 돈과 아이템을 얻을 수 있습니다.");
+            story.Add("변대섭: 아니 그럼 어떻게 해요 원래 게임도 500G는 주고 하는데");
+            story.Add("소라카: 대신 시스템에서 퀘스트를 받을 수 있습니다.");
+            story.Add("소라카: 퀘스트를 완료할 시 골드와 경험치 아이템을 얻을 수 있는데 그래도 힘드실까요?");
             story.Add("그래서 쫄리신건가요? 쫄?");
-            story.Add("쫄긴 누가 쫄았다고 그래요 바로 갔다 오겠습니다."); // 이후로 2차제목과 소제목 등장
+            story.Add("쫄긴 누가 쫄았다고 그래요 바로 갔다 오겠습니다."); // 이후로 2차제목과 소제목 등장 [52]
 
 
 
-            intro.Add(
+            introArt.Add(
                 "@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@\r\n" +
                 "@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@\r\n" +
                 "@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@\r\n" +
@@ -203,7 +206,7 @@ namespace Text_RPG_11
                 "@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@\r\n" +
                 "@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@");
 
-            intro.Add(
+            introArt.Add(
                 "\r\n\r\n@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@..\r\n" +
                 "@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@.....\r\n" +
                 "@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@  ..... \r\n" +
@@ -260,7 +263,7 @@ namespace Text_RPG_11
                 "@@@@@@@@@@@@@@@@@@@@@@**!=,@@@@@*;:;*-..,,,:;,,,,-***=;@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@\r\n" +
                 "@@@@@@@@@@@@@@@@@@@@@;**=-@@@@@@*!:;;:..-,,,$~,--,=$==!:@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@\r\n");
 
-            intro.Add(
+            introArt.Add(
                 "@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@!::@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@\r\n" +
                 "@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@.!!,@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@\r\n" +
                 "@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@!!-@@@@@..@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@\r\n" +
@@ -321,6 +324,11 @@ namespace Text_RPG_11
                 ",$$#$$$$$$$===*=******===============$*;!;;:-,@@@@@@@@@@,***!====*~@@@@@.$$$$$$##$$$$$$$$$$$$=:*$$##\r\n" +
                 ",$$#$=$$$$$$$$===================*==*=$;!;:~@@@@@@@@@@@@@:!*!,:==*~@@@@.=$$$$###$$$$$$$$$$$$$::=$$##\r\n");
 
+
+            Console.Write(introArt[0]);
+            Console.WriteLine($"\n\n{story[0]}\n{story[1]}");
+            Console.ReadKey();
+            Console.Clear();
             Console.ForegroundColor = ConsoleColor.Cyan;
             foreach (string str in logo1)
             {
@@ -328,6 +336,39 @@ namespace Text_RPG_11
                 Thread.Sleep(200);
             }
             Thread.Sleep(2000);
+            Console.WriteLine($"\n\n{story[2]}\n{story[3]}\n{story[4]}\n{story[5]}");
+            Console.ReadKey();
+            Console.Clear();
+            Console.Write(introArt[0]);
+            Console.WriteLine("\n\n");
+            for (int i = 6; i <= 25; i++)
+            {
+                Console.WriteLine(story[i]);
+                Thread.Sleep(2000);
+            }
+            Console.ReadKey();
+            Console.Clear();
+            Console.Write($"{story[26]}\n{story[27]}");
+            Console.ReadKey();
+            Console.Clear();
+            Console.Write(introArt[1]);
+            Console.Write($"{story[28]}\n{story[29]}\n{story[30]}\n{story[31]}");
+            Console.Write(introArt[2]);
+            for (int i = 32; i <= 52; i++)
+            {
+                Console.Clear();
+                Console.Write(introArt[1]);
+                Console.WriteLine(story[i]);
+                Console.ReadKey();
+            }
+            Console.Clear();
+            foreach (string str in logo2)
+            {
+                Console.Write(str);
+                Thread.Sleep(200);
+            }
+            Thread.Sleep(3000);
+
 
             Console.WriteLine("소환사의 협곡에 오신것을 환영합니다." +
                 "\n소환사님의 이름은 무엇인가요.\n");
@@ -362,7 +403,7 @@ namespace Text_RPG_11
             }
             gameManager.Player.Name = name; // 게임매니저에다가 이름 넣어주기
             Console.WriteLine($"{name} 소환사님 과연 이름부터가 휘황찬란하시군요\n소환사님을 위한 챔피언을 준비했습니다 어서 골라보시지요\n\n" +
-                $"1. 가렌 (전사)\n2. 럭스 (마법사)\n3. 애쉬 (궁수)\n\n");
+                $"1. 가렌 (전사)\n2. 럭스 (마법사)\n3. 제드 (암살자)\n4. 애쉬 (궁수)\n\n");
             Console.Write(">>");
             act = Console.ReadLine();
             while (true)
@@ -382,12 +423,19 @@ namespace Text_RPG_11
                 else if (act == "3")
                 {
                     Console.Clear();
+                    job = "제드";
+                    break;
+                }
+                else if (act == "4")
+                {
+                    Console.Clear();
                     job = "애쉬";
                     break;
                 }
                 else
                 {
-                    Console.Clear(); Console.WriteLine("마 니 솔킬머신 맞나?\n혹시 솔킬 당하는 머신이가?\n단디 해라이\n\n1. 가렌 (전사)\n2. 럭스 (마법사)\n3. 애쉬 (궁수)\n\n");
+                    Console.Clear(); Console.WriteLine("마 니 솔킬머신 맞나?\n혹시 솔킬 당하는 머신이가?\n단디 해라이\n\n" +
+                        "1. 가렌 (전사)\n2. 럭스 (마법사)\n3. 제드 (암살자)\n4. 애쉬 (궁수)\n\n");
                     Console.Write(">>");
                     act = Console.ReadLine();
                 }
@@ -400,7 +448,7 @@ namespace Text_RPG_11
         {
             Console.Clear();
             Console.WriteLine("이 곳에서 던전으로 들어가기 전 활동을 할 수 있습니다\n\n1. 상태보기\n2. 인벤토리" +
-                "\n3. 탐험하기\n4. 상점\n\n원하시는 행동을 입력해주세요");
+                "\n3. 탐험하기\n4. 상점\n5. 휴식\n\n원하시는 행동을 입력해주세요");
             Console.Write(">>");
             act = Console.ReadLine();
         }
@@ -409,7 +457,8 @@ namespace Text_RPG_11
         {
             Console.Clear();
             Console.WriteLine("지친 피로를 충분히 풀고 있습니다\n챔피언의 체력과 마나가 모두 찹니다.");
-            // 현재체력과 마나를 모두 최대치랑 똑같이 맞추기
+            gameManager.Player.HP = gameManager.Player.MaxHP;
+            gameManager.Player.MP = gameManager.Player.MaxMP;
         }
 
         public void ViewStatus() // 상태보기
@@ -470,7 +519,7 @@ namespace Text_RPG_11
                         break;
                 }
 
-                // 전투 상태 확인 (플레이어의 행동 후)
+                // 전투 상태 확인 (소환사의 행동 후)
                 battle.EndCheck();
                 if (battle.BattleState != Battle.BattleResult.InProgress)
                 {
@@ -484,7 +533,7 @@ namespace Text_RPG_11
                 // 전투 상태 재확인
                 battle.EndCheck();
 
-                // 플레이어의 공격으로 바로 넘어가지 않고 포켓몬처럼 살짝 쉬고 플레이어의 공격으로 넘어가 배틀의 흐름을 유지함 (0.15초 쉼)
+                // 소환사의 공격으로 바로 넘어가지 않고 포켓몬처럼 살짝 쉬고 플레이어의 공격으로 넘어가 배틀의 흐름을 유지함 (0.15초 쉼)
                 Thread.Sleep(150);
             }
 
@@ -624,6 +673,7 @@ namespace Text_RPG_11
             Console.Write("]");
         }
 
+        //MP바
         private void ShowMPBar(int current, int max)
         {
             ShowMPBarInline(current, max);
@@ -703,6 +753,16 @@ namespace Text_RPG_11
             }
 
             return pick - 1;
+        }
+
+        public void ShowInventoryDisplay(Inventory inventory) // 고맙게 만들어주신거 그대로 쓰겠습니다
+        {
+            inventory.ShowInventoryDisplay();
+        }
+
+        public void ItemEquipped(Inventory inventory) // 이하 동문
+        {
+            inventory.ItemEquipped();
         }
     }
 }
