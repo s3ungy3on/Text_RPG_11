@@ -32,12 +32,12 @@ namespace Text_RPG_11
         private int itemHP = 0;                                                             //장착 아이템으로 얻는 능력치
         private int itemMP = 0;
         private int itemAttack = 0;
-        private int itemDefense = 0;
+        private float itemDefense = 0;
 
         public int MaxHP => DefaultHP + itemHP;                                             //최대 체력
         public int MaxMP => DefaultMP + itemMP;                                             //최대 마나
         public int MaxAttack => Attack + itemAttack;                                        //최종 공격력
-        public int MaxDefense => Defense + itemDefense;                                     //최종 방어력
+        public float MaxDefense => Defense + itemDefense;                                     //최종 방어력
 
 
         private List<string> inventory = new List<string>();   // 인벤토리
@@ -60,6 +60,8 @@ namespace Text_RPG_11
             Job = job;
             Attack = attack;
             Defense = defense;
+            DefaultHP = defaultHP;
+            DefaultMP = defaultMP;
             HP = DefaultHP;                                                         //생성시 현재 체력 = 최대 체력
             MP = DefaultMP;                                                         //생성시 현재 마나 = 최대 마나
             Gold = gold;
@@ -73,21 +75,21 @@ namespace Text_RPG_11
             itemAttack = 0;
             itemDefense = 0;
 
-            if(gameManager.GameItems == null)                                                   //장착 아이템 없으면 종료
+            if (gameManager.GameItems == null)                                                   //장착 아이템 없으면 종료
             {
                 return;
             }
 
             foreach (var item in gameManager.GameItems)
             {
-                if(item != null && item.IsEquipped)                                             //아이템 장착 떄만 적용
+                if (item != null && item.IsEquipped)                                             //아이템 장착 떄만 적용
                 {
                     if (item is Weapon weapon)
                     {
                         itemAttack += weapon.AttackPower;                                   //무기 장착시 공격력 증가
                         itemHP += weapon.ItemHp;                                            //무기 장착시 체력 증가
                         itemMP += weapon.ItemMp;                                            //무기 장착시 마나 증가
-                        
+
 
                     }
                     else if (item is Armor armor)
@@ -96,22 +98,22 @@ namespace Text_RPG_11
                         itemHP += armor.ItemHp;                                                 //방어구 장착시 체력 증가
                         itemMP += armor.ItemMp;                                                 //방어구 장착시 마나 증가
 
-                        
-                    } 
+
+                    }
                 }
             }
 
-            if(HP > MaxHP)                                              //HP/MP가 최대치보다 높으면 최대치로 세팅
+            if (HP > MaxHP)                                              //HP/MP가 최대치보다 높으면 최대치로 세팅
             {
                 HP = MaxHP;
             }
 
-            if(MP > MaxMP)
+            if (MP > MaxMP)
             {
                 MP = MaxMP;
             }
 
-    }
+        }
 
         public void GainExp(int amount)
         {
@@ -139,20 +141,21 @@ namespace Text_RPG_11
             HP = MaxHP;                                                         //레벨업시 체력회복
             MP = MaxMP;                                                         //레벨업시 마나회복
         }
+    }
 
-    public class JobData
+    internal class JobData
     {
         public List<Job> jobs { get; set; } = new List<Job>();                                      //직업 리스트
     }
 
-    public class Job                                                                                //직업 정보
+    internal class Job                                                                                //직업 정보
     {
         public string name { get; set; } = "";                                                      //직업 이름
         public string description { get; set; } = "";                                               //직업 설명
         public BaseStats baseStats { get; set; } = new BaseStats();                             //직업 기본 능력치
     }
 
-    public class BaseStats                                      //직업 기본 능력치
+    internal class BaseStats                                      //직업 기본 능력치
     {
         public int hp { get; set; } = 0;                    //기본 체력
         public int mp { get; set; } = 0;                    //기본 마나
