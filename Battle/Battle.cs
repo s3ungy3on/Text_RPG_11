@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -11,7 +12,8 @@ namespace Text_RPG_11
     internal class Battle
     {
         // 담은 몬스터에 관련된 변수명은 enemy로 통일, 담기 전 몬스터에 관련된 변수명은 monster로 통일
-        public int Stage { get; set; } // 던전 층
+        
+        public int Stage; // 던전 층
         
         public int PlayerInitialHP; // 플레이어 던전 진입 시 체력
         public int PlayerHP; // 플레이어 던전 진입 이후 턴 별 체력(에너미에게 공격 당하기 전)
@@ -21,6 +23,7 @@ namespace Text_RPG_11
         
         public int AtkRandInput; // 공격력 별 오차 범위
         public int AtkRand; // 오차 범위를 더한 공격력
+        
         
         public int RewardExp; // 총 보상 계산
         public int RewardGold; // 총 보상 계산
@@ -157,8 +160,70 @@ namespace Text_RPG_11
             
             _gameManager.Player.Gold += RewardGold;
             _gameManager.Player.Exp += RewardExp;
-            Stage++;
         }
+
+        /*public void ClearRewardItem()
+        {
+            List<Items> GetItems = new List<Items>(); // 모든 아이템을 하나씩 담는 리스트
+            List<Items> RewardItems = new List<Items>(); // 보상으로 출력할 아이템을 담는 리스트
+            
+            Random rand = new Random();
+
+            for (int i = 0; i < Enemies.Count; i++)
+            {
+                int itemGetPercent = Math.Max((100 - i) * 20, 10); // 몬스터 순서에 따른 아이템 획득 확률
+                int itemDropPercent = rand.Next(1, 101); // 아이템 드랍 획률
+                int itemTierPercent = rand.Next(1, 101); // 아이템 티어
+                int itemTranscendencePercent = rand.Next(1, 10001);
+                
+                // int stageGroup = (int)Math.Ceiling(Stage / 10.0); // 구간별 스테이지
+                
+                int stagePercent = Stage switch // 구간별 기본템 드랍 확률
+                {
+                    <= 10 => 90,
+                    <= 20 => 80,
+                    <= 30 => 70,
+                    <= 40 => 60,
+                    _ => 50
+                };
+                
+                // int i = 0
+                // 
+                
+                // 아이템 드랍
+                if (itemDropPercent <= itemGetPercent) 
+                {
+                    // 던전 층에 따라 보상 아이템의 티어가 달라짐
+                    switch (Stage)
+                    {
+                        // 임의 작성: 퍼센트에 따라 RewardItems에 랜덤(기본 or 레어) 아이템 추가
+                        case <= 10:
+                            RewardItems.Add(itemTierPercent <= stagePercent 
+                                ? GetItems
+                                    .Where(item => item.Tier == ItemTier.Common)
+                                    .OrderBy(_ => rand.Next()).First()
+                                : GetItems
+                                    .Where(item => item.Tier != ItemTier.Rare)
+                                    .OrderBy(_ => rand.Next()).First());
+                            break;
+                        
+                        // 임의 작성: 50층 이상일 시 초월 무기 등장 
+                        default:
+                            Items selectedItem;
+                            if (itemTierPercent <= stagePercent)
+                                selectedItem = GetItems.Where(item => item.Tier == ItemTier.Common).OrderBy(_ => rand.Next()).First();
+                            else if (itemTranscendencePercent > 9995)
+                                selectedItem = GetItems.Where(item => item.Tier == ItemTier.Transcendence).OrderBy(_ => rand.Next()).First();
+                            else
+                                selectedItem = GetItems.Where(item => item.Tier != ItemTier.Rare).OrderBy(_ => rand.Next()).First();
+
+                            RewardItems.Add(selectedItem);
+                            break;
+                    }
+                }
+            }
+
+        }*/
         
         // exp 충족 시 레벨 업
         public void LevelUp()

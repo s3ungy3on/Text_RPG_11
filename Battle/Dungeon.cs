@@ -10,7 +10,7 @@ namespace Text_RPG_11
     internal class Dungeon
     {
         private GameManager _gameManager;
-        private Battle _battle;
+        public Battle _battle;
 
         private int _monsterNum;
         
@@ -266,6 +266,7 @@ namespace Text_RPG_11
             while (true)
             {
                 _battle.ClearReward();
+                _battle.Stage++;
                 Console.WriteLine("Battle!! - Result\n");
                 Console.WriteLine("Victory\n");
                 Console.WriteLine($"던전에서 몬스터 {_battle.Enemies.Count}마리를 잡았습니다.\n");
