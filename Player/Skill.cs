@@ -168,6 +168,8 @@ namespace Text_RPG_11
                 effects: new SkillEffects
                 {
                     DamageMultiplier = 1.4f,
+                    DefenseBonus = -2,          
+                    Duration = 3,               
                     AdditionalEffects = new List<string> { "apply:defense-2", "duration:3" }
                 },
                 type: SkillType.Damage,
@@ -294,6 +296,8 @@ namespace Text_RPG_11
                 effects: new SkillEffects
                 {
                     DamageMultiplier = 1.7f,
+                    DefenseBonus = -3,          
+                    Duration = 3,               
                     AdditionalEffects = new List<string> { "guaranteed-crit", "apply:defense-3", "duration:3" }
                 },
                 type: SkillType.Damage,
