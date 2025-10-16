@@ -34,7 +34,7 @@ namespace Text_RPG_11
         {
             gameManager = manager;
         }
-
+        #region 인트로
         public void Intro() // 시작시 초기 설정 및 스토리 화면
         {
             // 1차 제목
@@ -327,7 +327,7 @@ namespace Text_RPG_11
 
             Console.Write(introArt[0]);
             Console.WriteLine($"\n\n{story[0]}\n{story[1]}");
-            Console.ReadKey();
+            Console.ReadLine();
             Console.Clear();
             Console.ForegroundColor = ConsoleColor.Cyan;
             foreach (string str in logo1)
@@ -336,8 +336,9 @@ namespace Text_RPG_11
                 Thread.Sleep(200);
             }
             Thread.Sleep(2000);
+            Console.ResetColor();
             Console.WriteLine($"\n\n{story[2]}\n{story[3]}\n{story[4]}\n{story[5]}");
-            Console.ReadKey();
+            Console.ReadLine();
             Console.Clear();
             Console.Write(introArt[0]);
             Console.WriteLine("\n\n");
@@ -346,10 +347,11 @@ namespace Text_RPG_11
                 Console.WriteLine(story[i]);
                 Thread.Sleep(2000);
             }
-            Console.ReadKey();
+
+            Console.ReadLine();
             Console.Clear();
             Console.Write($"{story[26]}\n{story[27]}");
-            Console.ReadKey();
+            Console.ReadLine();
             Console.Clear();
             Console.Write(introArt[1]);
             Console.Write($"{story[28]}\n{story[29]}\n{story[30]}\n{story[31]}");
@@ -359,7 +361,7 @@ namespace Text_RPG_11
                 Console.Clear();
                 Console.Write(introArt[1]);
                 Console.WriteLine(story[i]);
-                Console.ReadKey();
+                Console.ReadLine();
             }
             Console.Clear();
             foreach (string str in logo2)
@@ -443,6 +445,7 @@ namespace Text_RPG_11
             Console.WriteLine($"{job}을(를) 고르시다니 기대가 되는군요.");
             gameManager.Player.Job = job;
         }
+        #endregion
 
         public void MainScreen()
         {
