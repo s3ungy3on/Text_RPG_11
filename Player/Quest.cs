@@ -8,67 +8,91 @@ namespace Text_RPG_11
 {
     internal class Quest
     {
-       public string QuestName { get; }                      //이름
-       public string Desctipyion { get; }                 //퀘스트 설명
-       public bool IsCompleted { get; private set; }         //달성 조건
-       public int RewardGold { get; }                        //보상 골드
-       public int RewardExp { get; }                        //보상 경험치
-       public string Requirement { get; }                 //
+        public string QuestName { get; }                      //이름
+        public string Description { get; }                 //퀘스트 설명
+        public bool IsCompleted { get; private set; }         //달성 조건
+        public string Requirement { get; }                       // 퀘스트 달성 조건
 
-        public Quest(string questName, string description, int rewardGold, int rewardExp)
+        public int RewardGold { get; set; }                        //보상 골드
+        public int RewardExp { get; set; }                        //보상 경험치
+        public int RewardPotion { get; set; }                       //보상 포션
+        public string RewardItem { get; set; }                     //보상 아이템
+
+        public Quest(string questName, string description, string requirement, int rewardGold, int rewardExp, int rewardPotion, string rewardItem)
         {
             QuestName = questName;
             Description = description;
             Requirement = requirement;
             RewardGold = rewardGold;
             RewardExp = rewardExp;
-            IsCompleted = false; // 기본은 미완료
+            RewardPotion = rewardPotion;
+            RewardItem = rewardItem;   // 직업별 아이템 보상
+            IsCompleted = false;
         }
 
-        public void Complete()
+        public void Complete(Player player, List<Job> jobs)
         {
+            if (IsCompleted) return;
+
             IsCompleted = true;
+
+            // 직업별 보상 적용
+            var job = jobs.FirstOrDefault(j => j.name == player.Job);
+            if (job != null)
+            {
+                player.Gold += RewardGold;       // 기본 골드 보상
+                player.Exp += RewardExp;       // 경험치 보상
+                player.Potions += RewardPotion > 0 ? RewardPotion : 0;        // 포션 보상
+
+                if (!string.IsNullOrEmpty(RewardItem))
+                {
+                    player.AddItem(RewardItem);
+                }
+            }
         }
 
-        public bool CheckCompletionCondition(Player player)
+        public bool CheckCompletionCondition(Player player, List<Job> jobs)
         {
             if (player.Level >= 5)
             {
-                Complete();
+                Complete(player, jobs);  
                 return true;
             }
 
             return false;
         }
-    }
 
-    internal static class QuestData
-    {
-        public static List<Quest> GetDefaultQuests()
+        public void ShowQuestInfo(Player player)
         {
-            return new List<Quest>
-        {
-            new Quest(
-                "마을을 위협하는 미니언 처치",
-                "마을 주변에 나타난 미니언을 처치하자.",
-                "미니언 1마리 처치",
-                100,
-                50
-            ),
-            new Quest(
-                "장비를 장착해보자",
-                "획득한 장비를 직접 착용해보자.",
-                "아이템 1개 장착",
-                150,
-                70
-            ),
-            new Quest(
-                "더욱 더 강해지기!",
-                "수련을 통해 강해지자.",
-                "플레이어 레벨 5 달성",
-                200,
-                100
-            )
-        };
-
+            Console.WriteLine($"퀘스트 이름: {QuestName}");
+            Console.WriteLine($"퀘스트 설명: {Description}");
+            Console.WriteLine($"퀘스트 요구 사항: {Requirement}");
+            Console.WriteLine($"보상 - 경험치: {RewardExp}, 골드: {RewardGold}, 포션: {RewardPotion}, 아이템: {RewardItem}");
+            Console.WriteLine($"플레이어 직업: {player.Job}");
+            Console.WriteLine($"퀘스트 완료 여부: {IsCompleted}");
         }
+
+        // 플레이어 직업에 맞춘 퀘스트 생성
+        public static Quest CreateQuestForPlayer(Player player, List<Job> jobs)
+        {
+            string rewardItem = player.Job switch
+            {
+                "전사" => "롱소드",
+                "마법사" => "증폭의 고서",
+                "도적" => "단검",
+                "궁수" => "롱소드",
+                _ => "기본 아이템"
+            };
+
+            return new Quest(
+                questName: "마을을 위협하는 미니언 처치",
+                description: "마을 근처 미니언 5마리 처치",
+                requirement: "Kill 5 monsters",
+                rewardGold: 500,
+                rewardExp: 30,
+                rewardPotion: 2,
+                rewardItem: rewardItem
+            );
+        }
+    }
+}

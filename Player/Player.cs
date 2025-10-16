@@ -26,6 +26,7 @@ namespace Text_RPG_11
         public int Exp { get; set; }                                                //경험치
         public int DefaultHP { get; set; }                                          // 기본 체력
         public int DefaultMP { get; set; }                                          //기본 마나
+        public int Potions { get; set; } = 0;                                       //소지 포션 수량
 
 
         private int itemHP = 0;                                                             //장착 아이템으로 얻는 능력치
@@ -38,7 +39,19 @@ namespace Text_RPG_11
         public int MaxAttack => Attack + itemAttack;                                        //최종 공격력
         public int MaxDefense => Defense + itemDefense;                                     //최종 방어력
 
-        
+
+        private List<string> inventory = new List<string>();   // 인벤토리
+        public IReadOnlyList<string> Inventory => inventory.AsReadOnly(); // 외부에서 읽기 전용
+
+        public void AddItem(string itemName)
+        {
+            if (!string.IsNullOrEmpty(itemName))
+            {
+                inventory.Add(itemName);
+            }
+        }
+
+
 
         public Player(string name, int level, string job, int attack, int defense, int defaultHP, int defaultMP, int gold, int exp = 0)
         {
@@ -97,7 +110,8 @@ namespace Text_RPG_11
             {
                 MP = MaxMP;
             }
-        }
+
+    }
     }
 
     public class JobData
