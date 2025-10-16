@@ -19,7 +19,10 @@
       "price": 250, //아이템 가격
       "obtainMethods": [ "shop", "monster", "dungeon", "quest" ], //획득할 수 있는 경로
       "crafting": false, //합성으로 만들 수 있는지
-      "craftingRecipe": null //합성 레시피
+      "craftingRecipe": null, //합성 레시피
+      "dropInfo": { //아이템 드랍
+        "dropChance": 40 //획득 확률
+      }
     },
     {
       "id": 2,
@@ -35,12 +38,15 @@
       "price": 200,
       "obtainMethods": [ "shop", "monster", "dungeon", "quest" ],
       "crafting": false,
-      "craftingRecipe": null
+      "craftingRecipe": null,
+      "dropInfo": {
+        "dropChance": 40
+      }
     },
     {
       "id": 3,
       "name": "단검",
-      "type": "무기",
+      "type": "재료",
       "description": "설명",
       "rarity": "common",
       "attackPower": 3,
@@ -51,12 +57,15 @@
       "price": 250,
       "obtainMethods": [ "shop", "monster", "dungeon", "quest" ],
       "crafting": false,
-      "craftingRecipe": null
+      "craftingRecipe": null,
+      "dropInfo": {
+        "dropChance": 40
+      }
     },
     {
       "id": 4,
       "name": "천 갑옷",
-      "type": "방어구",
+      "type": "재료",
       "description": "설명",
       "rarity": "common",
       "attackPower": 0,
@@ -67,7 +76,10 @@
       "price": 300,
       "obtainMethods": [ "shop", "monster", "dungeon", "quest" ],
       "crafting": false,
-      "craftingRecipe": null
+      "craftingRecipe": null,
+      "dropInfo": {
+        "dropChance": 40
+      }
     },
     {
       "id": 5,
@@ -83,7 +95,10 @@
       "price": 300,
       "obtainMethods": [ "shop", "monster", "dungeon", "quest" ],
       "crafting": false,
-      "craftingRecipe": null
+      "craftingRecipe": null,
+      "dropInfo": {
+        "dropChance": 40
+      }
     },
     {
       "id": 6,
@@ -99,12 +114,15 @@
       "price": 300,
       "obtainMethods": [ "shop", "monster", "dungeon", "quest" ],
       "crafting": false,
-      "craftingRecipe": null
+      "craftingRecipe": null,
+      "dropInfo": {
+        "dropChance": 40
+      }
     },
     {
       "id": 7,
       "name": "롱소드",
-      "type": "무기",
+      "type": "재료",
       "description": "설명",
       "rarity": "common",
       "attackPower": 3,
@@ -115,12 +133,15 @@
       "price": 350,
       "obtainMethods": [ "shop", "monster", "dungeon", "quest" ],
       "crafting": false,
-      "craftingRecipe": null
+      "craftingRecipe": null,
+      "dropInfo": {
+        "dropChance": 40
+      }
     },
     {
       "id": 8,
       "name": "증폭의 고서",
-      "type": "무기",
+      "type": "재료",
       "description": "설명",
       "rarity": "common",
       "attackPower": 4,
@@ -131,12 +152,15 @@
       "price": 400,
       "obtainMethods": [ "shop", "monster", "dungeon", "quest" ],
       "crafting": false,
-      "craftingRecipe": null
+      "craftingRecipe": null,
+      "dropInfo": {
+        "dropChance": 40
+      }
     },
     {
       "id": 9,
       "name": "루비 수정",
-      "type": "방어구",
+      "type": "재료",
       "description": "설명",
       "rarity": "common",
       "attackPower": 0,
@@ -147,12 +171,15 @@
       "price": 400,
       "obtainMethods": [ "shop", "monster", "dungeon", "quest" ],
       "crafting": false,
-      "craftingRecipe": null
+      "craftingRecipe": null,
+      "dropInfo": {
+        "dropChance": 40
+      }
     },
     {
       "id": 10,
       "name": "마법 무효화의 망토",
-      "type": "방어구",
+      "type": "재료",
       "description": "설명",
       "rarity": "common",
       "attackPower": 0,
@@ -163,12 +190,15 @@
       "price": 400,
       "obtainMethods": [ "shop", "monster", "dungeon", "quest" ],
       "crafting": false,
-      "craftingRecipe": null
+      "craftingRecipe": null,
+      "dropInfo": {
+        "dropChance": 40
+      }
     },
     {
       "id": 11,
       "name": "민첩성의 망토",
-      "type": "방어구",
+      "type": "재료",
       "description": "설명",
       "rarity": "common",
       "attackPower": 2,
@@ -179,12 +209,15 @@
       "price": 600,
       "obtainMethods": [ "shop", "monster", "dungeon", "quest" ],
       "crafting": false,
-      "craftingRecipe": null
+      "craftingRecipe": null,
+      "dropInfo": {
+        "dropChance": 40
+      }
     },
     {
       "id": 12,
       "name": "방출의 마법봉",
-      "type": "무기",
+      "type": "재료",
       "description": "설명",
       "rarity": "common",
       "attackPower": 6,
@@ -195,12 +228,15 @@
       "price": 850,
       "obtainMethods": [ "shop", "monster", "dungeon", "quest" ],
       "crafting": false,
-      "craftingRecipe": null
+      "craftingRecipe": null,
+      "dropInfo": {
+        "dropChance": 40
+      }
     },
     {
       "id": 13,
       "name": "곡괭이",
-      "type": "무기",
+      "type": "재료",
       "description": "설명",
       "rarity": "common",
       "attackPower": 7,
@@ -211,12 +247,15 @@
       "price": 875,
       "obtainMethods": [ "shop", "monster", "dungeon", "quest" ],
       "crafting": false,
-      "craftingRecipe": null
+      "craftingRecipe": null,
+      "dropInfo": {
+        "dropChance": 40
+      }
     },
     {
       "id": 14,
       "name": "쓸데없이 큰 지팡이",
-      "type": "무기",
+      "type": "재료",
       "description": "설명",
       "rarity": "common",
       "attackPower": 10,
@@ -227,12 +266,15 @@
       "price": 1200,
       "obtainMethods": [ "shop", "monster", "dungeon", "quest" ],
       "crafting": false,
-      "craftingRecipe": null
+      "craftingRecipe": null,
+      "dropInfo": {
+        "dropChance": 40
+      }
     },
     {
       "id": 15,
       "name": "B.F. 대검",
-      "type": "무기",
+      "type": "재료",
       "description": "설명",
       "rarity": "common",
       "attackPower": 11,
@@ -243,7 +285,10 @@
       "price": 1300,
       "obtainMethods": [ "shop", "monster", "dungeon", "quest" ],
       "crafting": false,
-      "craftingRecipe": null
+      "craftingRecipe": null,
+      "dropInfo": {
+        "dropChance": 40
+      }
     },
     {
       "id": 16,
@@ -289,6 +334,9 @@
             "quantity": 1
           }
         ]
+      },
+      "dropInfo": {
+        "dropChance": 40
       }
     },
     {
@@ -312,6 +360,9 @@
             "quantity": 1
           }
         ]
+      },
+      "dropInfo": {
+        "dropChance": 40
       }
     },
     {
@@ -339,6 +390,9 @@
             "quantity": 2
           }
         ]
+      },
+      "dropInfo": {
+        "dropChance": 40
       }
     },
     {
@@ -366,6 +420,9 @@
             "quantity": 1
           }
         ]
+      },
+      "dropInfo": {
+        "dropChance": 40
       }
     },
     {
@@ -393,6 +450,9 @@
             "quantity": 1
           }
         ]
+      },
+      "dropInfo": {
+        "dropChance": 40
       }
     },
     {
@@ -416,6 +476,9 @@
             "quantity": 2
           }
         ]
+      },
+      "dropInfo": {
+        "dropChance": 40
       }
     },
     {
@@ -443,6 +506,9 @@
             "quantity": 2
           }
         ]
+      },
+      "dropInfo": {
+        "dropChance": 40
       }
     },
     {
@@ -470,6 +536,9 @@
             "quantity": 1
           }
         ]
+      },
+      "dropInfo": {
+        "dropChance": 40
       }
     },
     {
@@ -497,6 +566,9 @@
             "quantity": 1
           }
         ]
+      },
+      "dropInfo": {
+        "dropChance": 40
       }
     },
     {
@@ -520,6 +592,9 @@
             "quantity": 1
           }
         ]
+      },
+      "dropInfo": {
+        "dropChance": 40
       }
     },
     {
@@ -543,6 +618,9 @@
             "quantity": 2
           }
         ]
+      },
+      "dropInfo": {
+        "dropChance": 40
       }
     },
     {
@@ -570,6 +648,9 @@
             "quantity": 1
           }
         ]
+      },
+      "dropInfo": {
+        "dropChance": 40
       }
     },
     {
@@ -593,6 +674,9 @@
             "quantity": 2
           }
         ]
+      },
+      "dropInfo": {
+        "dropChance": 40
       }
     },
     {
@@ -616,6 +700,9 @@
             "quantity": 1
           }
         ]
+      },
+      "dropInfo": {
+        "dropChance": 40
       }
     },
     {
@@ -639,6 +726,9 @@
             "quantity": 2
           }
         ]
+      },
+      "dropInfo": {
+        "dropChance": 40
       }
     },
     {
@@ -666,6 +756,9 @@
             "quantity": 1
           }
         ]
+      },
+      "dropInfo": {
+        "dropChance": 40
       }
     },
     {
@@ -689,6 +782,9 @@
             "quantity": 1
           }
         ]
+      },
+      "dropInfo": {
+        "dropChance": 40
       }
     },
     {
@@ -712,6 +808,9 @@
             "quantity": 1
           }
         ]
+      },
+      "dropInfo": {
+        "dropChance": 40
       }
     },
     {
@@ -735,6 +834,9 @@
             "quantity": 1
           }
         ]
+      },
+      "dropInfo": {
+        "dropChance": 40
       }
     },
     {
@@ -762,6 +864,9 @@
             "quantity": 1
           }
         ]
+      },
+      "dropInfo": {
+        "dropChance": 40
       }
     },
     {
@@ -785,6 +890,9 @@
             "quantity": 1
           }
         ]
+      },
+      "dropInfo": {
+        "dropChance": 40
       }
     },
     {
@@ -808,6 +916,9 @@
             "quantity": 2
           }
         ]
+      },
+      "dropInfo": {
+        "dropChance": 40
       }
     },
     {
@@ -831,6 +942,9 @@
             "quantity": 1
           }
         ]
+      },
+      "dropInfo": {
+        "dropChance": 40
       }
     },
     {
@@ -862,6 +976,9 @@
             "quantity": 1
           }
         ]
+      },
+      "dropInfo": {
+        "dropChance": 40
       }
     },
     {
@@ -889,6 +1006,9 @@
             "quantity": 1
           }
         ]
+      },
+      "dropInfo": {
+        "dropChance": 40
       }
     },
     {
@@ -916,6 +1036,9 @@
             "quantity": 1
           }
         ]
+      },
+      "dropInfo": {
+        "dropChance": 40
       }
     },
     {
@@ -943,6 +1066,9 @@
             "quantity": 1
           }
         ]
+      },
+      "dropInfo": {
+        "dropChance": 40
       }
     },
     {
@@ -970,6 +1096,9 @@
             "quantity": 1
           }
         ]
+      },
+      "dropInfo": {
+        "dropChance": 40
       }
     },
     {
@@ -997,6 +1126,9 @@
             "quantity": 1
           }
         ]
+      },
+      "dropInfo": {
+        "dropChance": 40
       }
     },
     {
@@ -1020,6 +1152,9 @@
             "quantity": 1
           }
         ]
+      },
+      "dropInfo": {
+        "dropChance": 40
       }
     },
     {
@@ -1043,6 +1178,9 @@
             "quantity": 2
           }
         ]
+      },
+      "dropInfo": {
+        "dropChance": 40
       }
     },
     {
@@ -1070,6 +1208,9 @@
             "quantity": 1
           }
         ]
+      },
+      "dropInfo": {
+        "dropChance": 40
       }
     },
     {
@@ -1093,6 +1234,9 @@
             "quantity": 1
           }
         ]
+      },
+      "dropInfo": {
+        "dropChance": 40
       }
     },
     {
@@ -1120,6 +1264,9 @@
             "quantity": 1
           }
         ]
+      },
+      "dropInfo": {
+        "dropChance": 40
       }
     },
     {
@@ -1143,6 +1290,9 @@
             "quantity": 1
           }
         ]
+      },
+      "dropInfo": {
+        "dropChance": 40
       }
     },
     {
@@ -1166,6 +1316,9 @@
             "quantity": 1
           }
         ]
+      },
+      "dropInfo": {
+        "dropChance": 40
       }
     },
     {
@@ -1189,6 +1342,9 @@
             "quantity": 2
           }
         ]
+      },
+      "dropInfo": {
+        "dropChance": 40
       }
     },
     {
@@ -1216,6 +1372,9 @@
             "quantity": 1
           }
         ]
+      },
+      "dropInfo": {
+        "dropChance": 40
       }
     },
     {
@@ -1247,6 +1406,9 @@
             "quantity": 1
           }
         ]
+      },
+      "dropInfo": {
+        "dropChance": 40
       }
     },
     {
@@ -1274,6 +1436,9 @@
             "quantity": 1
           }
         ]
+      },
+      "dropInfo": {
+        "dropChance": 40
       }
     },
     { //에픽 시작
@@ -1286,7 +1451,7 @@
       "defensePower": 0,
       "itemHp": 0,
       "itemMp": 0,
-      "equipJob": [ "전사" ],
+      "equipJob": null,
       "price": 2700,
       "obtainMethods": [ "craft" ],
       "crafting": true,
@@ -1313,7 +1478,7 @@
       "defensePower": 0,
       "itemHp": 0,
       "itemMp": 0,
-      "equipJob": [ "전사" ],
+      "equipJob": null,
       "price": 2700,
       "obtainMethods": [ "craft" ],
       "crafting": true,
@@ -1332,6 +1497,33 @@
     },
     {
       "id": 59,
+      "name": "지크의 융합",
+      "type": "방어구",
+      "description": "설명",
+      "rarity": "epic",
+      "attackPower": 10,
+      "defensePower": 0,
+      "itemHp": 0,
+      "itemMp": 0,
+      "equipJob": null,
+      "price": 2300,
+      "obtainMethods": [ "craft" ],
+      "crafting": true,
+      "craftingRecipe": {
+        "requiredItems": [
+          {
+            "itemId": 56,
+            "quantity": 1
+          },
+          {
+            "itemId": 9,
+            "quantity": 1
+          }
+        ]
+      }
+    },
+    {
+      "id": 60,
       "name": "죽음의 무도",
       "type": "무기",
       "description": "설명",
@@ -1358,7 +1550,7 @@
       }
     },
     {
-      "id": 60,
+      "id": 61,
       "name": "거대한 히드라",
       "type": "무기",
       "description": "설명",
@@ -1387,6 +1579,1350 @@
           }
         ]
       }
+    },
+    {
+      "id": 62,
+      "name": "선체파괴자",
+      "type": "무기",
+      "description": "설명",
+      "rarity": "epic",
+      "attackPower": 10,
+      "defensePower": 0,
+      "itemHp": 0,
+      "itemMp": 0,
+      "equipJob": [ "전사" ],
+      "price": 3000,
+      "obtainMethods": [ "craft" ],
+      "crafting": true,
+      "craftingRecipe": {
+        "requiredItems": [
+          {
+            "itemId": 21,
+            "quantity": 1
+          },
+          {
+            "itemId": 49,
+            "quantity": 1
+          },
+          {
+            "itemId": 13,
+            "quantity": 1
+          }
+        ]
+      }
+    },
+    {
+      "id": 63,
+      "name": "루덴의 동반자",
+      "type": "무기",
+      "description": "설명",
+      "rarity": "epic",
+      "attackPower": 10,
+      "defensePower": 0,
+      "itemHp": 0,
+      "itemMp": 0,
+      "equipJob": [ "마법사" ],
+      "price": 2750,
+      "obtainMethods": [ "craft" ],
+      "crafting": true,
+      "craftingRecipe": {
+        "requiredItems": [
+          {
+            "itemId": 38,
+            "quantity": 1
+          },
+          {
+            "itemId": 40,
+            "quantity": 1
+          }
+        ]
+      }
+    },
+    {
+      "id": 64,
+      "name": "악의",
+      "type": "무기",
+      "description": "설명",
+      "rarity": "epic",
+      "attackPower": 10,
+      "defensePower": 0,
+      "itemHp": 0,
+      "itemMp": 0,
+      "equipJob": [ "마법사" ],
+      "price": 2700,
+      "obtainMethods": [ "craft" ],
+      "crafting": true,
+      "craftingRecipe": {
+        "requiredItems": [
+          {
+            "itemId": 12,
+            "quantity": 1
+          },
+          {
+            "itemId": 40,
+            "quantity": 1
+          }
+        ]
+      }
+    },
+    {
+      "id": 65,
+      "name": "폭풍 쇄도",
+      "type": "무기",
+      "description": "설명",
+      "rarity": "epic",
+      "attackPower": 10,
+      "defensePower": 0,
+      "itemHp": 0,
+      "itemMp": 0,
+      "equipJob": [ "마법사" ],
+      "price": 2700,
+      "obtainMethods": [ "craft" ],
+      "crafting": true,
+      "craftingRecipe": {
+        "requiredItems": [
+          {
+            "itemId": 38,
+            "quantity": 1
+          },
+          {
+            "itemId": 35,
+            "quantity": 1
+          }
+        ]
+      }
+    },
+    {
+      "id": 66,
+      "name": "세릴다의 원한",
+      "type": "무기",
+      "description": "설명",
+      "rarity": "epic",
+      "attackPower": 10,
+      "defensePower": 0,
+      "itemHp": 0,
+      "itemMp": 0,
+      "equipJob": [ "도적" ],
+      "price": 2750,
+      "obtainMethods": [ "craft" ],
+      "crafting": true,
+      "craftingRecipe": {
+        "requiredItems": [
+          {
+            "itemId": 19,
+            "quantity": 1
+          },
+          {
+            "itemId": 29,
+            "quantity": 1
+          }
+        ]
+      }
+    },
+    {
+      "id": 67,
+      "name": "그림자 검",
+      "type": "무기",
+      "description": "설명",
+      "rarity": "epic",
+      "attackPower": 10,
+      "defensePower": 0,
+      "itemHp": 0,
+      "itemMp": 0,
+      "equipJob": [ "도적" ],
+      "price": 2500,
+      "obtainMethods": [ "craft" ],
+      "crafting": true,
+      "craftingRecipe": {
+        "requiredItems": [
+          {
+            "itemId": 31,
+            "quantity": 1
+          },
+          {
+            "itemId": 19,
+            "quantity": 1
+          }
+        ]
+      }
+    },
+    {
+      "id": 68,
+      "name": "원칙의 원형낫",
+      "type": "무기",
+      "description": "설명",
+      "rarity": "epic",
+      "attackPower": 10,
+      "defensePower": 0,
+      "itemHp": 0,
+      "itemMp": 0,
+      "equipJob": [ "도적" ],
+      "price": 2750,
+      "obtainMethods": [ "craft" ],
+      "crafting": true,
+      "craftingRecipe": {
+        "requiredItems": [
+          {
+            "itemId": 19,
+            "quantity": 1
+          },
+          {
+            "itemId": 32,
+            "quantity": 1
+          }
+        ]
+      }
+    },
+    {
+      "id": 69,
+      "name": "스태틱의 단검",
+      "type": "무기",
+      "description": "설명",
+      "rarity": "epic",
+      "attackPower": 10,
+      "defensePower": 0,
+      "itemHp": 0,
+      "itemMp": 0,
+      "equipJob": [ "궁수" ],
+      "price": 2700,
+      "obtainMethods": [ "craft" ],
+      "crafting": true,
+      "craftingRecipe": {
+        "requiredItems": [
+          {
+            "itemId": 13,
+            "quantity": 1
+          },
+          {
+            "itemId": 27,
+            "quantity": 1
+          },
+          {
+            "itemId": 33,
+            "quantity": 1
+          }
+        ]
+      }
+    },
+    {
+      "id": 70,
+      "name": "고속 연사포",
+      "type": "무기",
+      "description": "설명",
+      "rarity": "epic",
+      "attackPower": 10,
+      "defensePower": 0,
+      "itemHp": 0,
+      "itemMp": 0,
+      "equipJob": [ "궁수" ],
+      "price": 2650,
+      "obtainMethods": [ "craft" ],
+      "crafting": true,
+      "craftingRecipe": {
+        "requiredItems": [
+          {
+            "itemId": 25,
+            "quantity": 1
+          },
+          {
+            "itemId": 27,
+            "quantity": 1
+          }
+        ]
+      }
+    },
+    {
+      "id": 71,
+      "name": "도미닉 경의 인사",
+      "type": "무기",
+      "description": "설명",
+      "rarity": "epic",
+      "attackPower": 10,
+      "defensePower": 0,
+      "itemHp": 0,
+      "itemMp": 0,
+      "equipJob": [ "궁수" ],
+      "price": 3100,
+      "obtainMethods": [ "craft" ],
+      "crafting": true,
+      "craftingRecipe": {
+        "requiredItems": [
+          {
+            "itemId": 28,
+            "quantity": 1
+          },
+          {
+            "itemId": 29,
+            "quantity": 1
+          }
+        ]
+      }
+    },
+    { //전설 시작
+      "id": 72,
+      "name": "얼어붙은 심장",
+      "type": "방어구",
+      "description": "설명",
+      "rarity": "legend",
+      "attackPower": 10,
+      "defensePower": 0,
+      "itemHp": 0,
+      "itemMp": 0,
+      "equipJob": null,
+      "price": 3100,
+      "obtainMethods": [ "craft" ],
+      "crafting": true,
+      "craftingRecipe": {
+        "requiredItems": [
+          {
+            "itemId": 50,
+            "quantity": 1
+          },
+          {
+            "itemId": 53,
+            "quantity": 1
+          },
+          {
+            "itemId": 59,
+            "quantity": 1
+          }
+        ]
+      }
+    },
+    {
+      "id": 73,
+      "name": "망자의 갑옷",
+      "type": "방어구",
+      "description": "설명",
+      "rarity": "legend",
+      "attackPower": 10,
+      "defensePower": 0,
+      "itemHp": 0,
+      "itemMp": 0,
+      "equipJob": null,
+      "price": 2900,
+      "obtainMethods": [ "craft" ],
+      "crafting": true,
+      "craftingRecipe": {
+        "requiredItems": [
+          {
+            "itemId": 46,
+            "quantity": 1
+          },
+          {
+            "itemId": 49,
+            "quantity": 1
+          },
+          {
+            "itemId": 9,
+            "quantity": 1
+          },
+          {
+            "itemId": 57,
+            "quantity": 1
+          },
+          {
+            "itemId": 58,
+            "quantity": 1
+          }
+        ]
+      }
+    },
+    {
+      "id": 74,
+      "name": "몰락한 왕의 검",
+      "type": "무기",
+      "description": "설명",
+      "rarity": "legend",
+      "attackPower": 10,
+      "defensePower": 0,
+      "itemHp": 0,
+      "itemMp": 0,
+      "equipJob": [ "전사" ],
+      "price": 3200,
+      "obtainMethods": [ "craft" ],
+      "crafting": true,
+      "craftingRecipe": {
+        "requiredItems": [
+          {
+            "itemId": 17,
+            "quantity": 1
+          },
+          {
+            "itemId": 26,
+            "quantity": 1
+          },
+          {
+            "itemId": 13,
+            "quantity": 1
+          },
+          {
+            "itemId": 60,
+            "quantity": 1
+          }
+        ]
+      }
+    },
+    {
+      "id": 75,
+      "name": "굶주린 히드라",
+      "type": "무기",
+      "description": "설명",
+      "rarity": "legend",
+      "attackPower": 10,
+      "defensePower": 0,
+      "itemHp": 0,
+      "itemMp": 0,
+      "equipJob": [ "전사" ],
+      "price": 3300,
+      "obtainMethods": [ "craft" ],
+      "crafting": true,
+      "craftingRecipe": {
+        "requiredItems": [
+          {
+            "itemId": 22,
+            "quantity": 1
+          },
+          {
+            "itemId": 17,
+            "quantity": 1
+          },
+          {
+            "itemId": 19,
+            "quantity": 1
+          },
+          {
+            "itemId": 61,
+            "quantity": 1
+          },
+          {
+            "itemId": 62,
+            "quantity": 1
+          }
+        ]
+      }
+    },
+    {
+      "id": 76,
+      "name": "그림자 불꽃",
+      "type": "무기",
+      "description": "설명",
+      "rarity": "legend",
+      "attackPower": 10,
+      "defensePower": 0,
+      "itemHp": 0,
+      "itemMp": 0,
+      "equipJob": [ "마법사" ],
+      "price": 3200,
+      "obtainMethods": [ "craft" ],
+      "crafting": true,
+      "craftingRecipe": {
+        "requiredItems": [
+          {
+            "itemId": 38,
+            "quantity": 1
+          },
+          {
+            "itemId": 14,
+            "quantity": 1
+          },
+          {
+            "itemId": 63,
+            "quantity": 1
+          },
+          {
+            "itemId": 65,
+            "quantity": 1
+          }
+        ]
+      }
+    },
+    {
+      "id": 77,
+      "name": "어둠불꽃 횃불",
+      "type": "무기",
+      "description": "설명",
+      "rarity": "legend",
+      "attackPower": 10,
+      "defensePower": 0,
+      "itemHp": 0,
+      "itemMp": 0,
+      "equipJob": [ "마법사" ],
+      "price": 2800,
+      "obtainMethods": [ "craft" ],
+      "crafting": true,
+      "craftingRecipe": {
+        "requiredItems": [
+          {
+            "itemId": 37,
+            "quantity": 1
+          },
+          {
+            "itemId": 40,
+            "quantity": 1
+          },
+          {
+            "itemId": 64,
+            "quantity": 1
+          }
+        ]
+      }
+    },
+    {
+      "id": 78,
+      "name": "독사의 송곳니",
+      "type": "무기",
+      "description": "설명",
+      "rarity": "legend",
+      "attackPower": 10,
+      "defensePower": 0,
+      "itemHp": 0,
+      "itemMp": 0,
+      "equipJob": [ "도적" ],
+      "price": 2500,
+      "obtainMethods": [ "craft" ],
+      "crafting": true,
+      "craftingRecipe": {
+        "requiredItems": [
+          {
+            "itemId": 13,
+            "quantity": 1
+          },
+          {
+            "itemId": 31,
+            "quantity": 1
+          },
+          {
+            "itemId": 66,
+            "quantity": 1
+          }
+        ]
+      }
+    },
+    {
+      "id": 79,
+      "name": "벼락폭풍검",
+      "type": "무기",
+      "description": "설명",
+      "rarity": "legend",
+      "attackPower": 10,
+      "defensePower": 0,
+      "itemHp": 0,
+      "itemMp": 0,
+      "equipJob": [ "도적" ],
+      "price": 3000,
+      "obtainMethods": [ "craft" ],
+      "crafting": true,
+      "craftingRecipe": {
+        "requiredItems": [
+          {
+            "itemId": 7,
+            "quantity": 2
+          },
+          {
+            "itemId": 32,
+            "quantity": 1
+          },
+          {
+            "itemId": 67,
+            "quantity": 1
+          },
+          {
+            "itemId": 68,
+            "quantity": 1
+          }
+        ]
+      }
+    },
+    {
+      "id": 80,
+      "name": "유령무희",
+      "type": "무기",
+      "description": "설명",
+      "rarity": "legend",
+      "attackPower": 10,
+      "defensePower": 0,
+      "itemHp": 0,
+      "itemMp": 0,
+      "equipJob": [ "궁수" ],
+      "price": 3000,
+      "obtainMethods": [ "craft" ],
+      "crafting": true,
+      "craftingRecipe": {
+        "requiredItems": [
+          {
+            "itemId": 3,
+            "quantity": 1
+          },
+          {
+            "itemId": 25,
+            "quantity": 1
+          },
+          {
+            "itemId": 69,
+            "quantity": 1
+          },
+          {
+            "itemId": 70,
+            "quantity": 1
+          }
+        ]
+      }
+    },
+    {
+      "id": 81,
+      "name": "윤 탈 야생화살",
+      "type": "무기",
+      "description": "설명",
+      "rarity": "legend",
+      "attackPower": 10,
+      "defensePower": 0,
+      "itemHp": 0,
+      "itemMp": 0,
+      "equipJob": [ "궁수" ],
+      "price": 3000,
+      "obtainMethods": [ "craft" ],
+      "crafting": true,
+      "craftingRecipe": {
+        "requiredItems": [
+          {
+            "itemId": 7,
+            "quantity": 1
+          },
+          {
+            "itemId": 15,
+            "quantity": 1
+          },
+          {
+            "itemId": 27,
+            "quantity": 1
+          },
+          {
+            "itemId": 71,
+            "quantity": 1
+          }
+        ]
+      }
+    },
+    { //신화 시작
+      "id": 82,
+      "name": "정령의 형상",
+      "type": "방어구",
+      "description": "설명",
+      "rarity": "myth",
+      "attackPower": 10,
+      "defensePower": 0,
+      "itemHp": 0,
+      "itemMp": 0,
+      "equipJob": null,
+      "price": 2700,
+      "obtainMethods": [ "craft" ],
+      "crafting": true,
+      "craftingRecipe": {
+        "requiredItems": [
+          {
+            "itemId": 45,
+            "quantity": 1
+          },
+          {
+            "itemId": 55,
+            "quantity": 1
+          },
+          {
+            "itemId": 72,
+            "quantity": 1
+          }
+        ]
+      }
+    },
+    {
+      "id": 83,
+      "name": "가시 갑옷",
+      "type": "방어구",
+      "description": "설명",
+      "rarity": "myth",
+      "attackPower": 10,
+      "defensePower": 0,
+      "itemHp": 0,
+      "itemMp": 0,
+      "equipJob": null,
+      "price": 2650,
+      "obtainMethods": [ "craft" ],
+      "crafting": true,
+      "craftingRecipe": {
+        "requiredItems": [
+          {
+            "itemId": 46,
+            "quantity": 1
+          },
+          {
+            "itemId": 47,
+            "quantity": 1
+          },
+          {
+            "itemId": 9,
+            "quantity": 1
+          },
+          {
+            "itemId": 73,
+            "quantity": 1
+          }
+        ]
+      }
+    },
+    {
+      "id": 84,
+      "name": "쇼진의 창",
+      "type": "무기",
+      "description": "설명",
+      "rarity": "myth",
+      "attackPower": 10,
+      "defensePower": 0,
+      "itemHp": 0,
+      "itemMp": 0,
+      "equipJob": [ "전사" ],
+      "price": 3100,
+      "obtainMethods": [ "craft" ],
+      "crafting": true,
+      "craftingRecipe": {
+        "requiredItems": [
+          {
+            "itemId": 9,
+            "quantity": 1
+          },
+          {
+            "itemId": 13,
+            "quantity": 1
+          },
+          {
+            "itemId": 21,
+            "quantity": 1
+          },
+          {
+            "itemId": 74,
+            "quantity": 1
+          }
+        ]
+      }
+    },
+    {
+      "id": 85,
+      "name": "칠흑의 양날 도끼",
+      "type": "무기",
+      "description": "설명",
+      "rarity": "myth",
+      "attackPower": 10,
+      "defensePower": 0,
+      "itemHp": 0,
+      "itemMp": 0,
+      "equipJob": [ "전사" ],
+      "price": 3000,
+      "obtainMethods": [ "craft" ],
+      "crafting": true,
+      "craftingRecipe": {
+        "requiredItems": [
+          {
+            "itemId": 13,
+            "quantity": 1
+          },
+          {
+            "itemId": 20,
+            "quantity": 1
+          },
+          {
+            "itemId": 45,
+            "quantity": 1
+          },
+          {
+            "itemId": 75,
+            "quantity": 1
+          }
+        ]
+      }
+    },
+    {
+      "id": 86,
+      "name": "공허의 지팡이",
+      "type": "무기",
+      "description": "설명",
+      "rarity": "myth",
+      "attackPower": 10,
+      "defensePower": 0,
+      "itemHp": 0,
+      "itemMp": 0,
+      "equipJob": [ "마법사" ],
+      "price": 3000,
+      "obtainMethods": [ "craft" ],
+      "crafting": true,
+      "craftingRecipe": {
+        "requiredItems": [
+          {
+            "itemId": 12,
+            "quantity": 1
+          },
+          {
+            "itemId": 39,
+            "quantity": 1
+          },
+          {
+            "itemId": 76,
+            "quantity": 1
+          }
+        ]
+      }
+    },
+    {
+      "id": 87,
+      "name": "리안드리의 고통",
+      "type": "무기",
+      "description": "설명",
+      "rarity": "myth",
+      "attackPower": 10,
+      "defensePower": 0,
+      "itemHp": 0,
+      "itemMp": 0,
+      "equipJob": [ "마법사" ],
+      "price": 3000,
+      "obtainMethods": [ "craft" ],
+      "crafting": true,
+      "craftingRecipe": {
+        "requiredItems": [
+          {
+            "itemId": 37,
+            "quantity": 1
+          },
+          {
+            "itemId": 42,
+            "quantity": 1
+          },
+          {
+            "itemId": 77,
+            "quantity": 1
+          }
+        ]
+      }
+    },
+    {
+      "id": 88,
+      "name": "오만",
+      "type": "무기",
+      "description": "설명",
+      "rarity": "myth",
+      "attackPower": 10,
+      "defensePower": 0,
+      "itemHp": 0,
+      "itemMp": 0,
+      "equipJob": [ "도적" ],
+      "price": 3000,
+      "obtainMethods": [ "craft" ],
+      "crafting": true,
+      "craftingRecipe": {
+        "requiredItems": [
+          {
+            "itemId": 19,
+            "quantity": 1
+          },
+          {
+            "itemId": 31,
+            "quantity": 1
+          },
+          {
+            "itemId": 78,
+            "quantity": 1
+          }
+        ]
+      }
+    },
+    {
+      "id": 89,
+      "name": "기회",
+      "type": "무기",
+      "description": "설명",
+      "rarity": "myth",
+      "attackPower": 10,
+      "defensePower": 0,
+      "itemHp": 0,
+      "itemMp": 0,
+      "equipJob": [ "도적" ],
+      "price": 2700,
+      "obtainMethods": [ "craft" ],
+      "crafting": true,
+      "craftingRecipe": {
+        "requiredItems": [
+          {
+            "itemId": 7,
+            "quantity": 1
+          },
+          {
+            "itemId": 13,
+            "quantity": 1
+          },
+          {
+            "itemId": 31,
+            "quantity": 1
+          },
+          {
+            "itemId": 79,
+            "quantity": 1
+          }
+        ]
+      }
+    },
+    {
+      "id": 90,
+      "name": "구인수의 격노검",
+      "type": "무기",
+      "description": "설명",
+      "rarity": "myth",
+      "attackPower": 10,
+      "defensePower": 0,
+      "itemHp": 0,
+      "itemMp": 0,
+      "equipJob": [ "궁수" ],
+      "price": 3000,
+      "obtainMethods": [ "craft" ],
+      "crafting": true,
+      "craftingRecipe": {
+        "requiredItems": [
+          {
+            "itemId": 8,
+            "quantity": 1
+          },
+          {
+            "itemId": 13,
+            "quantity": 1
+          },
+          {
+            "itemId": 26,
+            "quantity": 1
+          },
+          {
+            "itemId": 80,
+            "quantity": 1
+          }
+        ]
+      }
+    },
+    {
+      "id": 91,
+      "name": "크라켄 학살자",
+      "type": "무기",
+      "description": "설명",
+      "rarity": "myth",
+      "attackPower": 10,
+      "defensePower": 0,
+      "itemHp": 0,
+      "itemMp": 0,
+      "equipJob": [ "궁수" ],
+      "price": 3000,
+      "obtainMethods": [ "craft" ],
+      "crafting": true,
+      "craftingRecipe": {
+        "requiredItems": [
+          {
+            "itemId": 24,
+            "quantity": 1
+          },
+          {
+            "itemId": 26,
+            "quantity": 1
+          },
+          {
+            "itemId": 33,
+            "quantity": 1
+          },
+          {
+            "itemId": 81,
+            "quantity": 1
+          }
+        ]
+      }
+    },
+    { //초월 시작
+      "id": 92,
+      "name": "워모그의 갑옷",
+      "type": "방어구",
+      "description": "설명",
+      "rarity": "transcended",
+      "attackPower": 10,
+      "defensePower": 0,
+      "itemHp": 0,
+      "itemMp": 0,
+      "equipJob": null,
+      "price": 3100,
+      "obtainMethods": [ "craft" ],
+      "crafting": true,
+      "craftingRecipe": {
+        "requiredItems": [
+          {
+            "itemId": 48,
+            "quantity": 1
+          },
+          {
+            "itemId": 52,
+            "quantity": 2
+          },
+          {
+            "itemId": 82,
+            "quantity": 1
+          },
+          {
+            "itemId": 83,
+            "quantity": 1
+          }
+        ]
+      }
+    },
+    {
+      "id": 93,
+      "name": "강철 심장",
+      "type": "방어구",
+      "description": "설명",
+      "rarity": "transcended",
+      "attackPower": 10,
+      "defensePower": 0,
+      "itemHp": 0,
+      "itemMp": 0,
+      "equipJob": [ "전사" ],
+      "price": 3100,
+      "obtainMethods": [ "dungeon" ],
+      "crafting": false,
+      "craftingRecipe": null,
+      "dropInfo": {
+        "dungeonId": 1,
+        "dropChance": 0.05 //0.05%
+      }
+    },
+    { //초월 시작
+      "id": 94,
+      "name": "워모그의 갑옷",
+      "type": "방어구",
+      "description": "설명",
+      "rarity": "transcended",
+      "attackPower": 10,
+      "defensePower": 0,
+      "itemHp": 0,
+      "itemMp": 0,
+      "equipJob": null,
+      "price": 3100,
+      "obtainMethods": [ "craft" ],
+      "crafting": true,
+      "craftingRecipe": {
+        "requiredItems": [
+          {
+            "itemId": 48,
+            "quantity": 1
+          },
+          {
+            "itemId": 52,
+            "quantity": 2
+          },
+          {
+            "itemId": 82,
+            "quantity": 1
+          },
+          {
+            "itemId": 83,
+            "quantity": 1
+          }
+        ]
+      }
+    },
+    {
+      "id": 95,
+      "name": "강철 심장",
+      "type": "방어구",
+      "description": "설명",
+      "rarity": "transcended",
+      "attackPower": 10,
+      "defensePower": 0,
+      "itemHp": 0,
+      "itemMp": 0,
+      "equipJob": [ "전사" ],
+      "price": 3100,
+      "obtainMethods": [ "dungeon" ],
+      "crafting": false,
+      "craftingRecipe": null,
+      "dropInfo": {
+        "dungeonId": 1,
+        "dropChance": 0.05 //0.05%
+      }
+    },
+    {
+      "id": 96,
+      "name": "존야의 모래시계",
+      "type": "방어구",
+      "description": "설명",
+      "rarity": "transcended",
+      "attackPower": 10,
+      "defensePower": 0,
+      "itemHp": 0,
+      "itemMp": 0,
+      "equipJob": [ "마법사" ],
+      "price": 3100,
+      "obtainMethods": [ "dungeon" ],
+      "crafting": false,
+      "craftingRecipe": null,
+      "dropInfo": {
+        "dungeonId": 1,
+        "dropChance": 0.05
+      }
+    },
+    {
+      "id": 97,
+      "name": "월식",
+      "type": "방어구",
+      "description": "설명",
+      "rarity": "transcended",
+      "attackPower": 10,
+      "defensePower": 0,
+      "itemHp": 0,
+      "itemMp": 0,
+      "equipJob": [ "도적" ],
+      "price": 3100,
+      "obtainMethods": [ "dungeon" ],
+      "crafting": false,
+      "craftingRecipe": null,
+      "dropInfo": {
+        "dungeonId": 1,
+        "dropChance": 0.05 //0.05%
+      }
+    },
+    {
+      "id": 98,
+      "name": "헤르메스의 시미터",
+      "type": "방어구",
+      "description": "설명",
+      "rarity": "transcended",
+      "attackPower": 10,
+      "defensePower": 0,
+      "itemHp": 0,
+      "itemMp": 0,
+      "equipJob": [ "궁수" ],
+      "price": 3100,
+      "obtainMethods": [ "dungeon" ],
+      "crafting": false,
+      "craftingRecipe": null,
+      "dropInfo": {
+        "dungeonId": 1,
+        "dropChance": 0.05 //0.05%
+      }
+    },
+    {
+      "id": 99,
+      "name": "삼위일체",
+      "type": "무기",
+      "description": "설명",
+      "rarity": "transcended",
+      "attackPower": 10,
+      "defensePower": 0,
+      "itemHp": 0,
+      "itemMp": 0,
+      "equipJob": [ "전사" ],
+      "price": 3100,
+      "obtainMethods": [ "craft" ],
+      "crafting": true,
+      "craftingRecipe": {
+        "requiredItems": [
+          {
+            "itemId": 18,
+            "quantity": 1
+          },
+          {
+            "itemId": 20,
+            "quantity": 2
+          },
+          {
+            "itemId": 18,
+            "quantity": 1
+          },
+          {
+            "itemId": 84,
+            "quantity": 1
+          },
+          {
+            "itemId": 85,
+            "quantity": 1
+          }
+        ]
+      }
+    },
+    {
+      "id": 100,
+      "name": "갈라진 하늘",
+      "type": "무기",
+      "description": "설명",
+      "rarity": "transcended",
+      "attackPower": 10,
+      "defensePower": 0,
+      "itemHp": 0,
+      "itemMp": 0,
+      "equipJob": [ "전사" ],
+      "price": 3100,
+      "obtainMethods": [ "dungeon" ],
+      "crafting": false,
+      "craftingRecipe": null,
+      "dropInfo": {
+        "dungeonId": 1,
+        "dropChance": 0.05 //0.05%
+      }
+    },
+    {
+      "id": 101,
+      "name": "대천사의 포옹",
+      "type": "무기",
+      "description": "설명",
+      "rarity": "transcended",
+      "attackPower": 10,
+      "defensePower": 0,
+      "itemHp": 0,
+      "itemMp": 0,
+      "equipJob": [ "마법사" ],
+      "price": 3100,
+      "obtainMethods": [ "craft" ],
+      "crafting": true,
+      "craftingRecipe": {
+        "requiredItems": [
+          {
+            "itemId": 36,
+            "quantity": 1
+          },
+          {
+            "itemId": 40,
+            "quantity": 2
+          },
+          {
+            "itemId":,
+            "quantity": 1
+          },
+          {
+            "itemId": 86,
+            "quantity": 1
+          },
+          {
+            "itemId": 87,
+            "quantity": 1
+          }
+        ]
+      }
+    },
+    {
+      "id": 102,
+      "name": "라바돈의 죽음모자",
+      "type": "무기",
+      "description": "설명",
+      "rarity": "transcended",
+      "attackPower": 10,
+      "defensePower": 0,
+      "itemHp": 0,
+      "itemMp": 0,
+      "equipJob": [ "마법사" ],
+      "price": 3100,
+      "obtainMethods": [ "dungeon" ],
+      "crafting": false,
+      "craftingRecipe": null,
+      "dropInfo": {
+        "dungeonId": 1,
+        "dropChance": 0.05 //0.05%
+      }
+    },
+    {
+      "id": 103,
+      "name": "요우무의 유령검",
+      "type": "무기",
+      "description": "설명",
+      "rarity": "transcended",
+      "attackPower": 10,
+      "defensePower": 0,
+      "itemHp": 0,
+      "itemMp": 0,
+      "equipJob": [ "도적" ],
+      "price": 3100,
+      "obtainMethods": [ "craft" ],
+      "crafting": true,
+      "craftingRecipe": {
+        "requiredItems": [
+          {
+            "itemId": 7,
+            "quantity": 1
+          },
+          {
+            "itemId": 31,
+            "quantity": 1
+          },
+          {
+            "itemId": 33,
+            "quantity": 1
+          },
+          {
+            "itemId": 88,
+            "quantity": 1
+          },
+          {
+            "itemId": 89,
+            "quantity": 1
+          }
+        ]
+      }
+    },
+    {
+      "id": 104,
+      "name": "오만",
+      "type": "무기",
+      "description": "설명",
+      "rarity": "transcended",
+      "attackPower": 10,
+      "defensePower": 0,
+      "itemHp": 0,
+      "itemMp": 0,
+      "equipJob": [ "도적" ],
+      "price": 3100,
+      "obtainMethods": [ "dungeon" ],
+      "crafting": false,
+      "craftingRecipe": null,
+      "dropInfo": {
+        "dungeonId": 1,
+        "dropChance": 0.05 //0.05%
+      }
+    },
+    {
+      "id": 105,
+      "name": "무한의 대검",
+      "type": "무기",
+      "description": "설명",
+      "rarity": "transcended",
+      "attackPower": 10,
+      "defensePower": 0,
+      "itemHp": 0,
+      "itemMp": 0,
+      "equipJob": [ "궁수" ],
+      "price": 3100,
+      "obtainMethods": [ "craft" ],
+      "crafting": true,
+      "craftingRecipe": {
+        "requiredItems": [
+          {
+            "itemId": 13,
+            "quantity": 1
+          },
+          {
+            "itemId": 15,
+            "quantity": 1
+          },
+          {
+            "itemId": 11,
+            "quantity": 1
+          },
+          {
+            "itemId": 90,
+            "quantity": 1
+          },
+          {
+            "itemId": 91,
+            "quantity": 1
+          }
+        ]
+      }
     }
   ],
 
@@ -1397,60 +2933,46 @@
       "description": "사용 시 체력을 30 회복합니다.",
       "rarity": "common",
       "healPower": 30,
+      "stackable": true,
+      "maxStack": 99,
       "price": 500,
-      "stackavle": true,
-      "maxStack": 99,
       "obtainMethods": [ "shop", "monster", "dungeon" ],
       "dropInfo": {
-        "dungeonId": 1,
         "dropChance": 40
-      },
-      "crafting": false,
-      "craftingRecipe": null
-    },
-    {
-      "id": 202,
-      "name": "체력 물약(중)",
-      "description": "사용 시 체력을 50 회복합니다.",
-      "rarity": "common",
-      "healPower": 50,
-      "price": 1000,
-      "stackavle": true,
-      "maxStack": 99,
-      "obtainMethods": [ "shop", "monster", "dungeon" ],
-      "dropInfo": {
-        "dungeonId": 1,
-        "dropChance": 10
-      },
-      "crafting": false,
-      "craftingRecipe": null
+      }
     }
   ],
 
   "rarityInfo": {
     "common": {
       "displayName": "일반",
-      "color": "White"
+      "color": "#FFFFFF",
+      "craftingGoldCost": 0
     },
     "rare": {
       "displayName": "레어",
-      "color": ""
+      "color": "",
+      "craftingGoldCost": 500
     },
     "epic": {
       "displayName": "에픽",
-      "color": ""
-    }, 
+      "color": "",
+      "craftingGoldCost": 1000
+    },
     "legend": {
       "displayName": "전설",
-      "color": "Yellow"
+      "color": "",
+      "craftingGoldCost": 2000
     },
     "myth": {
       "displayName": "신화",
-      "color": ""
+      "color": "",
+      "craftingGoldCost": 3000
     },
     "transcended": {
       "displayName": "초월",
-      "color": ""
+      "color": "",
+      "craftingGoldCost": 5000
     }
   }
 }

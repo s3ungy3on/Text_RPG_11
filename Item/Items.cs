@@ -115,7 +115,21 @@ namespace Text_RPG_11
             return $"체력 회복 +{HealPower}";
         }
 
-        //포션 기능 추가
+        public void UsePotion(Player player) //포션 사용 기능
+        {
+            //포션 개수 ui 출력도 여기서?
+
+            int healAmount = Math.Min(HealPower, player.MaxHP - player.HP);
+            player.HP += healAmount;
+            PotionCount--;
+
+            //회복 대사 출력
+
+            if (PotionCount == 0)
+            {
+                IsPurchased = false;
+            }
+        }
     }
 }
 
