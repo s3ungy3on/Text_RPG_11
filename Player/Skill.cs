@@ -147,7 +147,7 @@ namespace Text_RPG_11
                 guaranteedCritical: true
             );
 
-        //==============================이하 럭스 스킬============================
+        //==============================이하 럭스(마법사) 스킬============================
 
         // 빛의 속박: ×1.4 + 방깎 -2 (3턴)
         public static Skill Lux_LightBinding() =>
@@ -317,6 +317,98 @@ namespace Text_RPG_11
                 powerMultiplier: 3f, // 전투 해석: target.TempDefense -= 3 (3턴)
                 hits: 0,
                 desc: "대상 방어 -3 (3턴)."
+            );
+
+        //=====================이하 제드(도적) 스킬=====================
+
+
+        // 면도 표창: 단일 ×1.5 (2회) — 멀티히트 수리검
+        public static Skill Zed_RazorShuriken() =>
+            new Skill(
+                id: 401,
+                name: "Razor Shuriken",
+                description: "면도날처럼 예리한 표창을 던집니다.",
+                requiredJob: "도적",
+                requiredLevel: 1,
+                typeText: "attack",
+                manaCost: 10,
+                cooldown: 2,
+                effects: new SkillEffects
+                {
+                    DamageMultiplier = 1.5f,
+                    AdditionalEffects = new List<string> { "multi-hit:2" }
+                },
+                type: SkillType.Damage,
+                powerMultiplier: 1.5f,
+                hits: 2,
+                desc: "단일 대상에 2회 타격(각 ×1.5)."
+            );
+
+        // 그림자 절개: 무작위 3타 ×1.2 — 광역 느낌
+        public static Skill Zed_ShadowSlash() =>
+            new Skill(
+                id: 402,
+                name: "Shadow Slash",
+                description: "그림자의 궤적이 적을 베어넘깁니다.",
+                requiredJob: "도적",
+                requiredLevel: 3,
+                typeText: "attack",
+                manaCost: 14,
+                cooldown: 3,
+                effects: new SkillEffects
+                {
+                    DamageMultiplier = 1.2f,
+                    AdditionalEffects = new List<string> { "multi-hit:3" }
+                },
+                type: SkillType.Damage,
+                powerMultiplier: 1.2f,
+                hits: 3,
+                desc: "무작위 적 3회 타격(각 ×1.2)."
+            );
+
+        // 살아있는 그림자: 공격 +4 (3턴) — 자기 버프
+        public static Skill Zed_LivingShadow() =>
+            new Skill(
+                id: 403,
+                name: "Living Shadow",
+                description: "그림자와 일체가 되어 감각을 일깨웁니다.",
+                requiredJob: "도적",
+                requiredLevel: 4,
+                typeText: "buff",
+                manaCost: 10,
+                cooldown: 5,
+                effects: new SkillEffects
+                {
+                    Duration = 3,
+                    AdditionalEffects = new List<string> { "attack+4" }
+                },
+                type: SkillType.Buff,
+                powerMultiplier: 4f, // 전투 해석: TempAttack += 4 (3턴)
+                hits: 0,
+                desc: "자신의 공격력 +4 (3턴)."
+            );
+
+        // 죽음의 표식: 확정 치명 ×1.8 + 방깎 -4 (3턴)
+        public static Skill Zed_DeathMark() =>
+            new Skill(
+                id: 404,
+                name: "Death Mark",
+                description: "표식을 남기고 그늘 속에서 마무리합니다.",
+                requiredJob: "도적",
+                requiredLevel: 6,
+                typeText: "attack",
+                manaCost: 22,
+                cooldown: 6,
+                effects: new SkillEffects
+                {
+                    DamageMultiplier = 1.8f,
+                    AdditionalEffects = new List<string> { "guaranteed-crit", "apply:defense-4", "duration:3" }
+                },
+                type: SkillType.Damage,
+                powerMultiplier: 1.8f,
+                hits: 1,
+                desc: "×1.8, 반드시 치명타. 추가로 방어 -4 (3턴).",
+                guaranteedCritical: true
             );
     }
 }
