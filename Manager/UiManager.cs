@@ -15,7 +15,8 @@ namespace Text_RPG_11
         public string job; // 플레이어 직업
 
         // 로고
-        public List<string> logo = new List<string>(); // 로고 0~14 -> 1차제목, 15~18 -> 1차 소제목
+        public List<string> logo1 = new List<string>(); // 로고1 0~14 -> 1차제목, 15~18 -> 1차 소제목
+        public List<string> logo2 = new List<string>(); // 로고2 
 
         public List<string> story = new List<string>(); // 시작 스토리
 
@@ -37,28 +38,47 @@ namespace Text_RPG_11
         public void Intro() // 시작시 초기 설정 및 스토리 화면
         {
             // 1차 제목
-            logo.Add("      ...                                                                                                     ...                                                         ..          .x+=:.   \r\n");
-            logo.Add("  .zf\"` `\"tu                                                                                  oec :       .zf\"` `\"tu                                                    dF           z`    ^%  \r\n");
-            logo.Add(" x88      '8N.                                       x.    .                          u.     @88888      x88      '8N.                                      u.    u.   '88bu.           .   <k \r\n");
-            logo.Add(" 888k     d88&      .u          u          uL      .@88k  z88u        .u        ...ue888b    8\"*88%      888k     d88&      .u         uL          .u     x@88k u@88c. '*88888bu      .@8Ned8\" \r\n");
-            logo.Add(" 8888N.  @888F   ud8888.     us888u.   .ue888Nc.. ~\"8888 ^8888     ud8888.      888R Y888r   8b.         8888N.  @888F   ud8888.   .ue888Nc..   ud8888.  ^\"8888\"\"8888\"   ^\"*8888N   .@^%8888\"  \r\n");
-            logo.Add(" `88888 9888%  :888'8888. .@88 \"8888\" d88E`\"888E`   8888  888R   :888'8888.     888R I888>  u888888>     `88888 9888%  :888'8888. d88E`\"888E` :888'8888.   8888  888R   beWE \"888L x88:  `)8b. \r\n");
-            logo.Add("   %888 \"88F   d888 '88%\" 9888  9888  888E  888E    8888  888R   d888 '88%\"     888R I888>   8888R         %888 \"88F   d888 '88%\" 888E  888E  d888 '88%\"   8888  888R   888E  888E 8888N=*8888 \r\n");
-            logo.Add("    8\"   \"*h=~ 8888.+\"    9888  9888  888E  888E    8888  888R   8888.+\"        888R I888>   8888P          8\"   \"*h=~ 8888.+\"    888E  888E  8888.+\"      8888  888R   888E  888E  %8\"    R88 \r\n");
-            logo.Add("  z8Weu        8888L      9888  9888  888E  888E    8888 ,888B . 8888L         u8888cJ888    *888>        z8Weu        8888L      888E  888E  8888L        8888  888R   888E  888F   @8Wou 9%  \r\n");
-            logo.Add(" \"\"88888i.   Z '8888c. .+ 9888  9888  888& .888E   \"8888Y 8888\"  '8888c. .+     \"*888*P\"     4888        \"\"88888i.   Z '8888c. .+ 888& .888E  '8888c. .+  \"*88*\" 8888\" .888N..888  .888888P`   \r\n");
-            logo.Add("\"   \"8888888*   \"88888%   \"888*\"\"888\" *888\" 888&    `Y\"   'YP     \"88888%         'Y\"        '888       \"   \"8888888*   \"88888%   *888\" 888&   \"88888%      \"\"   'Y\"    `\"888*\"\"   `   ^\"F     \r\n");
-            logo.Add("      ^\"**\"\"      \"YP'     ^Y\"   ^Y'   `\"   \"888E                   \"YP'                      88R             ^\"**\"\"      \"YP'     `\"   \"888E    \"YP'                      \"\"                  \r\n");
-            logo.Add("                                      .dWi   `88E                                             88>                                 .dWi   `88E                                                  \r\n");
-            logo.Add("                                      4888~  J8%                                              48                                  4888~  J8%                                                   \r\n");
-            logo.Add("                                       ^\"===*\"`                                               '8                                   ^\"===*\"`                                                    ");
+            logo1.Add("      ...                                                                                                     ...                                                         ..          .x+=:.   \r\n");
+            logo1.Add("  .zf\"` `\"tu                                                                                  oec :       .zf\"` `\"tu                                                    dF           z`    ^%  \r\n");
+            logo1.Add(" x88      '8N.                                       x.    .                          u.     @88888      x88      '8N.                                      u.    u.   '88bu.           .   <k \r\n");
+            logo1.Add(" 888k     d88&      .u          u          uL      .@88k  z88u        .u        ...ue888b    8\"*88%      888k     d88&      .u         uL          .u     x@88k u@88c. '*88888bu      .@8Ned8\" \r\n");
+            logo1.Add(" 8888N.  @888F   ud8888.     us888u.   .ue888Nc.. ~\"8888 ^8888     ud8888.      888R Y888r   8b.         8888N.  @888F   ud8888.   .ue888Nc..   ud8888.  ^\"8888\"\"8888\"   ^\"*8888N   .@^%8888\"  \r\n");
+            logo1.Add(" `88888 9888%  :888'8888. .@88 \"8888\" d88E`\"888E`   8888  888R   :888'8888.     888R I888>  u888888>     `88888 9888%  :888'8888. d88E`\"888E` :888'8888.   8888  888R   beWE \"888L x88:  `)8b. \r\n");
+            logo1.Add("   %888 \"88F   d888 '88%\" 9888  9888  888E  888E    8888  888R   d888 '88%\"     888R I888>   8888R         %888 \"88F   d888 '88%\" 888E  888E  d888 '88%\"   8888  888R   888E  888E 8888N=*8888 \r\n");
+            logo1.Add("    8\"   \"*h=~ 8888.+\"    9888  9888  888E  888E    8888  888R   8888.+\"        888R I888>   8888P          8\"   \"*h=~ 8888.+\"    888E  888E  8888.+\"      8888  888R   888E  888E  %8\"    R88 \r\n");
+            logo1.Add("  z8Weu        8888L      9888  9888  888E  888E    8888 ,888B . 8888L         u8888cJ888    *888>        z8Weu        8888L      888E  888E  8888L        8888  888R   888E  888F   @8Wou 9%  \r\n");
+            logo1.Add(" \"\"88888i.   Z '8888c. .+ 9888  9888  888& .888E   \"8888Y 8888\"  '8888c. .+     \"*888*P\"     4888        \"\"88888i.   Z '8888c. .+ 888& .888E  '8888c. .+  \"*88*\" 8888\" .888N..888  .888888P`   \r\n");
+            logo1.Add("\"   \"8888888*   \"88888%   \"888*\"\"888\" *888\" 888&    `Y\"   'YP     \"88888%         'Y\"        '888       \"   \"8888888*   \"88888%   *888\" 888&   \"88888%      \"\"   'Y\"    `\"888*\"\"   `   ^\"F     \r\n");
+            logo1.Add("      ^\"**\"\"      \"YP'     ^Y\"   ^Y'   `\"   \"888E                   \"YP'                      88R             ^\"**\"\"      \"YP'     `\"   \"888E    \"YP'                      \"\"                  \r\n");
+            logo1.Add("                                      .dWi   `88E                                             88>                                 .dWi   `88E                                                  \r\n");
+            logo1.Add("                                      4888~  J8%                                              48                                  4888~  J8%                                                   \r\n");
+            logo1.Add("                                       ^\"===*\"`                                               '8                                   ^\"===*\"`                                                    ");
 
             // 1차 소제목
-            logo.Add("▗     ▛▀▖         ▜    ▐  ▗       \r\n");
-            logo.Add("▄ ▛▀▖ ▙▄▘▞▀▖▌ ▌▞▀▖▐ ▌ ▌▜▀ ▄ ▞▀▖▛▀▖\r\n");
-            logo.Add("▐ ▌ ▌ ▌▚ ▛▀ ▐▐ ▌ ▌▐ ▌ ▌▐ ▖▐ ▌ ▌▌ ▌\r\n");
-            logo.Add("▀▘▘ ▘ ▘ ▘▝▀▘ ▘ ▝▀  ▘▝▀▘ ▀ ▀▘▝▀ ▘ ▘");
+            logo1.Add("▗     ▛▀▖         ▜    ▐  ▗       \r\n");
+            logo1.Add("▄ ▛▀▖ ▙▄▘▞▀▖▌ ▌▞▀▖▐ ▌ ▌▜▀ ▄ ▞▀▖▛▀▖\r\n");
+            logo1.Add("▐ ▌ ▌ ▌▚ ▛▀ ▐▐ ▌ ▌▐ ▌ ▌▐ ▖▐ ▌ ▌▌ ▌\r\n");
+            logo1.Add("▀▘▘ ▘ ▘ ▘▝▀▘ ▘ ▝▀  ▘▝▀▘ ▀ ▀▘▝▀ ▘ ▘");
 
+            logo2.Add("                                                                                                                                                                                    \r\n");
+            logo2.Add(" ▄▄▄▄▄                                                                                        ▄▄▄▄             ▄▄                                                      ▄▄           \r\n");
+            logo2.Add(" ██▀▀▀██                                                                                     ██▀▀▀             ██                                                      ██           \r\n");
+            logo2.Add(" ██    ██  ██    ██  ██▄████▄   ▄███▄██   ▄████▄    ▄████▄   ██▄████▄             ▄████▄   ███████             ██         ▄████▄    ▄███▄██   ▄████▄   ██▄████▄   ▄███▄██  ▄▄█████▄ \r\n");
+            logo2.Add(" ██    ██  ██    ██  ██▀   ██  ██▀  ▀██  ██▄▄▄▄██  ██▀  ▀██  ██▀   ██            ██▀  ▀██    ██                ██        ██▄▄▄▄██  ██▀  ▀██  ██▄▄▄▄██  ██▀   ██  ██▀  ▀██  ██▄▄▄▄ ▀ \r\n");
+            logo2.Add(" ██    ██  ██    ██  ██    ██  ██    ██  ██▀▀▀▀▀▀  ██    ██  ██    ██            ██    ██    ██                ██        ██▀▀▀▀▀▀  ██    ██  ██▀▀▀▀▀▀  ██    ██  ██    ██   ▀▀▀▀██▄ \r\n");
+            logo2.Add(" ██▄▄▄██   ██▄▄▄███  ██    ██  ▀██▄▄███  ▀██▄▄▄▄█  ▀██▄▄██▀  ██    ██            ▀██▄▄██▀    ██                ██▄▄▄▄▄▄  ▀██▄▄▄▄█  ▀██▄▄███  ▀██▄▄▄▄█  ██    ██  ▀██▄▄███  █▄▄▄▄▄██ \r\n");
+            logo2.Add(" ▀▀▀▀▀      ▀▀▀▀ ▀▀  ▀▀    ▀▀   ▄▀▀▀ ██    ▀▀▀▀▀     ▀▀▀▀    ▀▀    ▀▀              ▀▀▀▀      ▀▀                ▀▀▀▀▀▀▀▀    ▀▀▀▀▀    ▄▀▀▀ ██    ▀▀▀▀▀   ▀▀    ▀▀    ▀▀▀ ▀▀   ▀▀▀▀▀▀  \r\n");
+            logo2.Add("                                ▀████▀▀                                                                                             ▀████▀▀                                         \r\n");
+            logo2.Add("                                                                                                                                                                                    ");
+
+
+            logo2.Add(" .-.         .--.       .-.          .-..-. _ .-.  .-.    .-..-.             .-.    _             \r\n");
+            logo2.Add(".' `.       : .--'      : :          : :' ;:_;: :  : :    : `' :             : :   :_;            \r\n");
+            logo2.Add("`. .'.--.   `. `.  .--. : :   .--.   :   ' .-.: :  : :    : .. : .--.   .--. : `-. .-.,-.,-. .--. \r\n");
+            logo2.Add(" : :' .; :   _`, :' .; :: :_ ' .; :  : :.`.: :: :_ : :_   : :; :' .; ; '  ..': .. :: :: ,. :' '_.'\r\n");
+            logo2.Add(" :_;`.__.'  `.__.'`.__.'`.__;`.__.'  :_;:_;:_;`.__;`.__;  :_;:_;`.__,_;`.__.':_;:_;:_;:_;:_;`.__.'\r\n");
+            logo2.Add("                                                                                                  \r\n");
+            logo2.Add("                                                                                                  ");
 
 
             story.Add("아 간만에 롤이나 해볼까");
@@ -302,7 +322,7 @@ namespace Text_RPG_11
                 ",$$#$=$$$$$$$$===================*==*=$;!;:~@@@@@@@@@@@@@:!*!,:==*~@@@@.=$$$$###$$$$$$$$$$$$$::=$$##\r\n");
 
             Console.ForegroundColor = ConsoleColor.Cyan;
-            foreach (string str in logo)
+            foreach (string str in logo1)
             {
                 Console.Write(str);
                 Thread.Sleep(200);
@@ -341,7 +361,7 @@ namespace Text_RPG_11
                 act = Console.ReadLine();
             }
             gameManager.Player.Name = name; // 게임매니저에다가 이름 넣어주기
-            Console.WriteLine($"{name} 소환사님 과연 이름부터가 휘황찬란하시군요\n헌데 용사님의 직업은 무엇인지요\n\n" +
+            Console.WriteLine($"{name} 소환사님 과연 이름부터가 휘황찬란하시군요\n소환사님을 위한 챔피언을 준비했습니다 어서 골라보시지요\n\n" +
                 $"1. 가렌 (전사)\n2. 럭스 (마법사)\n3. 애쉬 (궁수)\n\n");
             Console.Write(">>");
             act = Console.ReadLine();
@@ -367,7 +387,7 @@ namespace Text_RPG_11
                 }
                 else
                 {
-                    Console.Clear(); Console.WriteLine("마 니 용사 맞나?\n혹시 폐급 용사가?\n단디 해라이\n\n1. 가렌 (전사)\n2. 럭스 (마법사)\n3. 애쉬 (궁수)\n\n");
+                    Console.Clear(); Console.WriteLine("마 니 솔킬머신 맞나?\n혹시 솔킬 당하는 머신이가?\n단디 해라이\n\n1. 가렌 (전사)\n2. 럭스 (마법사)\n3. 애쉬 (궁수)\n\n");
                     Console.Write(">>");
                     act = Console.ReadLine();
                 }
@@ -406,7 +426,7 @@ namespace Text_RPG_11
         }
 
 
-        // 전투 루프를 실행 (Battle이 이미 준비된 상태여야 함 즉 몹을 생성한 뒤 돌려야 함)
+        // 적들과 배틀하는 UI를 실행 (Battle이 이미 준비된 상태여야 함 즉 몹을 생성한 뒤 돌려야 함)
         public void RunBattleLoop(Battle battle)
         {
             // 전투 시작 시 기본 렌더
@@ -431,18 +451,18 @@ namespace Text_RPG_11
                         break;
 
                     case "2":
-                        AddLog("스킬 사용(미구현)"); // 연결할 경우 battle.UserSkill() 호출
-                        // battle.UserSkill();
+                        AddLog("스킬 사용(미구현)"); // 연결할 경우 스킬 호출
+                        // battle.UserSkill(); -> 예시입니다 나중에 만드는거 보고 따라갈게여
                         break;
 
                     case "3":
                         AddLog("포션 사용(미구현)");
-                        // potion logic
+                        // potion logic -> 만드는거 보고 따라갈게여
                         break;
 
                     case "4":
                         AddLog("도망 시도...");
-                        // 도망 기능이 있으면 처리. 여기서는 루프 탈출
+                        // 도망 기능이 있으면 처리. 여기서는 루프 탈출 -> 이거는 넣을지 말지 정하고 넣을게여
                         return;
 
                     default:
@@ -686,136 +706,3 @@ namespace Text_RPG_11
         }
     }
 }
-
-
-//while (true)
-//{
-//    if (act == "0")
-//    {
-//        Console.Clear();
-//        Console.WriteLine("이 곳에서 던전으로 들어가기 전 활동을 할 수 있습니다\n\n1. 상태보기\n2. 인벤토리" +
-//            "\n3. 탐험하기\n4. 상점\n\n원하시는 행동을 입력해주세요");
-//        Console.Write(">>");
-//        act = Console.ReadLine();
-//    }
-//    else if (act == "1")
-//    {
-//        Console.Clear();
-//        playerMake.TotalPlayerStat();
-//        inventory.UseItems();
-//        Console.WriteLine("\n\n0. 나가기\n\n원하시는 행동을 입력해주세요");
-//        Console.Write(">>");
-//        act = Console.ReadLine();
-//        if (act != "0")
-//        {
-//            while (true)
-//            {
-//                Console.Clear();
-//                playerMake.TotalPlayerStat();
-//                inventory.UseItems();
-//                Console.WriteLine("\n\n0. 나가기\n\n잘못된 입력 입니다. 다시 입력하십시오.");
-//                Console.Write(">>");
-//                act = Console.ReadLine();
-//                if (act == "0") { break; }
-//            }
-//        }
-//    }
-//    else if (act == "2")
-//{
-//    act = "0";
-//    while (true)
-//    {
-//        if (act == "0")
-//        {
-//            inventory.InventoryInfo();
-//            Console.WriteLine("\n1. 장착 관리\n0. 나가기\n\n원하시는 행동을 입력해주세요");
-//            Console.Write(">>");
-//            act = Console.ReadLine();
-//            if (act == "0") break;
-//            continue;
-//        }
-//        else if (act == "1")
-//        {
-//            while (true)
-//            {
-//                inventory.InventoryItemUse();
-//                Console.Write("\n0. 나가기\n\n원하시는 행동을 입력해주세요.\n>>");
-//                act = Console.ReadLine();
-//                if (act == "0") { break; }
-//                else if (1 <= int.Parse(act) && int.Parse(act) <= inventory.myItems.Count)
-//                {
-//                    inventory.TotalStatItemUse(int.Parse(act), playerMake);
-//                    continue;
-//                }
-//                else { continue; }
-//            }
-//        }
-//        else
-//        {
-//            while (true)
-//            {
-//                Console.Clear();
-//                inventory.InventoryInfo();
-//                Console.WriteLine("\n1. 장착 관리\n0. 나가기\n\n잘못된 입력입니다\n다시 입력하십시오\n");
-//                act = Console.ReadLine();
-//                if (act == "0" || act == "1") { break; }
-//            }
-//            if (act == "1") { continue; }
-//            break;
-//        }
-//    }
-//}
-//else if (act == "3")
-//{
-//    Random random = new Random();
-//    Monster monster = new Monster();
-//    Adventure adventure = new Adventure();
-//    int i = random.Next(0, 10);
-//    if (i < 5) monster.Goblin();
-//    else if (i >= 5 && i <= 7) monster.Oak();
-//    else if (i > 7) monster.Ghost();
-//    adventure.AdventureStat(monster, playerMake);
-//    act = "0";
-//}
-//else if (act == "4")
-//{
-//    while (true)
-//    {
-//        Console.Clear();
-//        shop.DisplayItems(playerMake);
-//        Console.WriteLine("\n\n0. 나가기\n\n구매 할 아이템 번호 또는 행동을 입력하시오");
-//        act = Console.ReadLine();
-//        if (act == "0") { break; }
-//        else { shop.ItemBuy(playerMake, act, inventory); }
-//    }
-//}
-//else
-//{
-//    while (true)
-//    {
-//        Console.Clear();
-//        Console.WriteLine("이 곳에서 던전으로 들어가기 전 활동을 할 수 있습니다\n\n1. 상태보기\n2. 인벤토리" +
-//            "\n3. 탐험하기\n4. 상점\n\n");
-//        Console.WriteLine("잘못된 입력입니다\n다시 입력하십시오\n");
-//        Console.Write(">>");
-//        act = Console.ReadLine();
-//        if (act == "1" || act == "2" || act == "3") { break; }
-//    }
-//}
-
-//if (playerMake.alive == false) break;
-
-//// 레벨업 시 상점에 아이템 추가하는 로직
-//if (playerMake.level == 2 && playerMake.levelUp == true)
-//{
-//    playerMake.levelUp = false;
-//    shop.AddItem(new Item("롱 소드", 12, "공격력 +", 8, "철로 만들어진 긴 검으로 타격감이 좋습니다", false));
-//    Console.ReadLine();
-//    shop.AddItem(new Item("정령의 형상", 40, "마나 +", 20, "정령을 본 따 만들어진 물건으로 마나순환이 빨라지는 기분이 듭니다", false));
-//    Console.ReadLine();
-//    shop.AddItem(new Item("에이스 방패", 17, "방어력 +", 6, "에이스 대장장이가 만들었다고 전해지는 방패입니다.", false));
-//    Console.ReadLine();
-//    shop.AddItem(new Item("롯데팬의 분노", 999, "공격력 +", 999, "5%확률을 뚫고 가을을 가지 못 한 사직의 분노입니다.", false));
-//    Console.ReadLine();
-//}
-//}
