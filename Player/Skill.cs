@@ -68,9 +68,13 @@ namespace Text_RPG_11
 
         private Skill(
             int id, string name, string description,
-            string requiredJob, int requiredLevel,
-            string typeText, int manaCost, int cooldown, SkillEffects effects,
-            SkillType type, float powerMultiplier, int hits, string desc, bool guaranteedCritical = false)
+            string requiredJob, int requiredLevel, 
+            int manaCost, int cooldown,
+            SkillType type, float powerMultiplier, int hits, string desc,
+            bool guaranteedCritical = false,
+            int attackBonus = 0, int defenseBonus = 0,
+            int attackMinus = 0, int defenseMinus = 0,
+            int duration = 0)
         {
             Id = id;
             Name = name;
@@ -79,13 +83,22 @@ namespace Text_RPG_11
             RequiredLevel = requiredLevel;
             ManaCost = manaCost;
             Cooldown = cooldown;
-            Effects = effects ?? new SkillEffects();        // effects가 널이면 => new SkillEffects 실행해서 널 방지
 
             Type = type;
             PowerMultiplier = powerMultiplier;
             Hits = hits;
             Desc = desc;
             GuaranteedCritical = guaranteedCritical;
+
+            // Effects 생성을 기존 스킬별 팩토리메서드에서 스킬 생성자 내부로 옮겼습니다
+            Effects = new SkillEffects
+            {
+                AttackBonus = attackBonus,
+                DefenseBonus = defenseBonus,
+                AttackMinus = attackMinus,
+                DefenseMinus = defenseMinus,
+                Duration = duration
+            };
         }
 
         //====================이하 가렌(전사) 스킬==================
