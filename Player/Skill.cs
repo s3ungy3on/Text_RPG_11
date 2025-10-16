@@ -19,23 +19,25 @@ namespace Text_RPG_11
 
     internal class Skill
     {
-        public string Name { get; set; }
-        public int UseMP { get; set; }
-        public SkillType Type { get; set; }
-        // 타입별 해석:
-        // - Damage: 공격 배수(×값)
-        // - Heal  : 고정 회복량(+값)
-        // - Buff  : 공격력 +값(전투 동안 TempAttack에 누적)
-        // - Debuff: 방어력 -값(전투 동안 TempDefense에 누적)
+        public int Id { get; set; }                     //스킬 고유 번호
+        public string Name { get; set; }                //스킬 이름
+        public string Description { get; set; }         //스킬에 대한 설명
+        public string RequiredJob { get; set; }         // "전사" / "마법사" / "궁수" … 해당 스킬 사용하기 위해 요구되는 직업
+        public int RequiredLevel { get; set; }          // 해당스킬 사용하기 위해 요구되는 레벨
+        public string TypeText { get; set; }            // "attack" / "buff" / "heal" / "debuff"
+        public int ManaCost { get; set; }               //마나 소비량
+        public int Cooldown { get; set; }               //쿨타임 우리게임은 턴제이므로 턴으로 표기, 턴마다 1씩 감소
+        public SkillEffects Effects { get; set; }       
+        
+        
+        public SkillType Type { get; private set; }
+        public float PowerMultiplier { get; private set; }  // Damage/Heal 계수(Heal은 정수 캐스팅)
+        public int Hits { get; private set; }             // 다타격 횟수(0/1 = 단일)
+        public bool GuaranteedCritical { get; private set; }
+        public string Desc { get; private set; }
 
-        public float PowerMultiplier { get; set; } = 1.0f; // 공격/치명타/회복 배수 (예: 2.0f -> 공격력*2)
-        public bool IsCritical { get; set; } // Damage 한정: 확정 치명 스위치
-
-        public int Hits { get; set; } = 1; 
-
-
-        // 스킬 설명
-        public string Description { get; set; }
+        // 런타임 쿨다운(턴)
+        public int CurrentCooldown { get; set; } = 0;
 
         public Skill(string name, int useMP, SkillType type, float powerMultiplier, int hits, string desc = "",bool isCritical = false)
         {
