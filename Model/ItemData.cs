@@ -36,23 +36,28 @@ namespace Text_RPG_11
             public DropInfo dropInfo { get; set; }
         }
 
+        public class PotionData // 물약 데이터
+        {
+            public int id { get; set; }
+            public string name { get; set; }
+            public string description { get; set; }
+            public string rarity { get; set; }
+            public int healPower { get; set; }
+            public bool stackable { get; set; }
+            public int maxStack { get; set; }
+            public int price { get; set; }
+            public List<string> obtainMethods { get; set; }
+            public DropInfo dropInfo { get; set; }
+        }
+
         public class DropInfo // 드랍 정보
         {
             public List<int> monsterIds { get; set; }  // 어떤 몬스터가 드랍하는지
             public int dropChance { get; set; }         // 드랍 확률 (%)
         }
 
-
-        public class PotionData : ItemDataBase // 물약 데이터
-        {
-            public int healPower { get; set; }
-            public bool stackable { get; set; }
-            public int maxStack { get; set; }
-        }
-
         public class CraftingConfig //합성 기본 설정
         {
-            public int defaultGoldCost {  get; set; }
             public int alwaysSuccess {  get; set; }
         }
 
@@ -71,6 +76,7 @@ namespace Text_RPG_11
         {
             public string displayName {  get; set; }
             public string color { get; set; }
+            public int craftingGoldCost { get; set; }
         }
     }
 }

@@ -39,8 +39,8 @@
       "obtainMethods": [ "shop", "monster", "dungeon", "quest" ],
       "crafting": false,
       "craftingRecipe": null,
-      "dropInfo": { 
-        "dropChance": 40 
+      "dropInfo": {
+        "dropChance": 40
       }
     },
     {
@@ -2933,42 +2933,46 @@
       "description": "사용 시 체력을 30 회복합니다.",
       "rarity": "common",
       "healPower": 30,
-      "price": 500,
-      "stackavle": true,
+      "stackable": true,
       "maxStack": 99,
+      "price": 500,
       "obtainMethods": [ "shop", "monster", "dungeon" ],
       "dropInfo": {
         "dropChance": 40
-      },
-      "crafting": false,
-      "craftingRecipe": null
+      }
     }
   ],
 
   "rarityInfo": {
     "common": {
       "displayName": "일반",
-      "color": "White"
+      "color": "#FFFFFF",
+      "craftingGoldCost": 0
     },
     "rare": {
       "displayName": "레어",
-      "color": ""
+      "color": "",
+      "craftingGoldCost": 500
     },
     "epic": {
       "displayName": "에픽",
-      "color": ""
-    }, 
+      "color": "",
+      "craftingGoldCost": 1000
+    },
     "legend": {
       "displayName": "전설",
-      "color": "Yellow"
+      "color": "",
+      "craftingGoldCost": 2000
     },
     "myth": {
       "displayName": "신화",
-      "color": ""
+      "color": "",
+      "craftingGoldCost": 3000
     },
     "transcended": {
       "displayName": "초월",
-      "color": ""
+      "color": "",
+      "craftingGoldCost": 5000
     }
   }
 }
