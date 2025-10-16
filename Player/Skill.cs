@@ -7,15 +7,32 @@ using System.Threading.Tasks;
 namespace Text_RPG_11
 {
 
-    internal enum SkillType { Damage, Heal, Buff, Debuff }
+    internal enum SkillType
+    {
+        Attack,
+        Heal,
+        Buff,
+        Debuff,
+        AttackDebuff, // 공격 + 디버프
+        AttackBuff    // 공격 + 버프 
+    }
 
     internal sealed class SkillEffects
     {
-        public float DamageMultiplier { get; set; } = 0f;   // 0이면 미사용, >0이면 배수로 사용
-        public int AttackBonus { get; set; } = 0;          //0이면 미사용, >0이면 공격 +X
-        public int DefenseBonus { get; set; } = 0;         // 0이면 미사용, >0이면 방어 +X
+        // Buff(+)
+        public int AttackBonus { get; set; } = 0;
+        public int DefenseBonus { get; set; } = 0;
+        // Debuff(양수로 표기. 절댓값만큼 해당수치(공격/방어)를 감소시킵니다. ex) AttackMinus = 1 -> 몬스터 공격력 1 감소)
+        public int AttackMinus { get; set; } = 0;
+        public int DefenseMinus { get; set; } = 0;
+
         public int Duration { get; set; } = 0;             // 0이면 비지속, >0이면 N턴 지속
+
         public List<string> AdditionalEffects { get; set; } = new List<string>(); // UI/로깅용 태그
+
+        // 전투부 합성값: +면 버프, -면 디버프
+        public int EffectiveAttackDelta => AttackBonus - AttackMinus;
+        public int EffectiveDefenseDelta => DefenseBonus - DefenseMinus;
     }
 
     internal class Skill
