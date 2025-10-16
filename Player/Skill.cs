@@ -35,19 +35,29 @@ namespace Text_RPG_11
         public int Hits { get; private set; }             // 다타격 횟수(0/1 = 단일)
         public bool GuaranteedCritical { get; private set; }
         public string Desc { get; private set; }
+        public int CurrentCooldown { get; set; } = 0;       // 런타임 쿨다운(턴)
 
-        // 런타임 쿨다운(턴)
-        public int CurrentCooldown { get; set; } = 0;
-
-        public Skill(string name, int useMP, SkillType type, float powerMultiplier, int hits, string desc = "",bool isCritical = false)
+        private Skill(
+            int id, string name, string description,
+            string requiredJob, int requiredLevel,
+            string typeText, int manaCost, int cooldown, SkillEffects effects,
+            SkillType type, float powerMultiplier, int hits, string desc, bool guaranteedCritical = false)
         {
+            Id = id;
             Name = name;
-            UseMP = useMP;
+            Description = description;
+            RequiredJob = requiredJob;
+            RequiredLevel = requiredLevel;
+            TypeText = typeText;
+            ManaCost = manaCost;
+            Cooldown = cooldown;
+            Effects = effects ?? new SkillEffects();        // effects가 널이면 => new SkillEffects 실행해서 널 방지
+
             Type = type;
             PowerMultiplier = powerMultiplier;
             Hits = hits;
-            Description = desc;
-            IsCritical = isCritical;
+            Desc = desc;
+            GuaranteedCritical = guaranteedCritical;
         }
 
         //이하 가렌(전사) 스킬
