@@ -9,7 +9,7 @@ namespace Text_RPG_11
 
     internal enum SkillType
     {
-        Attack,
+        Attack,       //기존 Damage에서 Attack으로 변경하였습니다.
         Heal,
         Buff,
         Debuff,
@@ -111,15 +111,9 @@ namespace Text_RPG_11
                 description: "회전 공격으로 적을 연속 타격합니다.",
                 requiredJob: "전사",
                 requiredLevel: 3,
-                typeText: "attack",
                 manaCost: 14,
                 cooldown: 4,
-                effects: new SkillEffects
-                {
-                    DamageMultiplier = 1.15f,
-                    AdditionalEffects = new List<string> { "multi-hit:3" }
-                },
-                type: SkillType.Damage,
+                type: SkillType.Attack,
                 powerMultiplier: 1.15f,
                 hits: 3,
                 desc: "무작위 적을 3회 타격(각 ×1.15)."
@@ -133,22 +127,14 @@ namespace Text_RPG_11
                 description: "굳건한 의지로 몸을 단단히 합니다.",
                 requiredJob: "전사",
                 requiredLevel: 3,
-                typeText: "buff",
                 manaCost: 10,
                 cooldown: 5,
-                effects: new SkillEffects
-                {
-                    DefenseBonus = 4,
-                    Duration = 3,
-                    AdditionalEffects = new List<string> 
-                    {
-                        "defense+4", "duration:3"
-                    }
-                },
                 type: SkillType.Buff,
                 powerMultiplier: 0,                     // 버프/디버프는 SkillEffects 의 Attack/DefenseBonus 로 처리합니다
                 hits: 0,
-                desc: "자신의 방어력 +4 (3턴)."
+                desc: "자신의 방어력 +4 (3턴).",
+                defenseBonus: 4, duration: 3            /* 기존 effect: new SkillEffects()를 삭제하고(스킬 생성자에서 만드는것으로 수정)
+                                                           팩토리 메서드 안에 직접 값을 기재하는 것으로 바꾸었습니다. */
             );
 
         // 인내: HP +25
@@ -159,10 +145,8 @@ namespace Text_RPG_11
                 description: "잠시 호흡을 고르며 체력을 회복합니다.",
                 requiredJob: "전사",
                 requiredLevel: 2,
-                typeText: "heal",
                 manaCost: 10,
                 cooldown: 4,
-                effects: new SkillEffects(),
                 type: SkillType.Heal,
                 powerMultiplier: 25f,
                 hits: 0,
@@ -177,15 +161,9 @@ namespace Text_RPG_11
                 description: "데마시아의 이름으로 적을 처단합니다.",
                 requiredJob: "전사",
                 requiredLevel: 6,
-                typeText: "attack",
                 manaCost: 22,
                 cooldown: 6,
-                effects: new SkillEffects
-                {
-                    DamageMultiplier = 1.9f,
-                    AdditionalEffects = new List<string> { "guaranteed-crit" }
-                },
-                type: SkillType.Damage,
+                type: SkillType.Attack,
                 powerMultiplier: 1.9f,
                 hits: 1,
                 desc: "공격력×1.9, 반드시 치명타로 적용.",
@@ -202,20 +180,13 @@ namespace Text_RPG_11
                 description: "빛줄기로 적을 속박합니다.",
                 requiredJob: "마법사",
                 requiredLevel: 3,
-                typeText: "attack",
                 manaCost: 12,
                 cooldown: 3,
-                effects: new SkillEffects
-                {
-                    DamageMultiplier = 1.4f,
-                    DefenseBonus = -2,          
-                    Duration = 3,               
-                    AdditionalEffects = new List<string> { "apply:defense-2", "duration:3" }
-                },
-                type: SkillType.Damage,
+                type: SkillType.AttackDebuff,
                 powerMultiplier: 1.4f,
                 hits: 1,
-                desc: "×1.4, 추가로 대상 방어 -2 (3턴)."
+                desc: "×1.4, 추가로 대상 방어 -2 (3턴).",
+                defenseMinus: 2, duration: 3
             );
 
         // 광휘의 특이점: 무작위 3타 ×1.2
@@ -226,15 +197,9 @@ namespace Text_RPG_11
                 description: "광휘의 구체가 폭발합니다.",
                 requiredJob: "마법사",
                 requiredLevel: 5,
-                typeText: "attack",
                 manaCost: 18,
                 cooldown: 5,
-                effects: new SkillEffects
-                {
-                    DamageMultiplier = 1.2f,
-                    AdditionalEffects = new List<string> { "multi-hit:3" }
-                },
-                type: SkillType.Damage,
+                type: SkillType.Attack,
                 powerMultiplier: 1.2f,
                 hits: 3,
                 desc: "무작위 적에게 3회 타격(각 ×1.2)."
@@ -248,10 +213,8 @@ namespace Text_RPG_11
                 description: "빛의 보호막으로 치유합니다.",
                 requiredJob: "마법사",
                 requiredLevel: 2,
-                typeText: "heal",
                 manaCost: 10,
                 cooldown: 4,
-                effects: new SkillEffects(),
                 type: SkillType.Heal,
                 powerMultiplier: 30f,
                 hits: 0,
@@ -266,11 +229,9 @@ namespace Text_RPG_11
                 description: "최후의 섬광으로 적을 태웁니다.",
                 requiredJob: "마법사",
                 requiredLevel: 8,
-                typeText: "attack",
                 manaCost: 24,
                 cooldown: 6,
-                effects: new SkillEffects { DamageMultiplier = 2.2f },
-                type: SkillType.Damage,
+                type: SkillType.Attack,
                 powerMultiplier: 2.2f,
                 hits: 1,
                 desc: "공격력×2.2의 강력한 일격."
@@ -285,15 +246,9 @@ namespace Text_RPG_11
                 description: "화살비를 퍼붓습니다.",
                 requiredJob: "궁수",
                 requiredLevel: 2,
-                typeText: "attack",
                 manaCost: 12,
                 cooldown: 3,
-                effects: new SkillEffects
-                {
-                    DamageMultiplier = 1.1f,
-                    AdditionalEffects = new List<string> { "multi-hit:4" }
-                },
-                type: SkillType.Damage,
+                type: SkillType.Attack,
                 powerMultiplier: 1.1f,
                 hits: 4,
                 desc: "무작위 적에게 4회 타격(×1.1)."
@@ -307,19 +262,13 @@ namespace Text_RPG_11
                 description: "집중력을 높여 공격력을 끌어올립니다.",
                 requiredJob: "궁수",
                 requiredLevel: 3,
-                typeText: "buff",
                 manaCost: 8,
                 cooldown: 5,
-                effects: new SkillEffects
-                {
-                    Duration = 3,
-                    AttackBonus = 3,        
-                    AdditionalEffects = new List<string> { "attack+3", "duration:3" }
-                },
                 type: SkillType.Buff,
                 powerMultiplier: 0f,        // 버프/디버프는 SkillEffects 의 Attack/DefenseBonus 로 처리합니다
                 hits: 0,
-                desc: "자신의 공격력 +3 (3턴)."
+                desc: "자신의 공격력 +3 (3턴).",
+                attackBonus: 3, duration: 3
             );
 
         // 수정화살: 확정 치명 ×1.7 + 방깎 -3 (3턴)
@@ -330,20 +279,13 @@ namespace Text_RPG_11
                 description: "거대한 얼음 화살을 발사합니다.",
                 requiredJob: "궁수",
                 requiredLevel: 6,
-                typeText: "attack",
                 manaCost: 20,
                 cooldown: 6,
-                effects: new SkillEffects
-                {
-                    DamageMultiplier = 1.7f,
-                    DefenseBonus = -3,          
-                    Duration = 3,               
-                    AdditionalEffects = new List<string> { "guaranteed-crit", "apply:defense-3", "duration:3" }
-                },
-                type: SkillType.Damage,
+                type: SkillType.AttackDebuff,
                 powerMultiplier: 1.7f,
                 hits: 1,
                 desc: "×1.7, 확정 치명타. 추가로 방어 -3 (3턴).",
+                attackBonus: 3, duration: 3,
                 guaranteedCritical: true
             );
 
@@ -355,19 +297,13 @@ namespace Text_RPG_11
                 description: "냉기 화살로 적의 약점을 노출시킵니다.",
                 requiredJob: "궁수",
                 requiredLevel: 4,
-                typeText: "debuff",
                 manaCost: 10,
                 cooldown: 4,
-                effects: new SkillEffects
-                {
-                    Duration = 3,
-                    DefenseBonus = -3,
-                    AdditionalEffects = new List<string> { "defense-3" }
-                },
                 type: SkillType.Debuff,
                 powerMultiplier: 0f,                //버프/디버프는 SkillEffects 의 Attack/DefenseBonus 로 처리합니다
                 hits: 0,
-                desc: "대상 방어 -3 (3턴)."
+                desc: "대상 방어 -3 (3턴).",
+                defenseMinus: 3, duration: 3
             );
 
         //=====================이하 제드(도적) 스킬=====================
@@ -381,15 +317,9 @@ namespace Text_RPG_11
                 description: "면도날처럼 예리한 표창을 던집니다.",
                 requiredJob: "도적",
                 requiredLevel: 1,
-                typeText: "attack",
                 manaCost: 10,
                 cooldown: 2,
-                effects: new SkillEffects
-                {
-                    DamageMultiplier = 1.5f,
-                    AdditionalEffects = new List<string> { "multi-hit:2" }
-                },
-                type: SkillType.Damage,
+                type: SkillType.Attack,
                 powerMultiplier: 1.5f,
                 hits: 2,
                 desc: "단일 대상에 2회 타격(각 ×1.5)."
@@ -403,15 +333,9 @@ namespace Text_RPG_11
                 description: "그림자의 궤적이 적을 베어넘깁니다.",
                 requiredJob: "도적",
                 requiredLevel: 3,
-                typeText: "attack",
                 manaCost: 14,
                 cooldown: 3,
-                effects: new SkillEffects
-                {
-                    DamageMultiplier = 1.2f,
-                    AdditionalEffects = new List<string> { "multi-hit:3" }
-                },
-                type: SkillType.Damage,
+                type: SkillType.Attack,
                 powerMultiplier: 1.2f,
                 hits: 3,
                 desc: "무작위 적 3회 타격(각 ×1.2)."
@@ -425,19 +349,13 @@ namespace Text_RPG_11
                 description: "그림자와 일체가 되어 감각을 일깨웁니다.",
                 requiredJob: "도적",
                 requiredLevel: 4,
-                typeText: "buff",
                 manaCost: 10,
                 cooldown: 5,
-                effects: new SkillEffects
-                {
-                    Duration = 3,
-                    AttackBonus = 4,
-                    AdditionalEffects = new List<string> { "attack+4", "duration:3" }
-                },
                 type: SkillType.Buff,
                 powerMultiplier: 0f,            // 버프/디버프는 SkillEffects 의 Attack/DefenseBonus 로 처리합니다 
                 hits: 0,
-                desc: "자신의 공격력 +4 (3턴)."
+                desc: "자신의 공격력 +4 (3턴).",
+                attackBonus: 4, duration: 3
             );
 
         // 죽음의 표식: 확정 치명 ×1.8 + 방깎 -4 (3턴)
@@ -448,20 +366,13 @@ namespace Text_RPG_11
                 description: "표식을 남기고 그늘 속에서 마무리합니다.",
                 requiredJob: "도적",
                 requiredLevel: 6,
-                typeText: "attack",
                 manaCost: 22,
                 cooldown: 6,
-                effects: new SkillEffects
-                {
-                    DamageMultiplier = 1.8f,
-                    DefenseBonus = -4,
-                    Duration = 3,
-                    AdditionalEffects = new List<string> { "guaranteed-crit", "apply:defense-4", "duration:3" }
-                },
-                type: SkillType.Damage,
+                type: SkillType.AttackDebuff,
                 powerMultiplier: 1.8f,
                 hits: 1,
                 desc: "×1.8, 반드시 치명타. 추가로 방어 -4 (3턴).",
+                defenseMinus: 4, duration: 3,
                 guaranteedCritical: true
             );
     }
