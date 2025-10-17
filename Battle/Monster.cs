@@ -111,8 +111,8 @@ namespace Text_RPG_11
         //몬스터 피격시 데미지만큼 체력이 감소
         public void TakeDamage(int dmg)
         {
-            int taken = Math.Max(0, dmg);       //0과 dmg중 큰것을 반환합니다 ->피해량이 음수인 경우 방지
-            HP = Math.Max(0, HP - dmg);         //0과 HP-dmg중 큰것을 반환합니다 ->Hp가 음수인 경우 방지
+            int taken = Math.Max(0, dmg);         //dmg가 음수인 경우 방지
+            HP = Math.Max(0, HP - taken);         //0과 HP-taken중 큰것을 반환합니다 ->Hp가 음수인 경우 방지
         }
 
         //전투 종료시 Temp의 값 리셋
@@ -122,7 +122,7 @@ namespace Text_RPG_11
             TempDefense = 0;
         }
 
-        public bool isDead => HP <= 0; //몬스터 사망 여부
+        public bool IsDead => HP <= 0; //몬스터 사망 여부
 
 
         //이하 몬스터 팩토리 메서드
@@ -156,7 +156,7 @@ namespace Text_RPG_11
                 spawnLocations: new[] { "미드 라인", "탑 라인", "바텀 라인" }  // 스폰 위치 문자열 배열
             );
 
-        public static Monster CanonMinion() =>
+        public static Monster CannonMinion() =>
             new Monster(
                 id: 4,
                 name: "대포 미니언",
