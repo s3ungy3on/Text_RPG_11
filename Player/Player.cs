@@ -60,8 +60,6 @@ namespace Text_RPG_11
             Job = job;
             Attack = attack;
             Defense = defense;
-            DefaultHP = defaultHP;
-            DefaultMP = defaultMP;
             HP = DefaultHP;                                                         //생성시 현재 체력 = 최대 체력
             MP = DefaultMP;                                                         //생성시 현재 마나 = 최대 마나
             Gold = gold;
@@ -140,6 +138,20 @@ namespace Text_RPG_11
 
             HP = MaxHP;                                                         //레벨업시 체력회복
             MP = MaxMP;                                                         //레벨업시 마나회복
+        }
+
+        public bool HasEquippedItem { get; set; } = false;
+
+        // 게임매니저에서 장비 착용 상태 업데이트 후 HasEquippedItem 갱신 가능
+        public void UpdateEquippedStatus(GameManager gameManager)
+        {
+            if (gameManager.GameItems == null)
+            {
+                HasEquippedItem = false;
+                return;
+            }
+
+            HasEquippedItem = gameManager.GameItems.Exists(i => i != null && i.IsEquipped);
         }
     }
 

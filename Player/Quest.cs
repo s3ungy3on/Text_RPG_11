@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Text.Json;
+
 namespace Text_RPG_11
 {
     internal enum QuestType
@@ -33,9 +35,8 @@ namespace Text_RPG_11
             RewardExp = rewardExp;                                                          //경험치 보상 저장
             RewardPotion = rewardPotion;                                                    //포션 보상 저장
             RewardItem = rewardItem;                                                        // 직업별 아이템 보상 저장
-            IsCompleted = false;                                                            //퀘스트 기본적으로 미완료
             Type = type;
-            IsCompleted = false;
+            IsCompleted = false;                                                            //퀘스트 기본적으로 미완료
         }
 
         public void Complete(Player player, List<Job> jobs)
@@ -44,15 +45,14 @@ namespace Text_RPG_11
 
             IsCompleted = true;                                                     //퀘스트 완료 상태로 변경
 
+            player.Gold += RewardGold;
+            player.Exp += RewardExp;
+            player.Potions += RewardPotion;
 
             if (!string.IsNullOrEmpty(RewardItem))                                     //아이템 보상 적용
             {
                 player.AddItem(RewardItem);                                             // 플레이어 인벤토리에 추가
             }
-
-            player.Gold += RewardGold;
-            player.Exp += RewardExp;
-            player.Potions += RewardPotion;
         }
 
         public bool CheckCompletionCondition(Player player, List<Job> jobs)
@@ -96,50 +96,38 @@ namespace Text_RPG_11
         {
             List<Quest> quests = new();
 
-            string rewardItem1 = player.Job switch                                  // 플레이어 직업에 따른 아이템 보상 결정
+            // 1️⃣ quests.json 파일 읽기
+            string json = File.ReadAllText("quests.json");
+
+            // 2️⃣ JSON → C# 객체로 변환
+            QuestData? questData = JsonSerializer.Deserialize<QuestData>(json);
+
+            if (questData == null || questData.questRewards == null)
+                return quests;
+
+            // 3️⃣ JSON의 각 퀘스트를 Quest 객체로 변환
+            foreach (var q in questData.questRewards)
             {
-                "전사" => "롱소드",
-                "마법사" => "증폭의 고서",
-                "도적" => "단검",
-                "궁수" => "롱소드",
-                _ => "기본 아이템"
-            };
+                // 직업별 보상 아이템 선택
+                string rewardItem = q.rewardItems.ContainsKey(player.Job)
+                    ? q.rewardItems[player.Job]
+                    : "기본 아이템";
 
-            // 새로운 퀘스트 객체 생성 후 반환
-            quests.Add(new Quest(
-                questName: "마을을 위협하는 미니언 처치",
-                description: "마을 근처 미니언 5마리 처치",
-                requirement: "미니언 5 처치",
-                rewardGold: 500,
-                rewardExp: 30,
-                rewardPotion: 2,
-                rewardItem: rewardItem1,
-                type: QuestType.KillMonster
-            ));
-
-            string rewardItem2 = player.Job switch
-            {
-                "전사" => "강철 갑옷",
-                "마법사" => "마법 로브",
-                "도적" => "그림자 자켓",
-                "궁수" => "사냥꾼의 망토",
-                _ => "기본 방어구"
-            };
-
-            quests.Add(new Quest(
-                questName: "전투 준비 태세",
-                description: "장비 착용하기.",
-                requirement: "장비 착용 완료",
-                rewardGold: 300,
-                rewardExp: 30,
-                rewardPotion: 1,
-                rewardItem: rewardItem2,
-                type: QuestType.EquipItem
-            ));
+                // Quest 객체 생성
+                quests.Add(new Quest(
+                questName: q.questName,
+                description: q.questName + " 수행하기",
+                requirement: "조건 미정",
+                rewardGold: q.goldReward,
+                rewardExp: q.expReward,
+                rewardPotion: q.potionReward,
+                rewardItem: rewardItem,
+                type: Enum.TryParse(q.questType, out QuestType questType) ? questType : QuestType.KillMonster
+ ));
+            }
 
             return quests;
         }
-
 
     }
 
@@ -208,5 +196,21 @@ namespace Text_RPG_11
         {
             return quests.FindAll(q => !q.IsCompleted);
         }
+    }
+
+    internal class QuestRewardData
+    {
+        public int questId { get; set; }
+        public string questName { get; set; }
+        public string questType { get; set; }
+        public int expReward { get; set; }
+        public int goldReward { get; set; }
+        public int potionReward { get; set; }
+        public Dictionary<string, string> rewardItems { get; set; }
+    }
+
+    internal class QuestData
+    {
+        public List<QuestRewardData> questRewards { get; set; }
     }
 }
