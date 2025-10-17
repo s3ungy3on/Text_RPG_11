@@ -1,0 +1,110 @@
+{
+  "dungeonRewards": [
+    {
+      "stageRange": [ 1, 19 ], //스테이지 범위
+      "rewardGroups": [ //보상 아이템
+        {
+          "groupName": "일반 재료", //아이템 드랍 그룹 이름
+          "groupChance": 60, //그룹 확률
+          "items": [
+            {
+              "itemId": 1, //아이템 id
+              "dropChance": 30 //아이템 드랍 확률
+            },
+            {
+              "itemId": 2,
+              "dropChance": 30
+            },
+            {
+              "itemId": 3,
+              "dropChance": 40
+            }
+          ]
+        },
+        {
+          "groupName": "포션", //포션 드랍 그룹
+          "groupChance": 40, //포션 드랍 확률
+          "items": [
+            {
+              "itemId": 201, //포션 id
+              "dropChance": 100 //그룹 걸리면 100%로 획득
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "stageRange": [ 20, 39 ],
+      "rewardItems": [
+        {
+          "itemId": 1,
+          "dropChance": 50
+        }
+      ]
+    },
+    {
+      "stageRange": [ 40, 59 ],
+      "rewardItems": [
+        {
+          "itemId": 1,
+          "dropChance": 50
+        }
+      ]
+    },
+    {
+      "stageRange": [ 60, 79 ],
+      "rewardItems": [
+        {
+          "itemId": 1,
+          "dropChance": 50
+        }
+      ]
+    },
+    {
+      "stageRange": [ 80, 100 ],
+      "rewardItems": [
+        {
+          "itemId": 1,
+          "dropChance": 50
+        }
+      ]
+    }
+  ],
+
+  "questRewards": [
+    {
+      "questId": 301,
+      "questName": "마을을 위협하는 미니언 처치",
+      "description": "마을 근처 미니언 5마리를 처치하시오.",
+      "requirement": "미니언 5 처치",
+      "expReward": 50,
+      "goldReward": 500,
+      "potionReward": 2,
+     "itemRewards": {
+        "전사": "롱소드",
+        "마법사": "마법지팡이",
+        "도적": "단검",
+        "궁수": "롱소드"
+      },
+      "type": "KillMonster"
+        },
+         {
+      "questId": 302,
+      "questName": "전투 준비 태세",
+      "description": "장비를 착용하여 전투 준비를 마치시오.",
+      "requirement": "장비 착용 완료",
+      "expReward": 30,
+      "goldReward": 300,
+      "potionReward": 1,
+      "itemReward": {
+        "전사": "루비 수정",
+        "마법사": "루비 수정",
+        "도적": "루비 수정",
+        "궁수": "루비 수정"
+      },
+      "type": "EquipItem"
+    }
+      ]
+    }
+  ]
+}

@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -14,6 +15,7 @@ namespace Text_RPG_11
         public bool IsEquipped { get; set; } //아이템 장착 유무
         public bool IsPurchased { get; set; } // 아이템 구매 유무
         public int Quantity {  get; set; } //아이템 개수
+        public List<string> EquipableJobs { get; set; }
 
         public Items(string name, int price, bool isEquipped = false, bool isPurchased = false, int quantity = 1)
         {
@@ -26,6 +28,14 @@ namespace Text_RPG_11
 
         public abstract string ItemType();
         public abstract string ItemStats();
+
+        public bool CanEquip(string jobName)
+        {
+            if (EquipableJobs == null || EquipableJobs.Count == 0)
+                return true;  // null이면 모든 직업 착용 가능
+
+            return EquipableJobs.Contains(jobName);
+        }
     }
 
     public class Weapon : Items
@@ -50,7 +60,14 @@ namespace Text_RPG_11
 
         public override string ItemStats()
         {
-            return $"공격력 +{AttackPower}";
+            List<string> stats = new List<string>();
+
+            if (AttackPower > 0) stats.Add($"공격력 +{AttackPower}");
+            if (DefensePower > 0) stats.Add($"방어력 +{DefensePower}");
+            if (ItemHp > 0) stats.Add($"체력 +{ItemHp}");
+            if (ItemMp > 0) stats.Add($"마나 +{ItemMp}");
+
+            return stats.Count > 0 ? string.Join(", ", stats) : "효과 없음";
         }
     }
 
@@ -76,7 +93,14 @@ namespace Text_RPG_11
 
         public override string ItemStats()
         {
-            return $"방어력 +{DefensePower}";
+            List<string> stats = new List<string>();
+
+            if (AttackPower > 0) stats.Add($"공격력 +{AttackPower}");
+            if (DefensePower > 0) stats.Add($"방어력 +{DefensePower}");
+            if (ItemHp > 0) stats.Add($"체력 +{ItemHp}");
+            if (ItemMp > 0) stats.Add($"마나 +{ItemMp}");
+
+            return stats.Count > 0 ? string.Join(", ", stats) : "효과 없음";
         }
     }
 
@@ -116,6 +140,40 @@ namespace Text_RPG_11
         //        IsPurchased = false;
         //    }
         //}
+    }
+    public class Material : Items
+    {
+        public int AttackPower { get; }
+        public int DefensePower { get; }
+        public int ItemHp { get; }
+        public int ItemMp { get; }
+        public bool IsStackable { get; } = true;
+        public int MaxStack { get; } = 99;
+
+        public Material(string name, int attackPower, int defensePower, int price, int itemHp, int itemMp, bool isEquipped = false, bool isPurchased = false) : base(name, price, isEquipped, isPurchased)
+        {
+            AttackPower = attackPower;
+            DefensePower = defensePower;
+            ItemHp = itemHp;
+            ItemMp = itemMp;
+        }
+
+        public override string ItemType()
+        {
+            return "재료";
+        }
+
+        public override string ItemStats()
+        {
+            List<string> stats = new List<string>();
+
+            if (AttackPower > 0) stats.Add($"공격력 +{AttackPower}");
+            if (DefensePower > 0) stats.Add($"방어력 +{DefensePower}");
+            if (ItemHp > 0) stats.Add($"체력 +{ItemHp}");
+            if (ItemMp > 0) stats.Add($"마나 +{ItemMp}");
+
+            return stats.Count > 0 ? string.Join(", ", stats) : "효과 없음";
+        }
     }
 }
 

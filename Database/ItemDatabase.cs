@@ -103,7 +103,7 @@ namespace Text_RPG_11
             return item as Weapon;
         }
 
-        public static Armor GetAromr(string name)
+        public static Armor GetArmor(string name)
         {
             var item = GetItemByName(name);
             return item as Armor;
@@ -114,11 +114,16 @@ namespace Text_RPG_11
             var item = GetItemByName(name);
             return item as Potion;
         }
+
+        public static Material GetMaterial(string name)
+        {
+            var item = GetItemByName(name);
+            return item as Material;
+        }
         #endregion
 
         #region 획득 경로별 아이템 목록
-
-        public static List<Items> GetShopItems()
+        public static List<Items> GetShopItems() //상점 아이템
         {
             List<Items> shopItems = new List<Items>();
 
@@ -135,7 +140,7 @@ namespace Text_RPG_11
             return shopItems;
         }
 
-        public static List<Items> GetCraftableItems()
+        public static List<Items> GetCraftableItems() //합성 아이템
         {
             List<Items> craftableItems = new List<Items>();
 
@@ -147,7 +152,7 @@ namespace Text_RPG_11
             return craftableItems;
         }
 
-        public static List<Items> GetItemsByRarity(string rarity)
+        public static List<Items> GetItemsByRarity(string rarity) //등급 별 아이템
         {
             List<Items> items = new List<Items>();
 
@@ -234,11 +239,25 @@ namespace Text_RPG_11
                         itemHp: data.itemHp,
                         itemMp: data.itemMp)
                     {
-                        ItemId = data.id
+                        ItemId = data.id,
+                        EquipableJobs = data.equipJob
                     };
 
                 case "방어구":
                     return new Armor(
+                        name: data.name,
+                        attackPower: data.attackPower,
+                        defensePower: data.defensePower,
+                        price: data.price,
+                        itemHp: data.itemHp,
+                        itemMp: data.itemMp)
+                    {
+                        ItemId = data.id,
+                        EquipableJobs = data.equipJob
+                    };
+
+                case "재료":
+                    return new Material(
                         name: data.name,
                         attackPower: data.attackPower,
                         defensePower: data.defensePower,
@@ -259,7 +278,8 @@ namespace Text_RPG_11
             return new Potion(
                 name: data.name,
                 healPower: data.healPower,
-                price: data.price)
+                price: data.price,
+                potionCount: 1)
             {
                 ItemId = data.id
             };
