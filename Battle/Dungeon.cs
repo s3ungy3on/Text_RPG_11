@@ -13,6 +13,7 @@ namespace Text_RPG_11
         public Battle _battle;
 
         private int _monsterNum;
+        private int _skillNum;
         
         public Dungeon(GameManager manager)
         {
@@ -33,11 +34,14 @@ namespace Text_RPG_11
                 EnemyInfo();
                 Console.WriteLine();
                 
-                // 3. 내 정보 출력
+                // 3. 플레이어가 사용 가능한 스킬 로드
+                _battle.Skill();
+                
+                // 4. 내 정보 출력
                 Console.WriteLine("[내 정보]");
                 Console.WriteLine($"Lv.{_gameManager.Player.Level} Chad ({_gameManager.Player.Job})\n\nHP {_gameManager.Player.HP} / {_gameManager.Player.MaxHP}\nMP {_gameManager.Player.MP} / {_gameManager.Player.MaxMP}\n");
                 
-                // 4. 행동 입력
+                // 5. 행동 입력
                 Console.WriteLine("1. 공격\n");
                 Console.WriteLine("원하시는 행동을 입력해주세요.");
                 Console.Write(">> ");
@@ -65,12 +69,30 @@ namespace Text_RPG_11
                     Console.WriteLine($"[{i + 1}] Lv. {_battle.Enemies[i].Level} {_battle.Enemies[i].Name}  HP {_battle.Enemies[i].HP}");
             }
         }
+        
+        // 사용 가능한 스킬 정보
+        public void SkillInfo()
+        {
+            for (int i = 0; i < _battle.PlayerSkills.Count; i++)
+            {
+                // 쿨타임 남은 스킬은 사용 불가
+                if (_battle.PlayerSkills[i].CurrentCooldown != 0)
+                    Console.WriteLine($"[{i}. {_battle.PlayerSkills[i].Name} - 쿨타임 {_battle.PlayerSkills[i].CurrentCooldown}턴: 사용 불가");
+                else
+                    Console.WriteLine($"[{i}. {_battle.PlayerSkills[i].Name} - MP {_battle.PlayerSkills[i].ManaCost}");
+                
+                Console.WriteLine($"{_battle.PlayerSkills[i].Description}");
+                Console.WriteLine($"{_battle.PlayerSkills[i].Desc}");
+            }
+        }
 
         // 공격 / 스킬 사용 선택
         public void PlayerTurn()
         {
             // 1. 턴 시작 전 배틀 종료 조건 확인
             if (BattleEndCheck()) return;
+            
+            // 2. 사용한 스킬 지속 시간 체크
             
             while (true)
             {
@@ -129,12 +151,12 @@ namespace Text_RPG_11
                 // 2. 몬스터 공격
                 if(_monsterNum > 0 && _monsterNum <= _battle.Enemies.Count)
                 {
-                    _battle.Attack(_monsterNum - 1);
-                    PlayerTurnEnd();
+                    PlayerTurnSkillSelect();
                 }
                 else if (isWorked || _monsterNum == 0)
                 {
-                    // 나가기
+                    // 공격 or 스킬 재선택
+                    PlayerTurn();
                 }
                 else
                     Console.WriteLine("잘못된 입력입니다.");
@@ -144,13 +166,94 @@ namespace Text_RPG_11
         // 스킬 선택
         public void PlayerTurnSkillSelect()
         {
+            while (true)
+            {
+                Console.WriteLine("\nBattle!!\n");   
+                EnemyInfo();
+                Console.WriteLine();
             
+                Console.WriteLine("[내 정보]");
+                Console.WriteLine($"Lv.{_gameManager.Player.Level} Chad ({_gameManager.Player.Job})\nHP {_gameManager.Player.HP} / {_gameManager.Player.MaxHP}\n");
+                
+                // 1. 사용하고 싶은 스킬 확인
+                
+                SkillInfo();
+                Console.WriteLine("0. 취소\n");
+                
+                Console.WriteLine("원하시는 행동을 입력해주세요.");
+                Console.Write(">> ");
+            
+                bool isWorked = int.TryParse(Console.ReadLine(), out _skillNum);
+
+                // 2. 스킬 선택
+                if(_skillNum > 0 && _skillNum <= _battle.PlayerSkills.Count)
+                {
+                    // 선택한 스킬에 쿨타임이 남아 있다면 사용 불가능
+                    if (_battle.PlayerSkills[_skillNum - 1].CurrentCooldown != 0)
+                    {
+                        Console.WriteLine($"쿨타임 {_battle.PlayerSkills[_skillNum - 1].CurrentCooldown}턴: 사용 불가");
+                    }
+                    else
+                    {
+                        // Hits(다중 타격)가 0 이상이라면 몬스터 선택 없이 진행
+                        if (_battle.PlayerSkills[_skillNum - 1].Hits > 0)
+                        {
+                            _battle.SkillSelect(_skillNum - 1);
+                            _battle.SkillUse(-1);
+                            PlayerTurnEnd();
+                        }
+                        else
+                        {
+                            _battle.SkillSelect(_skillNum - 1);
+                            PlayerTurnSkill();
+                        }
+                    }
+                }
+                else if (isWorked || _monsterNum == 0)
+                {
+                    // 공격 or 스킬 재선택
+                    PlayerTurn();
+                }
+                else
+                    Console.WriteLine("잘못된 입력입니다.");
+            }
         }
         
         // 스킬 사용할 몬스터 선택
         public void PlayerTurnSkill()
         {
+            while (true)
+            {
+                Console.WriteLine("\nBattle!!\n");   
+                EnemyInfo();
+                Console.WriteLine();
             
+                Console.WriteLine("[내 정보]");
+                Console.WriteLine($"Lv.{_gameManager.Player.Level} Chad ({_gameManager.Player.Job})\nHP {_gameManager.Player.HP} / {_gameManager.Player.MaxHP}\n");
+                
+                // 1. 공격할 몬스터 입력
+                Console.WriteLine("몬스터 숫자. 공격");
+                Console.WriteLine("0. 취소\n");
+                
+                Console.WriteLine("대상을 선택해주세요.");
+                Console.Write(">> ");
+            
+                bool isWorked = int.TryParse(Console.ReadLine(), out _monsterNum);
+
+                // 2. 몬스터 공격
+                if(_monsterNum > 0 && _monsterNum <= _battle.Enemies.Count)
+                {
+                    _battle.SkillUse(_monsterNum - 1);
+                    PlayerTurnEnd();
+                }
+                else if (isWorked || _monsterNum == 0)
+                {
+                    // 스킬 재선택
+                    PlayerTurnSkillSelect();
+                }
+                else
+                    Console.WriteLine("잘못된 입력입니다.");
+            }
         }
         
         // 플레이어 턴 이후 결과 출력
@@ -173,8 +276,7 @@ namespace Text_RPG_11
                 
                 // 2. 몬스터 턴 진행
                 Console.WriteLine($"0. 다음\n");
-            
-                Console.WriteLine("원하시는 행동을 입력해주세요.\n");
+                
                 Console.Write(">> ");
                 
                 bool isWorked = int.TryParse(Console.ReadLine(), out int result);
@@ -223,8 +325,7 @@ namespace Text_RPG_11
                 
                 // 5. 플레이어 턴 진행
                 Console.WriteLine($"0. 다음\n");
-            
-                Console.WriteLine("원하시는 행동을 입력해주세요.");
+                
                 Console.Write(">> ");
             
                 bool isWorked = int.TryParse(Console.ReadLine(), out int result);
