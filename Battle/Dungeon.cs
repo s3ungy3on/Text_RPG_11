@@ -60,7 +60,7 @@ namespace Text_RPG_11
         {
             for (int i = 0; i < _battle.Enemies.Count; i++)
             {
-                if(_battle.Enemies[i].isDead)
+                if(_battle.Enemies[i].IsDead)
                     // 1. 몬스터 체력이 0일 시 Dead로 처리
                     Console.WriteLine($"[{i + 1}] Lv. {_battle.Enemies[i].Level} {_battle.Enemies[i].Name}  Dead");
                 // 회색 처리 필요
@@ -92,7 +92,9 @@ namespace Text_RPG_11
             // 1. 턴 시작 전 배틀 종료 조건 확인
             if (BattleEndCheck()) return;
             
-            // 2. 사용한 스킬 지속 시간 체크
+            // 2. 사용한 스킬 쿨타임 / 지속 시간 체크
+            _battle.CooldownEnd();
+            _battle.DurationEnd();
             
             while (true)
             {
@@ -103,7 +105,7 @@ namespace Text_RPG_11
                 Console.WriteLine("[내 정보]");
                 Console.WriteLine($"Lv.{_gameManager.Player.Level} Chad ({_gameManager.Player.Job})\n\nHP {_gameManager.Player.HP} / {_gameManager.Player.MaxHP}\nMP {_gameManager.Player.MP} / {_gameManager.Player.MaxMP}\n");
             
-                // 2. 플레이어 행동 선택
+                // 3. 플레이어 행동 선택
                 Console.WriteLine("1. 공격");
                 Console.WriteLine("2. 스킬\n");
             
@@ -111,7 +113,7 @@ namespace Text_RPG_11
                 Console.Write(">> ");
                 bool isWorked = int.TryParse(Console.ReadLine(), out int result);
 
-                // 3. 입력에 따라 공격 / 스킬 메서드 진행
+                // 4. 입력에 따라 공격 / 스킬 메서드 진행
                 switch (result)
                 {
                     case 1:
@@ -268,7 +270,7 @@ namespace Text_RPG_11
                 Console.WriteLine($"Lv.{_battle.Enemies[_monsterNum - 1].Level} {_battle.Enemies[_monsterNum - 1].Name}을(를) 맞췄습니다. [데미지 : {_battle.AtkRand}]\n");
                 
                 // 1. 플레이어 공격으로 몬스터 사망 시 Dead 처리
-                if (_battle.Enemies[_monsterNum - 1].isDead)
+                if (_battle.Enemies[_monsterNum - 1].IsDead)
                 {
                     Console.WriteLine($"Lv. {_battle.Enemies[_monsterNum - 1].Level} {_battle.Enemies[_monsterNum - 1].Name}");
                     Console.WriteLine($"HP {_battle.EnemyHP} -> Dead\n");
@@ -308,7 +310,7 @@ namespace Text_RPG_11
                 {
                     _battle.EnemyTurn();
                     
-                    if (_battle.Enemies[_battle.Index].isDead)
+                    if (_battle.Enemies[_battle.Index].IsDead)
                     {
                         // 죽은 몬스터의 공격은 출력 X
                     }

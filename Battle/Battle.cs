@@ -33,7 +33,7 @@ namespace Text_RPG_11
         {
             Monster.Minion(),
             Monster.Voidgrub(),
-            Monster.CanonMinion(),
+            Monster.CannonMinion(),
             Monster.SuperMinion(),
             Monster.Gromp(),
             Monster.Raptors(),
@@ -62,8 +62,10 @@ namespace Text_RPG_11
         public List<Skill> PlayerSkills = new List<Skill>(); // 모든 스킬 중 플레이어의 직업, 레벨에 맞는 스킬을 담을 리스트 생성
         
         public List<(Skill skill, int remainingCooldown)> CooldownList = new List<(Skill, int)>(); // 쿨타임이 남은 스킬 저장
-        public List<(Skill skill, int remainingDuration, int buffvalue)> BuffdurationList = new List<(Skill, int, int)>(); // 지속 시간이 남은 스킬 저장
-        public List<(Skill skill, int remainingDuration, int debuffvalue)> DebuffdurationList = new List<(Skill, int, int)>(); // 지속 시간이 남은 스킬 저장
+        public List<(Skill skill, int remainingDuration)> BuffdurationList = new List<(Skill, int)>(); 
+        // 지속 시간이 남은 스킬 저장: 사용한 스킬 / 남은 지속 시간
+        public List<(Skill skill, int remainingDuration, int monsterNum)> DebuffdurationList = new List<(Skill, int, int)>(); 
+        // 지속 시간이 남은 스킬 저장: 사용한 스킬 / 남은 지속 시간 / 대상
 
         private List<Monster> skillHitsEnemies = new List<Monster>(); // 스킬로 공격 받은 몬스터 리스트
         
@@ -216,10 +218,11 @@ namespace Text_RPG_11
                             // 스킬의 남은 지속 시간을 기본 지속 시간과 동기화
                             skillForAttack.LeftDuration = skillForAttack.Effects.Duration;
                             // 지속이 남은 스킬 리스트에 입력
-                            BuffdurationList.Add((skillForAttack, skillForAttack.LeftDuration, skillForAttack.Effects.EffectiveAttackDelta));
+                            BuffdurationList.Add((skillForAttack, skillForAttack.LeftDuration));
                         }
                     }
-                    else if (skillForAttack.Effects.EffectiveDefenseDelta != 0)
+                    
+                    if (skillForAttack.Effects.EffectiveDefenseDelta != 0)
                     {
                         _gameManager.Player.Defense += skillForAttack.Effects.EffectiveDefenseDelta;
                         
@@ -227,7 +230,7 @@ namespace Text_RPG_11
                         if (skillForAttack.Effects.Duration > 0)
                         {
                             skillForAttack.LeftDuration = skillForAttack.Effects.Duration;
-                            BuffdurationList.Add((skillForAttack, skillForAttack.LeftDuration, skillForAttack.Effects.EffectiveDefenseDelta));
+                            BuffdurationList.Add((skillForAttack, skillForAttack.LeftDuration));
                         }
                     }
 
@@ -242,10 +245,11 @@ namespace Text_RPG_11
                         if (skillForAttack.Effects.Duration > 0)
                         {
                             skillForAttack.LeftDuration = skillForAttack.Effects.Duration;
-                            DebuffdurationList.Add((skillForAttack, skillForAttack.LeftDuration, skillForAttack.Effects.EffectiveAttackDelta));
+                            DebuffdurationList.Add((skillForAttack, skillForAttack.LeftDuration, enemyIndex));
                         }
                     }
-                    else if (skillForAttack.Effects.EffectiveDefenseDelta != 0)
+                    
+                    if (skillForAttack.Effects.EffectiveDefenseDelta != 0)
                     {
                         Enemies[enemyIndex].Defense += skillForAttack.Effects.EffectiveDefenseDelta;
                         
@@ -253,7 +257,7 @@ namespace Text_RPG_11
                         if (skillForAttack.Effects.Duration > 0)
                         {
                             skillForAttack.LeftDuration = skillForAttack.Effects.Duration;
-                            DebuffdurationList.Add((skillForAttack, skillForAttack.LeftDuration, skillForAttack.Effects.EffectiveDefenseDelta));
+                            DebuffdurationList.Add((skillForAttack, skillForAttack.LeftDuration, enemyIndex));
                         }
                     }
                     break;
@@ -331,15 +335,68 @@ namespace Text_RPG_11
             }
         }
 
+        // 쿨다운 체크
         public void CooldownEnd()
         {
-            CooldownList.All
+            for (int i = CooldownList.Count - 1; i <= 0; i--)
+            {
+                if (CooldownList[i].remainingCooldown == 0)
+                    CooldownList.RemoveAt(i);
+            }
         }
         
-        // 지속시간 끝나면
+        // 지속시간 체크
         public void DurationEnd()
         {
+            // 버프
+            for (int i = BuffdurationList.Count - 1; i >= 0; i--)
+            {
+                // 버프 지속 시간이 끝난 경우
+                if (BuffdurationList[i].remainingDuration == 0)
+                {
+                    // 공격 버프 체크
+                    if (BuffdurationList[i].skill.Effects.EffectiveAttackDelta != 0)
+                    {
+                        // 버프 받은 만큼 음수 처리
+                        _gameManager.Player.Attack -= BuffdurationList[i].skill.Effects.EffectiveAttackDelta;
+                    }
+                    
+                    // 방어 버프 체크
+                    if (DebuffdurationList[i].skill.Effects.EffectiveDefenseDelta != 0)
+                    {
+                        // 버프 받은 만큼 음수 처리
+                        _gameManager.Player.Defense -= BuffdurationList[i].skill.Effects.EffectiveDefenseDelta;
+                    }
+                    
+                    // 체크 후 삭제
+                    BuffdurationList.RemoveAt(i);
+                }
+            }
             
+            // 디버프
+            for (int i = DebuffdurationList.Count - 1; i >= 0; i--)
+            {
+                // 디버프 지속 시간이 끝난 경우
+                if (DebuffdurationList[i].remainingDuration == 0)
+                {
+                    // 공격 디버프 체크
+                    if (DebuffdurationList[i].skill.Effects.EffectiveAttackDelta != 0)
+                    {
+                        // 디버프 받은 만큼 음수 처리
+                        Enemies[DebuffdurationList[i].monsterNum].Attack -= DebuffdurationList[i].skill.Effects.EffectiveAttackDelta;
+                    }
+                    
+                    // 방어 디버프 체크
+                    if (DebuffdurationList[i].skill.Effects.EffectiveDefenseDelta != 0)
+                    {
+                        // 디버프 받은 만큼 음수 처리
+                        Enemies[DebuffdurationList[i].monsterNum].Defense -= DebuffdurationList[i].skill.Effects.EffectiveDefenseDelta;
+                    }
+                    
+                    // 체크 후 삭제
+                    BuffdurationList.RemoveAt(i);
+                }
+            }
         }
 
         // Enemy가 사용자 공격
@@ -372,7 +429,7 @@ namespace Text_RPG_11
         // 승리 조건 체크
         public BattleResult EndCheck()
         {
-            if (Enemies.All(m => m.isDead) && _gameManager.Player.HP > 0)
+            if (Enemies.All(m => m.IsDead) && _gameManager.Player.HP > 0)
             {
                 // 모든 에너미가 죽은 채로 플레이어의 체력이 0이상일 시 승리
                 BattleState = BattleResult.Victory;
