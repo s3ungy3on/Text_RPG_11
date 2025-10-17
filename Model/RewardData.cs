@@ -16,7 +16,7 @@ namespace Text_RPG_11
 
         public class DungeonRewardData
         {
-            public int[] stageRange {  get; set; }
+            public List<int> stageRange { get; set; }
             public List<DungeonRewardItem> rewardItems { get; set; }
         }
 

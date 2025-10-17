@@ -22,8 +22,6 @@ namespace Text_RPG_11
 
         public List<string> introArt = new List<string>(); // 인트로 아스키아트
 
-
-
         private readonly List<string> battleLog = new List<string>();
         private const int LogShowCount = 6;           // 화면에 보일 로그 줄 수
         private const int HpBarLength = 24;           // HP바 길이
@@ -34,6 +32,31 @@ namespace Text_RPG_11
         {
             gameManager = manager;
         }
+
+        public void SafeResize(int cols, int rows)
+        {
+            try
+            {
+                cols = Math.Max(1, cols);
+                rows = Math.Max(1, rows);
+
+                if (Console.LargestWindowWidth > 0) cols = Math.Min(cols, Console.LargestWindowWidth);
+                if (Console.LargestWindowHeight > 0) rows = Math.Min(rows, Console.LargestWindowHeight);
+                int bufW = Math.Max(Console.BufferWidth, cols);
+                int bufH = Math.Max(Console.BufferHeight, rows);
+                if (bufW != Console.BufferWidth || bufH != Console.BufferHeight)
+                    Console.SetBufferSize(bufW, bufH);
+                Console.SetWindowSize(cols, rows);
+            }
+            catch (Exception ex) when (
+                ex is IOException ||
+                ex is PlatformNotSupportedException ||
+                ex is ArgumentOutOfRangeException)
+            {
+                Console.WriteLine($"콘솔 크기 변경 실패 {ex.GetType().Name} 발생");
+            }
+        }
+
         #region 인트로
         public void Intro() // 시작시 초기 설정 및 스토리 화면
         {
@@ -52,13 +75,13 @@ namespace Text_RPG_11
             logo1.Add("      ^\"**\"\"      \"YP'     ^Y\"   ^Y'   `\"   \"888E                   \"YP'                      88R             ^\"**\"\"      \"YP'     `\"   \"888E    \"YP'                      \"\"                  \r\n");
             logo1.Add("                                      .dWi   `88E                                             88>                                 .dWi   `88E                                                  \r\n");
             logo1.Add("                                      4888~  J8%                                              48                                  4888~  J8%                                                   \r\n");
-            logo1.Add("                                       ^\"===*\"`                                               '8                                   ^\"===*\"`                                                    ");
+            logo1.Add("                                       ^\"===*\"`                                               '8                                   ^\"===*\"`                                                    \n");
 
             // 1차 소제목
-            logo1.Add("▗     ▛▀▖         ▜    ▐  ▗       \r\n");
-            logo1.Add("▄ ▛▀▖ ▙▄▘▞▀▖▌ ▌▞▀▖▐ ▌ ▌▜▀ ▄ ▞▀▖▛▀▖\r\n");
-            logo1.Add("▐ ▌ ▌ ▌▚ ▛▀ ▐▐ ▌ ▌▐ ▌ ▌▐ ▖▐ ▌ ▌▌ ▌\r\n");
-            logo1.Add("▀▘▘ ▘ ▘ ▘▝▀▘ ▘ ▝▀  ▘▝▀▘ ▀ ▀▘▝▀ ▘ ▘");
+            logo1.Add("\t\t\t\t\t\t\t\t\t\t▗     ▛▀▖         ▜    ▐  ▗       \r\n");
+            logo1.Add("\t\t\t\t\t\t\t\t\t\t▄ ▛▀▖ ▙▄▘▞▀▖▌ ▌▞▀▖▐ ▌ ▌▜▀ ▄ ▞▀▖▛▀▖\r\n");
+            logo1.Add("\t\t\t\t\t\t\t\t\t\t▐ ▌ ▌ ▌▚ ▛▀ ▐▐ ▌ ▌▐ ▌ ▌▐ ▖▐ ▌ ▌▌ ▌\r\n");
+            logo1.Add("\t\t\t\t\t\t\t\t\t\t▀▘▘ ▘ ▘ ▘▝▀▘ ▘ ▝▀  ▘▝▀▘ ▀ ▀▘▝▀ ▘ ▘\n");
 
             logo2.Add("                                                                                                                                                                                    \r\n");
             logo2.Add(" ▄▄▄▄▄                                                                                        ▄▄▄▄             ▄▄                                                      ▄▄           \r\n");
@@ -69,7 +92,7 @@ namespace Text_RPG_11
             logo2.Add(" ██▄▄▄██   ██▄▄▄███  ██    ██  ▀██▄▄███  ▀██▄▄▄▄█  ▀██▄▄██▀  ██    ██            ▀██▄▄██▀    ██                ██▄▄▄▄▄▄  ▀██▄▄▄▄█  ▀██▄▄███  ▀██▄▄▄▄█  ██    ██  ▀██▄▄███  █▄▄▄▄▄██ \r\n");
             logo2.Add(" ▀▀▀▀▀      ▀▀▀▀ ▀▀  ▀▀    ▀▀   ▄▀▀▀ ██    ▀▀▀▀▀     ▀▀▀▀    ▀▀    ▀▀              ▀▀▀▀      ▀▀                ▀▀▀▀▀▀▀▀    ▀▀▀▀▀    ▄▀▀▀ ██    ▀▀▀▀▀   ▀▀    ▀▀    ▀▀▀ ▀▀   ▀▀▀▀▀▀  \r\n");
             logo2.Add("                                ▀████▀▀                                                                                             ▀████▀▀                                         \r\n");
-            logo2.Add("                                                                                                                                                                                    ");
+            logo2.Add("                                                                                                                                                                                    \r\n");
 
 
             logo2.Add(" .-.         .--.       .-.          .-..-. _ .-.  .-.    .-..-.             .-.    _             \r\n");
@@ -78,70 +101,66 @@ namespace Text_RPG_11
             logo2.Add(" : :' .; :   _`, :' .; :: :_ ' .; :  : :.`.: :: :_ : :_   : :; :' .; ; '  ..': .. :: :: ,. :' '_.'\r\n");
             logo2.Add(" :_;`.__.'  `.__.'`.__.'`.__;`.__.'  :_;:_;:_;`.__;`.__;  :_;:_;`.__,_;`.__.':_;:_;:_;:_;:_;`.__.'\r\n");
             logo2.Add("                                                                                                  \r\n");
-            logo2.Add("                                                                                                  ");
+            logo2.Add("                                                                                                  \r\n");
 
             //시작시 컴퓨터 하는 모습이 나감
-            story.Add("변대섭: 아 간만에 롤이나 해볼까"); 
+            story.Add("변대섭: 아 간만에 롤이나 해볼까"); // [0]
             story.Add("변대섭: 솔킬머신 변대섭 출동이요~"); // 이 글이 나간 이후 1차제목과 소제목을 넣음 [1]
             story.Add("변대섭: 어 뭐지? 원래 롤에 이런 문구가 있었나..??");
             story.Add("변대섭: 하도 패치 하니까 뭐가 바꼈는지도 모르겠네");
             story.Add("변대섭: 암튼 게임만 잘 하면 되지");
             story.Add("변대섭: 자 드가자~"); // 이 글이 나간 이후 다시 컴퓨터 하는 모습 [5]
-            story.Add("System: 소환사의 협곡에 오신것을 화ㄴ.영...ㅎ.ㅏ...ㅂ..");
-            story.Add("치지지...치직......치지지지직.....");
-            story.Add("변대섭: 뭐야 이거 왜 이래..???");
-            story.Add("System: 소환사 한 명이 게임을 종료했습니다");
-            story.Add("변대섭: 아 콩순이 1명 때문에 렉 걸린건가");
-            story.Add("변대섭: 진짜 시작부터 조짐이 안 좋네");
-            story.Add("System: 소환사 한 명이 게임을 종료했습니다");
-            story.Add("변대섭: 와 우리팀 ㄹㅈㄷ ㅋㅋㅋㅋㅋㅋㅋㅋㅋ");
-            story.Add("변대섭: 시작하자마자 2명이 튕기냐");
-            story.Add("System: 소환사 한 명이 게임을 종료했습니다");
-            story.Add("System: 소환사 한 명이 게임을 종료했습니다");
-            story.Add("변대섭: 뭐지...롤 서버가 지금 맛탱이가 간건가");
-            story.Add("System: 플레이어들이 게임에 접속하지 않았습니다. 60초 내에 /다시하기를 입력하여 게임을 재시작 할 수 있습니다.");
-            story.Add("변대섭: 아 시간만 버렸네 다시하기 gg");
-            story.Add("System: 게임을 재시작합니다");
+            story.Add("System: 소환사의 협곡에 오신것을 화ㄴ.영...ㅎ.ㅏ...ㅂ.."); // [6]
+            story.Add("치지지...치직......치지지지직....."); // [7]
+            story.Add("변대섭: 뭐야 이거 왜 이래..???");  // [8]
+            story.Add("System: 소환사 한 명이 게임을 종료했습니다"); // [9]
+            story.Add("변대섭: 아 콩순이 1명 때문에 렉 걸린건가"); // [10]
+            story.Add("변대섭: 진짜 시작부터 조짐이 안 좋네"); // [11]
+            story.Add("System: 소환사 한 명이 게임을 종료했습니다"); // [12]
+            story.Add("변대섭: 와 우리팀 ㄹㅈㄷ ㅋㅋㅋㅋㅋㅋㅋㅋㅋ"); // [13]
+            story.Add("변대섭: 시작하자마자 2명이 튕기냐"); // [14]
+            story.Add("System: 소환사 한 명이 게임을 종료했습니다"); // [15]
+            story.Add("System: 소환사 한 명이 게임을 종료했습니다"); // [16]
+            story.Add("변대섭: 뭐지...롤 서버가 지금 맛탱이가 간건가"); // [17]
+            story.Add("System: 플레이어들이 게임에 접속하지 않았습니다. 60초 내에 /다시하기를 입력하여 게임을 재시작 할 수 있습니다."); // [18]
+            story.Add("변대섭: 아 시간만 버렸네 다시하기 gg"); // [19]
+            story.Add("System: 게임을 재시작합니다"); // [20]
             story.Add("System: 챔피언 구성 중....");
-            story.Add("System: 미니언 구성 중....");
-            story.Add("삐------삐-------");
-            story.Add("System: 에러 발생 소환사를 불러옵니다");
-            story.Add("변대섭: 이게 뭔 말이......으아아아아아아");
+            story.Add("System: 미니언 구성 중...."); // [22]
+            story.Add("삐------삐-------"); // [23]
+            story.Add("System: 에러 발생 소환사를 불러옵니다"); // [24]
+            story.Add("변대섭: 이게 뭔 말이......으아아아아아아"); // [25]
             story.Add("............................................................"); // [26]
-            story.Add("............................................................");
+            story.Add("............................................................"); // [27]
             story.Add("???: 영웅은 죽지 않아요"); // 메르시 아트 출력 [28]
-            story.Add("변대섭: 으...으윽...머리야...");
-            story.Add("???: 드디어 일어나셨군요");
-            story.Add("변대섭: 으..어???? 아니 당신은 메르시 아닌가요?");
+            story.Add("변대섭: 으...으윽...머리야..."); // [29]
+            story.Add("???: 드디어 일어나셨군요"); // [30]
+            story.Add("변대섭: 으..어???? 아니 당신은 메르시 아닌가요?"); // [31]
             story.Add("소라카: 네?? 저는 소라카 입니다만...."); // 소라카 아트 출력 [32]
-            story.Add("변대섭: 아 그렇군요");
-            story.Add("변대섭: 근데 제가 왜 여기 있는거죠??");
-            story.Add("소라카: 지금 현재 미니언과 중립몹 즉 정글과 용 바론 등이 손을 잡고 반란을 일으켰습니다");
+            story.Add("변대섭: 아 그렇군요"); // [33]
+            story.Add("변대섭: 근데 제가 왜 여기 있는거죠??"); // [34]
+            story.Add("소라카: 지금 현재 미니언과 중립몹 즉 정글과 용 바론 등이 손을 잡고 반란을 일으켰습니다"); // [35]
             story.Add("소라카: 그래서 게임 시스템이 비상사태를 인지하고 소환사님을 부른겁니다.");
-            story.Add("소라카: 아마 들어오기 전에 문구가 있었을텐데 못 보셨을까요??");
-            story.Add("변대섭: (아 들어오기 전에 처음 본 문구가 그건가 보네)");
+            story.Add("소라카: 아마 들어오기 전에 문구가 있었을텐데 못 보셨을까요??"); // [37]
+            story.Add("변대섭: (아 들어오기 전에 처음 본 문구가 그건가 보네)"); // [38]
             story.Add("변대섭: 본거 같아요");
-            story.Add("변대섭: 그래서 제가 뭘 하면 되는거죠");
-            story.Add("소라카: 소환사님은 여기서 직접 챔피언을 골라 플레이 하시면서 반란을 일으킨 몹들을 잡으시면 됩니다");
-            story.Add("변대섭: (뭐야 롤 현실판 아니야? 이거 완전 개꿀 체험이자나)");
+            story.Add("변대섭: 그래서 제가 뭘 하면 되는거죠"); // [40]
+            story.Add("소라카: 소환사님은 여기서 직접 챔피언을 골라 플레이 하시면서 반란을 일으킨 몹들을 잡으시면 됩니다"); // [41]
+            story.Add("변대섭: (뭐야 롤 현실판 아니야? 이거 완전 개꿀 체험이자나)"); // [42]
             story.Add("변대섭: 그런거라면 맡겨만 주세요 제가 다 해결하겠습니다");
-            story.Add("변대섭: 어디보자 골드가....??????");
-            story.Add("소라카: 아 이걸 말을 안 해줬네요");
+            story.Add("변대섭: 어디보자 골드가....??????"); // [44]
+            story.Add("소라카: 아 이걸 말을 안 해줬네요"); // [45]
             story.Add("소라카: 지금 시스템 에러때문에 싸우시고 직접 얻으셔야 합니다.");
-            story.Add("소라카: 시간이 지나도 돈은 들어오지 않으니 몹들을 잡으셔야 돈과 아이템을 얻을 수 있습니다.");
-            story.Add("변대섭: 아니 그럼 어떻게 해요 원래 게임도 500G는 주고 하는데");
-            story.Add("소라카: 대신 시스템에서 퀘스트를 받을 수 있습니다.");
+            story.Add("소라카: 시간이 지나도 돈은 들어오지 않으니 몹들을 잡으셔야 돈과 아이템을 얻을 수 있습니다."); // [47]
+            story.Add("변대섭: 아니 그럼 어떻게 해요 원래 게임도 500G는 주고 하는데"); // [48]
+            story.Add("소라카: 대신 시스템에서 퀘스트를 받을 수 있습니다."); // [49]
             story.Add("소라카: 퀘스트를 완료할 시 골드와 경험치 아이템을 얻을 수 있는데 그래도 힘드실까요?");
-            story.Add("그래서 쫄리신건가요? 쫄?");
-            story.Add("쫄긴 누가 쫄았다고 그래요 바로 갔다 오겠습니다."); // 이후로 2차제목과 소제목 등장 [52]
+            story.Add("소라카: 그게 아니면 혹시 쫄리신건가요? 쫄?"); // [51]
+            story.Add("변대섭: 쫄긴 누가 쫄았다고 그래요 바로 갔다 오겠습니다."); // 이후로 2차제목과 소제목 등장 [52]
 
 
 
             introArt.Add(
-                "@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@\r\n" +
-                "@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@\r\n" +
-                "@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@\r\n" +
-                "@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@\r\n" +
                 "@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@\r\n" +
                 "@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@\r\n" +
                 "@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@====-;=@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@\r\n" +
@@ -200,11 +219,7 @@ namespace Text_RPG_11
                 "@@@@@@@@@@@@@@@@@@@@   ...@@@@@@@@@   ...@@@########@#####  ...$$$$#@@@@   ...@@@@@@@@@@@@@@@@@@@@@@\r\n" +
                 "@@@@@@@@@@@@@@@@@@@@   ...@@@@@@@@@   ...@@@#######@@#####  ...$$$$$@@@@   ...@@@@@@@@@@@@@@@@@@@@@@\r\n" +
                 "@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@\r\n" +
-                "@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@\r\n" +
-                "@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@\r\n" +
-                "@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@\r\n" +
-                "@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@\r\n" +
-                "@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@");
+                "@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@\r\n");
 
             introArt.Add(
                 "@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@..\r\n" +
@@ -325,60 +340,181 @@ namespace Text_RPG_11
                 ",$$#$=$$$$$$$$===================*==*=$;!;:~@@@@@@@@@@@@@:!*!,:==*~@@@@.=$$$$###$$$$$$$$$$$$$::=$$##\r\n");
 
 
-            Console.Write(introArt[0]);
-            Console.WriteLine($"\n\n{story[0]}\n{story[1]}");
-            Console.ReadLine();
+            for (int i = 0; i < story.Count; i++)
+            {
+                if (i == 0)
+                {
+                    Console.WriteLine($"{introArt[0],50}");
+                    Console.ForegroundColor = ConsoleColor.Green;
+                }
+                else if (i == 2)
+                {
+                    Console.Clear();
+                    Console.ForegroundColor = ConsoleColor.Cyan;
+                    foreach (string str in logo1)
+                    {
+                        Console.Write(str);
+                        Thread.Sleep(100);
+                    }
+                    Console.ForegroundColor = ConsoleColor.Green;
+                }
+                else if (i == 6)
+                {
+                    Console.Clear();
+                    Console.ResetColor();
+                    Console.WriteLine($"{introArt[0],50}");
+                }
+                else if (i == 7)
+                {
+                    Console.ForegroundColor = ConsoleColor.Red;
+                }
+                else if (i == 8)
+                {
+                    Console.ForegroundColor = ConsoleColor.Green;
+                }
+                else if (i == 9)
+                {
+                    Console.ResetColor();
+                }
+                else if (i == 10)
+                {
+                    Console.ForegroundColor = ConsoleColor.Green;
+                }
+                else if (i == 12)
+                {
+                    Console.ResetColor();
+                }
+                else if (i == 13)
+                {
+                    Console.ForegroundColor = ConsoleColor.Green;
+                }
+                else if (i == 15)
+                {
+                    Console.ResetColor();
+                }
+                else if (i == 17)
+                {
+                    Console.ForegroundColor = ConsoleColor.Green;
+                }
+                else if (i == 18)
+                {
+                    Console.ResetColor();
+                }
+                else if (i == 19)
+                {
+                    Console.ForegroundColor = ConsoleColor.Green;
+                }
+                else if (i == 20)
+                {
+                    Console.ResetColor();
+                }
+                else if (i == 23)
+                {
+                    Console.ForegroundColor = ConsoleColor.Red;
+                }
+                else if (i == 24)
+                {
+                    Console.ResetColor();
+                }
+                else if (i == 25)
+                {
+                    Console.ForegroundColor = ConsoleColor.Green;
+                }
+                else if (i == 26)
+                {
+                    Console.Clear();
+                    Console.ResetColor();
+                }
+                else if (i == 28)
+                {
+                    Console.Clear();
+                    Console.WriteLine($"{introArt[1],25}");
+                    Console.ForegroundColor = ConsoleColor.Yellow;
+                }
+                else if (i == 29)
+                {
+                    Console.ForegroundColor = ConsoleColor.Green;
+                }
+                else if (i == 30)
+                {
+                    Console.ForegroundColor = ConsoleColor.Yellow;
+                }
+                else if (i == 31)
+                {
+                    Console.ForegroundColor = ConsoleColor.Green;
+                }
+                else if (i == 32)
+                {
+                    Console.Clear();
+                    Console.ResetColor();
+                    Console.WriteLine($"{introArt[2],25}");
+                    Console.ForegroundColor = ConsoleColor.Yellow;
+                }
+                else if (i == 33)
+                {
+                    Console.ForegroundColor = ConsoleColor.Green;
+                }
+                else if (i == 35)
+                {
+                    Console.ForegroundColor = ConsoleColor.Yellow;
+                }
+                else if (i == 38)
+                {
+                    Console.ForegroundColor = ConsoleColor.Green;
+                }
+                else if (i == 41)
+                {
+                    Console.ForegroundColor = ConsoleColor.Yellow;
+                }
+                else if (i == 42)
+                {
+                    Console.ForegroundColor = ConsoleColor.Green;
+                }
+                else if (i == 45)
+                {
+                    Console.ForegroundColor = ConsoleColor.Yellow;
+                }
+                else if (i == 48)
+                {
+                    Console.ForegroundColor = ConsoleColor.Green;
+                }
+                else if (i == 49)
+                {
+                    Console.ForegroundColor = ConsoleColor.Yellow;
+                }
+                else if (i == 52)
+                {
+                    Console.ForegroundColor = ConsoleColor.Green;
+                }
+                
+                Console.Write($"{story[i],100}");
+                Thread.Sleep(1000);
+                if (Console.KeyAvailable)
+                {
+                    break;
+                }
+                int currentLine = Console.CursorLeft;
+                Console.SetCursorPosition(0, Console.CursorTop);
+                Console.Write(new string(' ', currentLine));
+                Console.SetCursorPosition(0, Console.CursorTop);
+            }
             Console.Clear();
             Console.ForegroundColor = ConsoleColor.Cyan;
-            foreach (string str in logo1)
-            {
-                Console.Write(str);
-                Thread.Sleep(200);
-            }
-            Thread.Sleep(2000);
-            Console.ResetColor();
-            Console.WriteLine($"\n\n{story[2]}\n{story[3]}\n{story[4]}\n{story[5]}");
-            Console.ReadLine();
-            Console.Clear();
-            Console.Write(introArt[0]);
-            Console.WriteLine("\n\n");
-            for (int i = 6; i <= 25; i++)
-            {
-                Console.WriteLine(story[i]);
-                Thread.Sleep(2000);
-            }
-
-            Console.ReadLine();
-            Console.Clear();
-            Console.Write($"{story[26]}\n{story[27]}");
-            Console.ReadLine();
-            Console.Clear();
-            Console.Write(introArt[1]);
-            Console.Write($"{story[28]}\n{story[29]}\n{story[30]}\n{story[31]}");
-            Console.ReadLine();
-            for (int i = 32; i <= 52; i++)
-            {
-                Console.Clear();
-                Console.Write(introArt[2]);
-                Console.WriteLine(story[i]);
-                Thread.Sleep(2000);
-            }
-            Console.ReadLine();
-            Console.Clear();
             foreach (string str in logo2)
             {
                 Console.Write(str);
-                Thread.Sleep(200);
+                Thread.Sleep(100);
             }
-            Thread.Sleep(3000);
 
+            Thread.Sleep(1000);
 
             Console.WriteLine("소환사의 협곡에 오신것을 환영합니다." +
                 "\n소환사님의 이름은 무엇인가요.\n");
             Console.Write(">>");
+            Console.ReadLine();
             name = Console.ReadLine(); // 이름 입력 
             Console.Clear();
-            Console.WriteLine($"{name}이름이 맞으십니까?\n\n1. 맞습니다\n2. 아닙니다\n\n");
+            Console.WriteLine($"{name} (이)라는 이름이 맞으십니까?\n\n1. 맞습니다\n2. 아닙니다\n\n");
             act = Console.ReadLine();
 
             while (true)
@@ -401,9 +537,11 @@ namespace Text_RPG_11
                     act = Console.ReadLine();
                     continue;
                 }
-                Console.WriteLine($"{name}이름이 맞으십니까?\n\n1. 맞습니다\n2. 아닙니다\n\n");
+                Console.Clear() ;
+                Console.WriteLine($"{name} 이름이 맞으십니까?\n\n1. 맞습니다\n2. 아닙니다\n\n");
                 act = Console.ReadLine();
             }
+
             gameManager.Player.Name = name; // 게임매니저에다가 이름 넣어주기
             Console.WriteLine($"{name} 소환사님 과연 이름부터가 휘황찬란하시군요\n소환사님을 위한 챔피언을 준비했습니다 어서 골라보시지요\n\n" +
                 $"1. 가렌 (전사)\n2. 럭스 (마법사)\n3. 제드 (암살자)\n4. 애쉬 (궁수)\n\n");
@@ -695,7 +833,7 @@ namespace Text_RPG_11
             Console.Write("[");
 
             Console.ForegroundColor = ConsoleColor.Blue;
-            
+
             Console.Write(new string('█', filled));
             Console.ResetColor();
             Console.Write(new string('░', empty));

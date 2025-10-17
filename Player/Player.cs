@@ -7,7 +7,6 @@ using System.Security.Cryptography.X509Certificates;
 using System.Text;
 using System.Threading.Tasks;
 using System.Xml.Linq;
-using System.Collections.Generic;
 
 namespace Text_RPG_11
 {
@@ -15,6 +14,7 @@ namespace Text_RPG_11
     {
         public string Name { get; set; }                                            //플레이어 이름       
         public int Level { get; set; }                                              //플레이어 레벨
+
         public string Job { get; set; }                                             //직업 이름
 
         public int Attack { get; set; }                                             //기본 공격력
@@ -22,11 +22,13 @@ namespace Text_RPG_11
         public int HP { get; set; }                                                 //플레이어 현재 체력
         public int MP { get; set; }                                                //플레이어 현재 마나
 
+
         public int Gold { get; set; }                                               //소지 골드
         public int Exp { get; set; }                                                //경험치
         public int DefaultHP { get; set; }                                          // 기본 체력
         public int DefaultMP { get; set; }                                          //기본 마나
         public int Potions { get; set; } = 0;                                       //소지 포션 수량
+
 
 
         private int itemHP = 0;                                                             //장착 아이템으로 얻는 능력치
@@ -40,16 +42,13 @@ namespace Text_RPG_11
         public float MaxDefense => Defense + itemDefense;                                     //최종 방어력
 
 
-        private List<string> inventory = new List<string>();   // 인벤토리
-        public IReadOnlyList<string> Inventory => inventory.AsReadOnly(); // 외부에서 읽기 전용
+        private List<Items> inventory = new();                                           //인벤토리
+        public IReadOnlyList<Items> Inventory => inventory.AsReadOnly();
 
-        public void AddItem(string itemName)
-        {
-            if (!string.IsNullOrEmpty(itemName))
-            {
-                inventory.Add(itemName);
-            }
-        }
+        private List<Items> equippedItems = new();                                           //장착 아이템
+        public IReadOnlyList<Items> EquippedItems => equippedItems.AsReadOnly();
+
+        public bool HasEquippedItem => equippedItems.Count > 0;
 
 
 
@@ -60,59 +59,12 @@ namespace Text_RPG_11
             Job = job;
             Attack = attack;
             Defense = defense;
-            DefaultHP = defaultHP;
-            DefaultMP = defaultMP;
-            HP = DefaultHP;                                                         //생성시 현재 체력 = 최대 체력
-            MP = DefaultMP;                                                         //생성시 현재 마나 = 최대 마나
+            DefaultHP = defaultHP;                                                  //최대체력 기준값 저장
+            DefaultMP = defaultMP;                                                  //최대 마나 기준값 저장
+            HP = DefaultHP;                                                         //현재 체력 초기화
+            MP = DefaultMP;                                                         //현재 마나 초기화
             Gold = gold;
             Exp = exp;
-        }
-
-        public void StatUpdate(GameManager gameManager)
-        {
-            itemHP = 0;                                                                         //아이템 스텟 초기화
-            itemMP = 0;
-            itemAttack = 0;
-            itemDefense = 0;
-
-            if (gameManager.GameItems == null)                                                   //장착 아이템 없으면 종료
-            {
-                return;
-            }
-
-            foreach (var item in gameManager.GameItems)
-            {
-                if (item != null && item.IsEquipped)                                             //아이템 장착 떄만 적용
-                {
-                    if (item is Weapon weapon)
-                    {
-                        itemAttack += weapon.AttackPower;                                   //무기 장착시 공격력 증가
-                        itemHP += weapon.ItemHp;                                            //무기 장착시 체력 증가
-                        itemMP += weapon.ItemMp;                                            //무기 장착시 마나 증가
-
-
-                    }
-                    else if (item is Armor armor)
-                    {
-                        itemDefense += armor.DefensePower;                                      //방어력 증가
-                        itemHP += armor.ItemHp;                                                 //방어구 장착시 체력 증가
-                        itemMP += armor.ItemMp;                                                 //방어구 장착시 마나 증가
-
-
-                    }
-                }
-            }
-
-            if (HP > MaxHP)                                              //HP/MP가 최대치보다 높으면 최대치로 세팅
-            {
-                HP = MaxHP;
-            }
-
-            if (MP > MaxMP)
-            {
-                MP = MaxMP;
-            }
-
         }
 
         public void GainExp(int amount)
@@ -141,7 +93,74 @@ namespace Text_RPG_11
             HP = MaxHP;                                                         //레벨업시 체력회복
             MP = MaxMP;                                                         //레벨업시 마나회복
         }
-    }
+        public void AddItem(Items item)
+        {
+            if (item != null)
+                inventory.Add(item);
+        }
+
+        // 아이템 장착
+        public void EquipItem(Items item)
+        {
+            if (item == null || !inventory.Contains(item)) return;
+
+            if (!equippedItems.Contains(item))
+            {
+                equippedItems.Add(item);
+                item.IsEquipped = true;
+                StatUpdate();
+            }
+        }
+
+        // 아이템 해제
+        public void UnequipItem(Items item)
+        {
+            if (item == null || !equippedItems.Contains(item)) return;
+
+            equippedItems.Remove(item);
+            item.IsEquipped = false;
+            StatUpdate();
+        }
+
+        // 포션 사용
+        public void UsePotion()
+        {
+            if (Potions > 0)
+            {
+                Potions--;
+                HP += 50;
+                if (HP > MaxHP) HP = MaxHP;
+            }
+        }
+
+        // 장착 아이템 기반으로 스탯 계산
+        public void StatUpdate()
+        {
+            itemHP = itemMP = itemAttack = 0;
+            itemDefense = 0;
+
+            foreach (var item in equippedItems)
+            {
+                if (item is Weapon w)
+                {
+                    itemAttack += w.AttackPower;
+                    itemHP += w.ItemHp;
+                    itemMP += w.ItemMp;
+                }
+                else if (item is Armor a)
+                {
+                    itemDefense += a.DefensePower;
+                    itemHP += a.ItemHp;
+                    itemMP += a.ItemMp;
+                }
+            }
+
+            if (HP > MaxHP) HP = MaxHP;
+            if (MP > MaxMP) MP = MaxMP;
+        }
+    } 
+    
+}
 
     internal class JobData
     {
@@ -165,4 +184,3 @@ namespace Text_RPG_11
         public int dodgeChance { get; set; } = 0;     // 회피 확률
         public int gold { get; set; } = 0;              //시작골드
     }
-}

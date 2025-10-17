@@ -9,6 +9,7 @@ namespace Text_RPG_11
 {
     internal class Shop
     {
+        private List<Items> shopInventory;
         private GameManager gameManager;
 
         public Shop(GameManager manager)
