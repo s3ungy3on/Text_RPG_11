@@ -15,11 +15,12 @@ namespace Text_RPG_11
         public string job; // 플레이어 직업
 
         // 로고
-        public List<string> logo = new List<string>(); // 로고 0~14 -> 1차제목, 15~18 -> 1차 소제목
+        public List<string> logo1 = new List<string>(); // 로고1 0~14 -> 1차제목, 15~18 -> 1차 소제목
+        public List<string> logo2 = new List<string>(); // 로고2 
 
         public List<string> story = new List<string>(); // 시작 스토리
 
-        public List<string> intro = new List<string>(); // 인트로 아스키아트
+        public List<string> introArt = new List<string>(); // 인트로 아스키아트
 
 
 
@@ -33,88 +34,110 @@ namespace Text_RPG_11
         {
             gameManager = manager;
         }
-
+        #region 인트로
         public void Intro() // 시작시 초기 설정 및 스토리 화면
         {
             // 1차 제목
-            logo.Add("      ...                                                                                                     ...                                                         ..          .x+=:.   \r\n");
-            logo.Add("  .zf\"` `\"tu                                                                                  oec :       .zf\"` `\"tu                                                    dF           z`    ^%  \r\n");
-            logo.Add(" x88      '8N.                                       x.    .                          u.     @88888      x88      '8N.                                      u.    u.   '88bu.           .   <k \r\n");
-            logo.Add(" 888k     d88&      .u          u          uL      .@88k  z88u        .u        ...ue888b    8\"*88%      888k     d88&      .u         uL          .u     x@88k u@88c. '*88888bu      .@8Ned8\" \r\n");
-            logo.Add(" 8888N.  @888F   ud8888.     us888u.   .ue888Nc.. ~\"8888 ^8888     ud8888.      888R Y888r   8b.         8888N.  @888F   ud8888.   .ue888Nc..   ud8888.  ^\"8888\"\"8888\"   ^\"*8888N   .@^%8888\"  \r\n");
-            logo.Add(" `88888 9888%  :888'8888. .@88 \"8888\" d88E`\"888E`   8888  888R   :888'8888.     888R I888>  u888888>     `88888 9888%  :888'8888. d88E`\"888E` :888'8888.   8888  888R   beWE \"888L x88:  `)8b. \r\n");
-            logo.Add("   %888 \"88F   d888 '88%\" 9888  9888  888E  888E    8888  888R   d888 '88%\"     888R I888>   8888R         %888 \"88F   d888 '88%\" 888E  888E  d888 '88%\"   8888  888R   888E  888E 8888N=*8888 \r\n");
-            logo.Add("    8\"   \"*h=~ 8888.+\"    9888  9888  888E  888E    8888  888R   8888.+\"        888R I888>   8888P          8\"   \"*h=~ 8888.+\"    888E  888E  8888.+\"      8888  888R   888E  888E  %8\"    R88 \r\n");
-            logo.Add("  z8Weu        8888L      9888  9888  888E  888E    8888 ,888B . 8888L         u8888cJ888    *888>        z8Weu        8888L      888E  888E  8888L        8888  888R   888E  888F   @8Wou 9%  \r\n");
-            logo.Add(" \"\"88888i.   Z '8888c. .+ 9888  9888  888& .888E   \"8888Y 8888\"  '8888c. .+     \"*888*P\"     4888        \"\"88888i.   Z '8888c. .+ 888& .888E  '8888c. .+  \"*88*\" 8888\" .888N..888  .888888P`   \r\n");
-            logo.Add("\"   \"8888888*   \"88888%   \"888*\"\"888\" *888\" 888&    `Y\"   'YP     \"88888%         'Y\"        '888       \"   \"8888888*   \"88888%   *888\" 888&   \"88888%      \"\"   'Y\"    `\"888*\"\"   `   ^\"F     \r\n");
-            logo.Add("      ^\"**\"\"      \"YP'     ^Y\"   ^Y'   `\"   \"888E                   \"YP'                      88R             ^\"**\"\"      \"YP'     `\"   \"888E    \"YP'                      \"\"                  \r\n");
-            logo.Add("                                      .dWi   `88E                                             88>                                 .dWi   `88E                                                  \r\n");
-            logo.Add("                                      4888~  J8%                                              48                                  4888~  J8%                                                   \r\n");
-            logo.Add("                                       ^\"===*\"`                                               '8                                   ^\"===*\"`                                                    ");
+            logo1.Add("      ...                                                                                                     ...                                                         ..          .x+=:.   \r\n");
+            logo1.Add("  .zf\"` `\"tu                                                                                  oec :       .zf\"` `\"tu                                                    dF           z`    ^%  \r\n");
+            logo1.Add(" x88      '8N.                                       x.    .                          u.     @88888      x88      '8N.                                      u.    u.   '88bu.           .   <k \r\n");
+            logo1.Add(" 888k     d88&      .u          u          uL      .@88k  z88u        .u        ...ue888b    8\"*88%      888k     d88&      .u         uL          .u     x@88k u@88c. '*88888bu      .@8Ned8\" \r\n");
+            logo1.Add(" 8888N.  @888F   ud8888.     us888u.   .ue888Nc.. ~\"8888 ^8888     ud8888.      888R Y888r   8b.         8888N.  @888F   ud8888.   .ue888Nc..   ud8888.  ^\"8888\"\"8888\"   ^\"*8888N   .@^%8888\"  \r\n");
+            logo1.Add(" `88888 9888%  :888'8888. .@88 \"8888\" d88E`\"888E`   8888  888R   :888'8888.     888R I888>  u888888>     `88888 9888%  :888'8888. d88E`\"888E` :888'8888.   8888  888R   beWE \"888L x88:  `)8b. \r\n");
+            logo1.Add("   %888 \"88F   d888 '88%\" 9888  9888  888E  888E    8888  888R   d888 '88%\"     888R I888>   8888R         %888 \"88F   d888 '88%\" 888E  888E  d888 '88%\"   8888  888R   888E  888E 8888N=*8888 \r\n");
+            logo1.Add("    8\"   \"*h=~ 8888.+\"    9888  9888  888E  888E    8888  888R   8888.+\"        888R I888>   8888P          8\"   \"*h=~ 8888.+\"    888E  888E  8888.+\"      8888  888R   888E  888E  %8\"    R88 \r\n");
+            logo1.Add("  z8Weu        8888L      9888  9888  888E  888E    8888 ,888B . 8888L         u8888cJ888    *888>        z8Weu        8888L      888E  888E  8888L        8888  888R   888E  888F   @8Wou 9%  \r\n");
+            logo1.Add(" \"\"88888i.   Z '8888c. .+ 9888  9888  888& .888E   \"8888Y 8888\"  '8888c. .+     \"*888*P\"     4888        \"\"88888i.   Z '8888c. .+ 888& .888E  '8888c. .+  \"*88*\" 8888\" .888N..888  .888888P`   \r\n");
+            logo1.Add("\"   \"8888888*   \"88888%   \"888*\"\"888\" *888\" 888&    `Y\"   'YP     \"88888%         'Y\"        '888       \"   \"8888888*   \"88888%   *888\" 888&   \"88888%      \"\"   'Y\"    `\"888*\"\"   `   ^\"F     \r\n");
+            logo1.Add("      ^\"**\"\"      \"YP'     ^Y\"   ^Y'   `\"   \"888E                   \"YP'                      88R             ^\"**\"\"      \"YP'     `\"   \"888E    \"YP'                      \"\"                  \r\n");
+            logo1.Add("                                      .dWi   `88E                                             88>                                 .dWi   `88E                                                  \r\n");
+            logo1.Add("                                      4888~  J8%                                              48                                  4888~  J8%                                                   \r\n");
+            logo1.Add("                                       ^\"===*\"`                                               '8                                   ^\"===*\"`                                                    ");
 
             // 1차 소제목
-            logo.Add("▗     ▛▀▖         ▜    ▐  ▗       \r\n");
-            logo.Add("▄ ▛▀▖ ▙▄▘▞▀▖▌ ▌▞▀▖▐ ▌ ▌▜▀ ▄ ▞▀▖▛▀▖\r\n");
-            logo.Add("▐ ▌ ▌ ▌▚ ▛▀ ▐▐ ▌ ▌▐ ▌ ▌▐ ▖▐ ▌ ▌▌ ▌\r\n");
-            logo.Add("▀▘▘ ▘ ▘ ▘▝▀▘ ▘ ▝▀  ▘▝▀▘ ▀ ▀▘▝▀ ▘ ▘");
+            logo1.Add("▗     ▛▀▖         ▜    ▐  ▗       \r\n");
+            logo1.Add("▄ ▛▀▖ ▙▄▘▞▀▖▌ ▌▞▀▖▐ ▌ ▌▜▀ ▄ ▞▀▖▛▀▖\r\n");
+            logo1.Add("▐ ▌ ▌ ▌▚ ▛▀ ▐▐ ▌ ▌▐ ▌ ▌▐ ▖▐ ▌ ▌▌ ▌\r\n");
+            logo1.Add("▀▘▘ ▘ ▘ ▘▝▀▘ ▘ ▝▀  ▘▝▀▘ ▀ ▀▘▝▀ ▘ ▘");
+
+            logo2.Add("                                                                                                                                                                                    \r\n");
+            logo2.Add(" ▄▄▄▄▄                                                                                        ▄▄▄▄             ▄▄                                                      ▄▄           \r\n");
+            logo2.Add(" ██▀▀▀██                                                                                     ██▀▀▀             ██                                                      ██           \r\n");
+            logo2.Add(" ██    ██  ██    ██  ██▄████▄   ▄███▄██   ▄████▄    ▄████▄   ██▄████▄             ▄████▄   ███████             ██         ▄████▄    ▄███▄██   ▄████▄   ██▄████▄   ▄███▄██  ▄▄█████▄ \r\n");
+            logo2.Add(" ██    ██  ██    ██  ██▀   ██  ██▀  ▀██  ██▄▄▄▄██  ██▀  ▀██  ██▀   ██            ██▀  ▀██    ██                ██        ██▄▄▄▄██  ██▀  ▀██  ██▄▄▄▄██  ██▀   ██  ██▀  ▀██  ██▄▄▄▄ ▀ \r\n");
+            logo2.Add(" ██    ██  ██    ██  ██    ██  ██    ██  ██▀▀▀▀▀▀  ██    ██  ██    ██            ██    ██    ██                ██        ██▀▀▀▀▀▀  ██    ██  ██▀▀▀▀▀▀  ██    ██  ██    ██   ▀▀▀▀██▄ \r\n");
+            logo2.Add(" ██▄▄▄██   ██▄▄▄███  ██    ██  ▀██▄▄███  ▀██▄▄▄▄█  ▀██▄▄██▀  ██    ██            ▀██▄▄██▀    ██                ██▄▄▄▄▄▄  ▀██▄▄▄▄█  ▀██▄▄███  ▀██▄▄▄▄█  ██    ██  ▀██▄▄███  █▄▄▄▄▄██ \r\n");
+            logo2.Add(" ▀▀▀▀▀      ▀▀▀▀ ▀▀  ▀▀    ▀▀   ▄▀▀▀ ██    ▀▀▀▀▀     ▀▀▀▀    ▀▀    ▀▀              ▀▀▀▀      ▀▀                ▀▀▀▀▀▀▀▀    ▀▀▀▀▀    ▄▀▀▀ ██    ▀▀▀▀▀   ▀▀    ▀▀    ▀▀▀ ▀▀   ▀▀▀▀▀▀  \r\n");
+            logo2.Add("                                ▀████▀▀                                                                                             ▀████▀▀                                         \r\n");
+            logo2.Add("                                                                                                                                                                                    ");
 
 
+            logo2.Add(" .-.         .--.       .-.          .-..-. _ .-.  .-.    .-..-.             .-.    _             \r\n");
+            logo2.Add(".' `.       : .--'      : :          : :' ;:_;: :  : :    : `' :             : :   :_;            \r\n");
+            logo2.Add("`. .'.--.   `. `.  .--. : :   .--.   :   ' .-.: :  : :    : .. : .--.   .--. : `-. .-.,-.,-. .--. \r\n");
+            logo2.Add(" : :' .; :   _`, :' .; :: :_ ' .; :  : :.`.: :: :_ : :_   : :; :' .; ; '  ..': .. :: :: ,. :' '_.'\r\n");
+            logo2.Add(" :_;`.__.'  `.__.'`.__.'`.__;`.__.'  :_;:_;:_;`.__;`.__;  :_;:_;`.__,_;`.__.':_;:_;:_;:_;:_;`.__.'\r\n");
+            logo2.Add("                                                                                                  \r\n");
+            logo2.Add("                                                                                                  ");
 
-            story.Add("아 간만에 롤이나 해볼까");
-            story.Add("솔킬머신 출동이요~"); // 이 글이 나간 이후 1차제목과 소제목을 넣음
-            story.Add("어 뭐지? 원래 롤에 이런 문구가 있었나..??");
-            story.Add("하도 패치 하니까 뭐가 바꼈는지도 모르겠네");
-            story.Add("암튼 게임만 잘 하면 되지");
-            story.Add("자 드가자~");
-            story.Add("소환사의 협곡에 오신것을 화ㄴ.영...ㅎ.ㅏ...ㅂ..");
+            //시작시 컴퓨터 하는 모습이 나감
+            story.Add("변대섭: 아 간만에 롤이나 해볼까"); 
+            story.Add("변대섭: 솔킬머신 변대섭 출동이요~"); // 이 글이 나간 이후 1차제목과 소제목을 넣음 [1]
+            story.Add("변대섭: 어 뭐지? 원래 롤에 이런 문구가 있었나..??");
+            story.Add("변대섭: 하도 패치 하니까 뭐가 바꼈는지도 모르겠네");
+            story.Add("변대섭: 암튼 게임만 잘 하면 되지");
+            story.Add("변대섭: 자 드가자~"); // 이 글이 나간 이후 다시 컴퓨터 하는 모습 [5]
+            story.Add("System: 소환사의 협곡에 오신것을 화ㄴ.영...ㅎ.ㅏ...ㅂ..");
             story.Add("치지지...치직......치지지지직.....");
-            story.Add("뭐야 이거 왜 이래..???");
-            story.Add("소환사 한 명이 게임을 종료했습니다");
-            story.Add("아 콩순이 1명 때문에 렉 걸린건가");
-            story.Add("진짜 시작부터 조짐이 안 좋네");
-            story.Add("소환사 한 명이 게임을 종료했습니다");
-            story.Add("와 우리팀 ㄹㅈㄷ ㅋㅋㅋㅋㅋㅋㅋㅋㅋ");
-            story.Add("시작하자마자 2명이 튕기냐");
-            story.Add("소환사 한 명이 게임을 종료했습니다");
-            story.Add("소환사 한 명이 게임을 종료했습니다");
-            story.Add("뭐지...롤 서버가 지금 맛탱이가 간건가");
-            story.Add("플레이어들이 게임에 접속하지 않았습니다. 60초 내에 /다시하기를 입력하여 게임을 재시작 할 수 있습니다.");
-            story.Add("아 시간만 버렸네 다시하기 gg");
-            story.Add("게임을 재시작합니다");
-            story.Add("챔피언 구성 중....");
-            story.Add("미니언 구성 중....");
+            story.Add("변대섭: 뭐야 이거 왜 이래..???");
+            story.Add("System: 소환사 한 명이 게임을 종료했습니다");
+            story.Add("변대섭: 아 콩순이 1명 때문에 렉 걸린건가");
+            story.Add("변대섭: 진짜 시작부터 조짐이 안 좋네");
+            story.Add("System: 소환사 한 명이 게임을 종료했습니다");
+            story.Add("변대섭: 와 우리팀 ㄹㅈㄷ ㅋㅋㅋㅋㅋㅋㅋㅋㅋ");
+            story.Add("변대섭: 시작하자마자 2명이 튕기냐");
+            story.Add("System: 소환사 한 명이 게임을 종료했습니다");
+            story.Add("System: 소환사 한 명이 게임을 종료했습니다");
+            story.Add("변대섭: 뭐지...롤 서버가 지금 맛탱이가 간건가");
+            story.Add("System: 플레이어들이 게임에 접속하지 않았습니다. 60초 내에 /다시하기를 입력하여 게임을 재시작 할 수 있습니다.");
+            story.Add("변대섭: 아 시간만 버렸네 다시하기 gg");
+            story.Add("System: 게임을 재시작합니다");
+            story.Add("System: 챔피언 구성 중....");
+            story.Add("System: 미니언 구성 중....");
             story.Add("삐------삐-------");
-            story.Add("에러 발생 소환사를 불러옵니다");
-            story.Add("이게 뭔 말이......으아아아아아아");
+            story.Add("System: 에러 발생 소환사를 불러옵니다");
+            story.Add("변대섭: 이게 뭔 말이......으아아아아아아");
+            story.Add("............................................................"); // [26]
             story.Add("............................................................");
-            story.Add("............................................................");
-            story.Add("영웅은 죽지 않아요"); // 메르시 아트 출력
-            story.Add("드디어 일어나셨군요");
-            story.Add("아니 당신은 메르시 아닌가요?");
-            story.Add("네?? 저는 소라카 입니다만...."); // 소라카 아트 출력
-            story.Add("아 그렇군요");
-            story.Add("근데 제가 왜 여기 있는거죠??");
-            story.Add("지금 현재 미니언과 중립몹 즉 정글과 용 바론 등이 손을 잡고 반란을 일으켰습니다");
-            story.Add("그래서 게임 시스템이 비상사태를 인지하고 소환사님을 부른겁니다.");
-            story.Add("아마 들어오기 전에 문구가 있었을텐데 못 보셨을까요??");
-            story.Add("(아 들어오기 전에 처음 본 문구가 그건가 보네)");
-            story.Add("본거 같아요");
-            story.Add("그래서 제가 뭘 하면 되는거죠");
-            story.Add("소환사님은 여기서 직접 챔피언을 골라 플레이 하시면서 반란을 일으킨 몹들을 잡으시면 됩니다");
-            story.Add("(뭐야 롤 현실판 아니야? 이거 완전 개꿀 체험이자나)");
-            story.Add("그런거라면 맡겨만 주세요 제가 다 해결하겠습니다");
-            story.Add("어디보자 골드가....??????");
-            story.Add("아 이걸 말을 안 해줬네요");
-            story.Add("지금 시스템 에러때문에 싸우시고 직접 얻으셔야 합니다.");
-            story.Add("시간이 지나도 돈은 들어오지 않으니 몹들을 잡으셔야 돈을 얻을 수 있습니다.");
-            story.Add("아니 그럼 어떻게 해요 원래 게임도 500G는 주고 하는데");
+            story.Add("???: 영웅은 죽지 않아요"); // 메르시 아트 출력 [28]
+            story.Add("변대섭: 으...으윽...머리야...");
+            story.Add("???: 드디어 일어나셨군요");
+            story.Add("변대섭: 으..어???? 아니 당신은 메르시 아닌가요?");
+            story.Add("소라카: 네?? 저는 소라카 입니다만...."); // 소라카 아트 출력 [32]
+            story.Add("변대섭: 아 그렇군요");
+            story.Add("변대섭: 근데 제가 왜 여기 있는거죠??");
+            story.Add("소라카: 지금 현재 미니언과 중립몹 즉 정글과 용 바론 등이 손을 잡고 반란을 일으켰습니다");
+            story.Add("소라카: 그래서 게임 시스템이 비상사태를 인지하고 소환사님을 부른겁니다.");
+            story.Add("소라카: 아마 들어오기 전에 문구가 있었을텐데 못 보셨을까요??");
+            story.Add("변대섭: (아 들어오기 전에 처음 본 문구가 그건가 보네)");
+            story.Add("변대섭: 본거 같아요");
+            story.Add("변대섭: 그래서 제가 뭘 하면 되는거죠");
+            story.Add("소라카: 소환사님은 여기서 직접 챔피언을 골라 플레이 하시면서 반란을 일으킨 몹들을 잡으시면 됩니다");
+            story.Add("변대섭: (뭐야 롤 현실판 아니야? 이거 완전 개꿀 체험이자나)");
+            story.Add("변대섭: 그런거라면 맡겨만 주세요 제가 다 해결하겠습니다");
+            story.Add("변대섭: 어디보자 골드가....??????");
+            story.Add("소라카: 아 이걸 말을 안 해줬네요");
+            story.Add("소라카: 지금 시스템 에러때문에 싸우시고 직접 얻으셔야 합니다.");
+            story.Add("소라카: 시간이 지나도 돈은 들어오지 않으니 몹들을 잡으셔야 돈과 아이템을 얻을 수 있습니다.");
+            story.Add("변대섭: 아니 그럼 어떻게 해요 원래 게임도 500G는 주고 하는데");
+            story.Add("소라카: 대신 시스템에서 퀘스트를 받을 수 있습니다.");
+            story.Add("소라카: 퀘스트를 완료할 시 골드와 경험치 아이템을 얻을 수 있는데 그래도 힘드실까요?");
             story.Add("그래서 쫄리신건가요? 쫄?");
-            story.Add("쫄긴 누가 쫄았다고 그래요 바로 갔다 오겠습니다."); // 이후로 2차제목과 소제목 등장
+            story.Add("쫄긴 누가 쫄았다고 그래요 바로 갔다 오겠습니다."); // 이후로 2차제목과 소제목 등장 [52]
 
 
 
-            intro.Add(
+            introArt.Add(
                 "@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@\r\n" +
                 "@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@\r\n" +
                 "@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@\r\n" +
@@ -183,8 +206,8 @@ namespace Text_RPG_11
                 "@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@\r\n" +
                 "@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@");
 
-            intro.Add(
-                "\r\n\r\n@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@..\r\n" +
+            introArt.Add(
+                "@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@..\r\n" +
                 "@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@.....\r\n" +
                 "@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@  ..... \r\n" +
                 "@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@     ...-@\r\n" +
@@ -240,7 +263,7 @@ namespace Text_RPG_11
                 "@@@@@@@@@@@@@@@@@@@@@@**!=,@@@@@*;:;*-..,,,:;,,,,-***=;@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@\r\n" +
                 "@@@@@@@@@@@@@@@@@@@@@;**=-@@@@@@*!:;;:..-,,,$~,--,=$==!:@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@\r\n");
 
-            intro.Add(
+            introArt.Add(
                 "@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@!::@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@\r\n" +
                 "@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@.!!,@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@\r\n" +
                 "@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@!!-@@@@@..@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@\r\n" +
@@ -301,13 +324,54 @@ namespace Text_RPG_11
                 ",$$#$$$$$$$===*=******===============$*;!;;:-,@@@@@@@@@@,***!====*~@@@@@.$$$$$$##$$$$$$$$$$$$=:*$$##\r\n" +
                 ",$$#$=$$$$$$$$===================*==*=$;!;:~@@@@@@@@@@@@@:!*!,:==*~@@@@.=$$$$###$$$$$$$$$$$$$::=$$##\r\n");
 
+
+            Console.Write(introArt[0]);
+            Console.WriteLine($"\n\n{story[0]}\n{story[1]}");
+            Console.ReadLine();
+            Console.Clear();
             Console.ForegroundColor = ConsoleColor.Cyan;
-            foreach (string str in logo)
+            foreach (string str in logo1)
             {
                 Console.Write(str);
                 Thread.Sleep(200);
             }
             Thread.Sleep(2000);
+            Console.ResetColor();
+            Console.WriteLine($"\n\n{story[2]}\n{story[3]}\n{story[4]}\n{story[5]}");
+            Console.ReadLine();
+            Console.Clear();
+            Console.Write(introArt[0]);
+            Console.WriteLine("\n\n");
+            for (int i = 6; i <= 25; i++)
+            {
+                Console.WriteLine(story[i]);
+                Thread.Sleep(2000);
+            }
+
+            Console.ReadLine();
+            Console.Clear();
+            Console.Write($"{story[26]}\n{story[27]}");
+            Console.ReadLine();
+            Console.Clear();
+            Console.Write(introArt[1]);
+            Console.Write($"{story[28]}\n{story[29]}\n{story[30]}\n{story[31]}");
+            Console.ReadLine();
+            for (int i = 32; i <= 52; i++)
+            {
+                Console.Clear();
+                Console.Write(introArt[2]);
+                Console.WriteLine(story[i]);
+                Thread.Sleep(2000);
+            }
+            Console.ReadLine();
+            Console.Clear();
+            foreach (string str in logo2)
+            {
+                Console.Write(str);
+                Thread.Sleep(200);
+            }
+            Thread.Sleep(3000);
+
 
             Console.WriteLine("소환사의 협곡에 오신것을 환영합니다." +
                 "\n소환사님의 이름은 무엇인가요.\n");
@@ -341,8 +405,8 @@ namespace Text_RPG_11
                 act = Console.ReadLine();
             }
             gameManager.Player.Name = name; // 게임매니저에다가 이름 넣어주기
-            Console.WriteLine($"{name} 소환사님 과연 이름부터가 휘황찬란하시군요\n헌데 용사님의 직업은 무엇인지요\n\n" +
-                $"1. 가렌 (전사)\n2. 럭스 (마법사)\n3. 애쉬 (궁수)\n\n");
+            Console.WriteLine($"{name} 소환사님 과연 이름부터가 휘황찬란하시군요\n소환사님을 위한 챔피언을 준비했습니다 어서 골라보시지요\n\n" +
+                $"1. 가렌 (전사)\n2. 럭스 (마법사)\n3. 제드 (암살자)\n4. 애쉬 (궁수)\n\n");
             Console.Write(">>");
             act = Console.ReadLine();
             while (true)
@@ -362,12 +426,19 @@ namespace Text_RPG_11
                 else if (act == "3")
                 {
                     Console.Clear();
+                    job = "제드";
+                    break;
+                }
+                else if (act == "4")
+                {
+                    Console.Clear();
                     job = "애쉬";
                     break;
                 }
                 else
                 {
-                    Console.Clear(); Console.WriteLine("마 니 용사 맞나?\n혹시 폐급 용사가?\n단디 해라이\n\n1. 가렌 (전사)\n2. 럭스 (마법사)\n3. 애쉬 (궁수)\n\n");
+                    Console.Clear(); Console.WriteLine("마 니 솔킬머신 맞나?\n혹시 솔킬 당하는 머신이가?\n단디 해라이\n\n" +
+                        "1. 가렌 (전사)\n2. 럭스 (마법사)\n3. 제드 (암살자)\n4. 애쉬 (궁수)\n\n");
                     Console.Write(">>");
                     act = Console.ReadLine();
                 }
@@ -375,12 +446,13 @@ namespace Text_RPG_11
             Console.WriteLine($"{job}을(를) 고르시다니 기대가 되는군요.");
             gameManager.Player.Job = job;
         }
+        #endregion
 
         public void MainScreen()
         {
             Console.Clear();
             Console.WriteLine("이 곳에서 던전으로 들어가기 전 활동을 할 수 있습니다\n\n1. 상태보기\n2. 인벤토리" +
-                "\n3. 탐험하기\n4. 상점\n\n원하시는 행동을 입력해주세요");
+                "\n3. 탐험하기\n4. 상점\n5. 휴식\n\n원하시는 행동을 입력해주세요");
             Console.Write(">>");
             act = Console.ReadLine();
         }
@@ -389,7 +461,8 @@ namespace Text_RPG_11
         {
             Console.Clear();
             Console.WriteLine("지친 피로를 충분히 풀고 있습니다\n챔피언의 체력과 마나가 모두 찹니다.");
-            // 현재체력과 마나를 모두 최대치랑 똑같이 맞추기
+            gameManager.Player.HP = gameManager.Player.MaxHP;
+            gameManager.Player.MP = gameManager.Player.MaxMP;
         }
 
         public void ViewStatus() // 상태보기
@@ -406,7 +479,7 @@ namespace Text_RPG_11
         }
 
 
-        // 전투 루프를 실행 (Battle이 이미 준비된 상태여야 함 즉 몹을 생성한 뒤 돌려야 함)
+        // 적들과 배틀하는 UI를 실행 (Battle이 이미 준비된 상태여야 함 즉 몹을 생성한 뒤 돌려야 함)
         public void RunBattleLoop(Battle battle)
         {
             // 전투 시작 시 기본 렌더
@@ -431,18 +504,18 @@ namespace Text_RPG_11
                         break;
 
                     case "2":
-                        AddLog("스킬 사용(미구현)"); // 연결할 경우 battle.UserSkill() 호출
-                        // battle.UserSkill();
+                        AddLog("스킬 사용(미구현)"); // 연결할 경우 스킬 호출
+                        // battle.UserSkill(); -> 예시입니다 나중에 만드는거 보고 따라갈게여
                         break;
 
                     case "3":
                         AddLog("포션 사용(미구현)");
-                        // potion logic
+                        // potion logic -> 만드는거 보고 따라갈게여
                         break;
 
                     case "4":
                         AddLog("도망 시도...");
-                        // 도망 기능이 있으면 처리. 여기서는 루프 탈출
+                        // 도망 기능이 있으면 처리. 여기서는 루프 탈출 -> 이거는 넣을지 말지 정하고 넣을게여
                         return;
 
                     default:
@@ -450,7 +523,7 @@ namespace Text_RPG_11
                         break;
                 }
 
-                // 전투 상태 확인 (플레이어의 행동 후)
+                // 전투 상태 확인 (소환사의 행동 후)
                 battle.EndCheck();
                 if (battle.BattleState != Battle.BattleResult.InProgress)
                 {
@@ -464,7 +537,7 @@ namespace Text_RPG_11
                 // 전투 상태 재확인
                 battle.EndCheck();
 
-                // 플레이어의 공격으로 바로 넘어가지 않고 포켓몬처럼 살짝 쉬고 플레이어의 공격으로 넘어가 배틀의 흐름을 유지함 (0.15초 쉼)
+                // 소환사의 공격으로 바로 넘어가지 않고 포켓몬처럼 살짝 쉬고 플레이어의 공격으로 넘어가 배틀의 흐름을 유지함 (0.15초 쉼)
                 Thread.Sleep(150);
             }
 
@@ -604,6 +677,7 @@ namespace Text_RPG_11
             Console.Write("]");
         }
 
+        //MP바
         private void ShowMPBar(int current, int max)
         {
             ShowMPBarInline(current, max);
@@ -684,138 +758,15 @@ namespace Text_RPG_11
 
             return pick - 1;
         }
+
+        public void ShowInventoryDisplay(Inventory inventory) // 고맙게 만들어주신거 그대로 쓰겠습니다
+        {
+            inventory.ShowInventoryDisplay();
+        }
+
+        public void ItemEquipped(Inventory inventory) // 이하 동문
+        {
+            inventory.ItemEquipped();
+        }
     }
 }
-
-
-//while (true)
-//{
-//    if (act == "0")
-//    {
-//        Console.Clear();
-//        Console.WriteLine("이 곳에서 던전으로 들어가기 전 활동을 할 수 있습니다\n\n1. 상태보기\n2. 인벤토리" +
-//            "\n3. 탐험하기\n4. 상점\n\n원하시는 행동을 입력해주세요");
-//        Console.Write(">>");
-//        act = Console.ReadLine();
-//    }
-//    else if (act == "1")
-//    {
-//        Console.Clear();
-//        playerMake.TotalPlayerStat();
-//        inventory.UseItems();
-//        Console.WriteLine("\n\n0. 나가기\n\n원하시는 행동을 입력해주세요");
-//        Console.Write(">>");
-//        act = Console.ReadLine();
-//        if (act != "0")
-//        {
-//            while (true)
-//            {
-//                Console.Clear();
-//                playerMake.TotalPlayerStat();
-//                inventory.UseItems();
-//                Console.WriteLine("\n\n0. 나가기\n\n잘못된 입력 입니다. 다시 입력하십시오.");
-//                Console.Write(">>");
-//                act = Console.ReadLine();
-//                if (act == "0") { break; }
-//            }
-//        }
-//    }
-//    else if (act == "2")
-//{
-//    act = "0";
-//    while (true)
-//    {
-//        if (act == "0")
-//        {
-//            inventory.InventoryInfo();
-//            Console.WriteLine("\n1. 장착 관리\n0. 나가기\n\n원하시는 행동을 입력해주세요");
-//            Console.Write(">>");
-//            act = Console.ReadLine();
-//            if (act == "0") break;
-//            continue;
-//        }
-//        else if (act == "1")
-//        {
-//            while (true)
-//            {
-//                inventory.InventoryItemUse();
-//                Console.Write("\n0. 나가기\n\n원하시는 행동을 입력해주세요.\n>>");
-//                act = Console.ReadLine();
-//                if (act == "0") { break; }
-//                else if (1 <= int.Parse(act) && int.Parse(act) <= inventory.myItems.Count)
-//                {
-//                    inventory.TotalStatItemUse(int.Parse(act), playerMake);
-//                    continue;
-//                }
-//                else { continue; }
-//            }
-//        }
-//        else
-//        {
-//            while (true)
-//            {
-//                Console.Clear();
-//                inventory.InventoryInfo();
-//                Console.WriteLine("\n1. 장착 관리\n0. 나가기\n\n잘못된 입력입니다\n다시 입력하십시오\n");
-//                act = Console.ReadLine();
-//                if (act == "0" || act == "1") { break; }
-//            }
-//            if (act == "1") { continue; }
-//            break;
-//        }
-//    }
-//}
-//else if (act == "3")
-//{
-//    Random random = new Random();
-//    Monster monster = new Monster();
-//    Adventure adventure = new Adventure();
-//    int i = random.Next(0, 10);
-//    if (i < 5) monster.Goblin();
-//    else if (i >= 5 && i <= 7) monster.Oak();
-//    else if (i > 7) monster.Ghost();
-//    adventure.AdventureStat(monster, playerMake);
-//    act = "0";
-//}
-//else if (act == "4")
-//{
-//    while (true)
-//    {
-//        Console.Clear();
-//        shop.DisplayItems(playerMake);
-//        Console.WriteLine("\n\n0. 나가기\n\n구매 할 아이템 번호 또는 행동을 입력하시오");
-//        act = Console.ReadLine();
-//        if (act == "0") { break; }
-//        else { shop.ItemBuy(playerMake, act, inventory); }
-//    }
-//}
-//else
-//{
-//    while (true)
-//    {
-//        Console.Clear();
-//        Console.WriteLine("이 곳에서 던전으로 들어가기 전 활동을 할 수 있습니다\n\n1. 상태보기\n2. 인벤토리" +
-//            "\n3. 탐험하기\n4. 상점\n\n");
-//        Console.WriteLine("잘못된 입력입니다\n다시 입력하십시오\n");
-//        Console.Write(">>");
-//        act = Console.ReadLine();
-//        if (act == "1" || act == "2" || act == "3") { break; }
-//    }
-//}
-
-//if (playerMake.alive == false) break;
-
-//// 레벨업 시 상점에 아이템 추가하는 로직
-//if (playerMake.level == 2 && playerMake.levelUp == true)
-//{
-//    playerMake.levelUp = false;
-//    shop.AddItem(new Item("롱 소드", 12, "공격력 +", 8, "철로 만들어진 긴 검으로 타격감이 좋습니다", false));
-//    Console.ReadLine();
-//    shop.AddItem(new Item("정령의 형상", 40, "마나 +", 20, "정령을 본 따 만들어진 물건으로 마나순환이 빨라지는 기분이 듭니다", false));
-//    Console.ReadLine();
-//    shop.AddItem(new Item("에이스 방패", 17, "방어력 +", 6, "에이스 대장장이가 만들었다고 전해지는 방패입니다.", false));
-//    Console.ReadLine();
-//    shop.AddItem(new Item("롯데팬의 분노", 999, "공격력 +", 999, "5%확률을 뚫고 가을을 가지 못 한 사직의 분노입니다.", false));
-//    Console.ReadLine();
-//}
-//}
