@@ -53,16 +53,37 @@
 
   "questRewards": [
     {
-      "questId": 301, //퀘스트 id
-      "questName": "마을을 위협하는 미니언 처치", //퀘스트 이름
-      "expReward": 50, //경험치 보상
-      "goldReward": 50, //골드 보상
-      "randomRewards": [ //랜덤 보상 테이블 - 재료 아이템, 포션
-        {
-          "itemId": 1, //아이템 id
-          "dropChance": 50, //드롭 확률
-          "amount": 1 //개수
-        }
+      "questId": 301,
+      "questName": "마을을 위협하는 미니언 처치",
+      "description": "마을 근처 미니언 5마리를 처치하시오.",
+      "requirement": "미니언 5 처치",
+      "expReward": 50,
+      "goldReward": 500,
+      "potionReward": 2,
+     "itemRewards": {
+        "전사": "롱소드",
+        "마법사": "마법지팡이",
+        "도적": "단검",
+        "궁수": "롱소드"
+      },
+      "type": "KillMonster"
+        },
+         {
+      "questId": 302,
+      "questName": "전투 준비 태세",
+      "description": "장비를 착용하여 전투 준비를 마치시오.",
+      "requirement": "장비 착용 완료",
+      "expReward": 30,
+      "goldReward": 300,
+      "potionReward": 1,
+      "itemReward": {
+        "전사": "루비 수정",
+        "마법사": "루비 수정",
+        "도적": "루비 수정",
+        "궁수": "루비 수정"
+      },
+      "type": "EquipItem"
+    }
       ]
     }
   ]

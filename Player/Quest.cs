@@ -3,7 +3,9 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.IO;
 using System.Text.Json;
+using System.Text.Json.Serialization;
 
 namespace Text_RPG_11
 {
@@ -96,16 +98,16 @@ namespace Text_RPG_11
         {
             List<Quest> quests = new();
 
-            // 1️⃣ quests.json 파일 읽기
+            // quests.json 파일 읽기
             string json = File.ReadAllText("quests.json");
 
-            // 2️⃣ JSON → C# 객체로 변환
+            // JSON → C# 객체로 변환
             QuestData? questData = JsonSerializer.Deserialize<QuestData>(json);
 
             if (questData == null || questData.questRewards == null)
                 return quests;
 
-            // 3️⃣ JSON의 각 퀘스트를 Quest 객체로 변환
+            // JSON의 각 퀘스트를 Quest 객체로 변환
             foreach (var q in questData.questRewards)
             {
                 // 직업별 보상 아이템 선택
@@ -116,8 +118,8 @@ namespace Text_RPG_11
                 // Quest 객체 생성
                 quests.Add(new Quest(
                 questName: q.questName,
-                description: q.questName + " 수행하기",
-                requirement: "조건 미정",
+                description: "", 
+                requirement: "",
                 rewardGold: q.goldReward,
                 rewardExp: q.expReward,
                 rewardPotion: q.potionReward,
@@ -207,6 +209,7 @@ namespace Text_RPG_11
         public int goldReward { get; set; }
         public int potionReward { get; set; }
         public Dictionary<string, string> rewardItems { get; set; }
+
     }
 
     internal class QuestData
