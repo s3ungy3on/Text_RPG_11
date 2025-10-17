@@ -30,6 +30,8 @@ namespace Text_RPG_11
         public int Potions { get; set; } = 0;                                       //소지 포션 수량
 
 
+        public int CurrentStage { get; set; } = 1;                              // 현재 던전 스테이지
+
 
         private int itemHP = 0;                                                             //장착 아이템으로 얻는 능력치
         private int itemMP = 0;
