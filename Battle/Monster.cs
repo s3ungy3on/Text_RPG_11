@@ -122,7 +122,7 @@ namespace Text_RPG_11
             TempDefense = 0;
         }
 
-        public bool isDead => HP <= 0; //몬스터 사망 여부
+        public bool IsDead => HP <= 0; //몬스터 사망 여부
 
 
         //이하 몬스터 팩토리 메서드
@@ -156,7 +156,7 @@ namespace Text_RPG_11
                 spawnLocations: new[] { "미드 라인", "탑 라인", "바텀 라인" }  // 스폰 위치 문자열 배열
             );
 
-        public static Monster CanonMinion() =>
+        public static Monster CannonMinion() =>
             new Monster(
                 id: 4,
                 name: "대포 미니언",
