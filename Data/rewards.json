@@ -2,14 +2,34 @@
   "dungeonRewards": [
     {
       "stageRange": [ 1, 19 ], //스테이지 범위
-      "rewardItems": [ //보상 아이템
+      "rewardGroups": [ //보상 아이템
         {
-          "itemId": 1, //아이템 id
-          "dropChance": 10 //드롭 확률 <다합쳐서 100이 되게끔
+          "groupName": "일반 재료", //아이템 드랍 그룹 이름
+          "groupChance": 60, //그룹 확률
+          "items": [
+            {
+              "itemId": 1, //아이템 id
+              "dropChance": 30 //아이템 드랍 확률
+            },
+            {
+              "itemId": 2,
+              "dropChance": 30
+            },
+            {
+              "itemId": 3,
+              "dropChance": 40
+            }
+          ]
         },
         {
-          "itemId": 2,
-          "dropChance": 10
+          "groupName": "포션", //포션 드랍 그룹
+          "groupChance": 40, //포션 드랍 확률
+          "items": [
+            {
+              "itemId": 201, //포션 id
+              "dropChance": 100 //그룹 걸리면 100%로 획득
+            }
+          ]
         }
       ]
     },
