@@ -9,10 +9,14 @@ namespace Text_RPG_11
 {
     internal class Dungeon
     {
+        // 평타 관련 메서드는 이름에 Attack을 포함
+        // 스킬 관련 메서드는 이름에 Skill을 포함
+        // 둘 다 사용되지 않은 메서드는 공동 사용
+        
         private GameManager _gameManager;
         public Battle _battle;
 
-        private int _monsterNum;
+        private int _monsterNum = 1;
         private int _skillNum;
         
         public Dungeon(GameManager manager)
@@ -77,9 +81,9 @@ namespace Text_RPG_11
             {
                 // 쿨타임 남은 스킬은 사용 불가
                 if (_battle.PlayerSkills[i].CurrentCooldown != 0)
-                    Console.WriteLine($"[{i}. {_battle.PlayerSkills[i].Name} - 쿨타임 {_battle.PlayerSkills[i].CurrentCooldown}턴: 사용 불가");
+                    Console.WriteLine($"{i + 1}. {_battle.PlayerSkills[i].Name} - 쿨타임 {_battle.PlayerSkills[i].CurrentCooldown}턴: 사용 불가");
                 else
-                    Console.WriteLine($"[{i}. {_battle.PlayerSkills[i].Name} - MP {_battle.PlayerSkills[i].ManaCost}");
+                    Console.WriteLine($"{i + 1}. {_battle.PlayerSkills[i].Name} - MP {_battle.PlayerSkills[i].ManaCost}");
                 
                 Console.WriteLine($"{_battle.PlayerSkills[i].Description}");
                 Console.WriteLine($"{_battle.PlayerSkills[i].Desc}");
@@ -153,7 +157,8 @@ namespace Text_RPG_11
                 // 2. 몬스터 공격
                 if(_monsterNum > 0 && _monsterNum <= _battle.Enemies.Count)
                 {
-                    PlayerTurnSkillSelect();
+                    _battle.Attack(_monsterNum - 1);
+                    AttackTurnEnd();
                 }
                 else if (isWorked || _monsterNum == 0)
                 {
@@ -180,7 +185,7 @@ namespace Text_RPG_11
                 // 1. 사용하고 싶은 스킬 확인
                 
                 SkillInfo();
-                Console.WriteLine("0. 취소\n");
+                Console.WriteLine("\n0. 취소\n");
                 
                 Console.WriteLine("원하시는 행동을 입력해주세요.");
                 Console.Write(">> ");
@@ -197,12 +202,15 @@ namespace Text_RPG_11
                     }
                     else
                     {
-                        // Hits(다중 타격)가 0 이상이라면 몬스터 선택 없이 진행
-                        if (_battle.PlayerSkills[_skillNum - 1].Hits > 0)
+                        // Hits(다중 타격)가 0 이상이거나, 스킬 타입이 힐 또는 버프거나, 스킬 타입이 공격+버프이고 다중 타격이 0인 경우 몬스터 선택 없이 진행
+                        if (_battle.PlayerSkills[_skillNum - 1].Hits > 0 || _battle.PlayerSkills[_skillNum - 1].Type == SkillType.Heal || _battle.PlayerSkills[_skillNum - 1].Type == SkillType.Buff || (_battle.PlayerSkills[_skillNum - 1].Hits > 0 && _battle.PlayerSkills[_skillNum - 1].Type == SkillType.AttackBuff))
                         {
+                            _monsterNum = 1;
+                            
                             _battle.SkillSelect(_skillNum - 1);
                             _battle.SkillUse(-1);
-                            PlayerTurnEnd();
+                            
+                            SkillTurnEnd();
                         }
                         else
                         {
@@ -246,7 +254,7 @@ namespace Text_RPG_11
                 if(_monsterNum > 0 && _monsterNum <= _battle.Enemies.Count)
                 {
                     _battle.SkillUse(_monsterNum - 1);
-                    PlayerTurnEnd();
+                    SkillTurnEnd();
                 }
                 else if (isWorked || _monsterNum == 0)
                 {
@@ -258,8 +266,8 @@ namespace Text_RPG_11
             }
         }
         
-        // 플레이어 턴 이후 결과 출력
-        public void PlayerTurnEnd()
+        // 공격 이후 플레이어 턴 결과 출력
+        public void AttackTurnEnd()
         {
             while (true)
             {
@@ -291,6 +299,191 @@ namespace Text_RPG_11
                     Console.WriteLine("잘못된 입력입니다.");
             }
         }
+        
+        // 스킬 사용 이후 플레이어 턴 결과 출력
+        public void SkillTurnEnd()
+        {
+            switch (_battle.PlayerSkills[_skillNum - 1].Type)
+            {
+                case SkillType.Attack:
+                    while (true)
+                    {
+                        // 일반 타격 스크립트
+                        if (_battle.PlayerSkills[_skillNum - 1].Hits == 0)
+                        {
+                            while (true)
+                            {
+                                EnemyInfo();
+                                Console.WriteLine("\nBattle!!\n");
+            
+                                Console.WriteLine($"{_gameManager.Player.Name}의 공격!");
+                                Console.WriteLine($"Lv.{_battle.Enemies[_monsterNum - 1].Level} {_battle.Enemies[_monsterNum - 1].Name}을(를) 맞췄습니다. [데미지 : {_battle.AtkRand}]\n");
+                
+                                // 1. 플레이어 공격으로 몬스터 사망 시 Dead 처리
+                                if (_battle.Enemies[_monsterNum - 1].IsDead)
+                                {
+                                    Console.WriteLine($"Lv. {_battle.Enemies[_monsterNum - 1].Level} {_battle.Enemies[_monsterNum - 1].Name}");
+                                    Console.WriteLine($"HP {_battle.EnemyHP} -> Dead\n");
+                                }
+                
+                                // 2. 몬스터 턴 진행
+                                Console.WriteLine($"0. 다음\n");
+                
+                                Console.Write(">> ");
+                
+                                bool isWorked = int.TryParse(Console.ReadLine(), out int result);
+                
+                                if (isWorked || result== 0)
+                                {
+                                    EnemyTurn();
+                                }
+                                else
+                                    Console.WriteLine("잘못된 입력입니다.");
+                            }
+                        }
+                        // 다중 타격 스크립트
+                        else
+                        {
+                            while (true)
+                            {
+                                EnemyInfo();
+                                Console.WriteLine("\nBattle!!\n");
+            
+                                Console.WriteLine($"{_gameManager.Player.Name}의 공격!");
+                                
+                                foreach (var t in _battle.SkillHitsEnemies)
+                                {
+                                    Console.WriteLine($"Lv. {t.Level} {t.Name}");
+                                    Console.WriteLine($"Lv.{_battle.Enemies[_monsterNum - 1].Level} {_battle.Enemies[_monsterNum - 1].Name}을(를) 맞췄습니다. [데미지 : {_battle.SkillAtk}]\n");
+                                }
+                                
+                                // 1. 플레이어 공격으로 몬스터 사망 시 Dead 처리
+                                if (_battle.Enemies[_monsterNum - 1].IsDead)
+                                {
+                                    Console.WriteLine($"Lv. {_battle.Enemies[_monsterNum - 1].Level} {_battle.Enemies[_monsterNum - 1].Name}");
+                                    Console.WriteLine($"HP {_battle.EnemyHP} -> Dead\n");
+                                }
+                
+                                // 2. 몬스터 턴 진행
+                                Console.WriteLine($"0. 다음\n");
+                
+                                Console.Write(">> ");
+                
+                                bool isWorked = int.TryParse(Console.ReadLine(), out int result);
+                
+                                if (isWorked || result== 0)
+                                {
+                                    EnemyTurn();
+                                }
+                                else
+                                    Console.WriteLine("잘못된 입력입니다.");
+                            }
+                        }
+                    }
+
+                case SkillType.Heal:
+                    while (true)
+                    {
+                        Console.WriteLine("\nBattle!!\n");
+                        
+                        // 1. 플레이어 회복량 출력
+                        Console.WriteLine($"{_battle.PlayerSkills[_skillNum - 1].PowerMultiplier}만큼 회복했습니다.");
+                
+                        // 2. 몬스터 턴 진행
+                        Console.WriteLine($"0. 다음\n");
+                
+                        Console.Write(">> ");
+                
+                        bool isWorked = int.TryParse(Console.ReadLine(), out int result);
+                
+                        if (isWorked || result== 0)
+                        {
+                            EnemyTurn();
+                        }
+                        else
+                            Console.WriteLine("잘못된 입력입니다.");
+                    }
+
+                case SkillType.Buff:
+                    // 공격이었을 시 
+                    // 일반 타격 스크립트
+                    while (true)
+                    {
+                        Console.WriteLine("\nBattle!!\n");
+                        
+                        // 1. 플레이어 버프량 출력
+                        if (Math.Abs(_battle.PlayerSkills[_skillNum - 1].Effects.EffectiveAttackDelta) > 0)
+                        {
+                            Console.WriteLine($"{_gameManager.Player.Name}의 공격력이 {_battle.PlayerSkills[_skillNum - 1].Effects.EffectiveAttackDelta}만큼 증가했습니다.");
+                            Console.WriteLine($"[현재 공격력: {_gameManager.Player.MaxAttack}]");
+                        }
+
+                        if (Math.Abs(_battle.PlayerSkills[_skillNum - 1].Effects.EffectiveDefenseDelta) > 0)
+                        {
+                            Console.WriteLine($"{_gameManager.Player.Name}의 방어력이 {_battle.PlayerSkills[_skillNum - 1].Effects.EffectiveDefenseDelta}만큼 증가했습니다.");
+                            Console.WriteLine($"[현재 방어력: {_gameManager.Player.MaxDefense}]");
+                        }
+
+                        // 2. 몬스터 턴 진행
+                        Console.WriteLine($"0. 다음\n");
+
+                        Console.Write(">> ");
+
+                        bool isWorked = int.TryParse(Console.ReadLine(), out int result);
+
+                        if (isWorked || result == 0)
+                        {
+                            EnemyTurn();
+                        }
+                        else
+                            Console.WriteLine("잘못된 입력입니다.");
+                    }
+
+                case SkillType.Debuff:
+                    while (true)
+                    {
+                        EnemyInfo();
+                        
+                        Console.WriteLine("\nBattle!!\n");
+                        
+                        // 1. 에너미 디버프량 출력
+                        if (Math.Abs(_battle.PlayerSkills[_skillNum - 1].Effects.EffectiveAttackDelta) > 0)
+                        {
+                            Console.WriteLine($"{_gameManager.Player.Name}의 공격!");
+                            Console.WriteLine($"Lv.{_battle.Enemies[_monsterNum - 1].Level} {_battle.Enemies[_monsterNum - 1].Name}을(를) 맞췄습니다. [공격력 디버프 : {_battle.PlayerSkills[_skillNum - 1].Effects.EffectiveAttackDelta}]\n");
+                        }
+
+                        if (Math.Abs(_battle.PlayerSkills[_skillNum - 1].Effects.EffectiveDefenseDelta) > 0)
+                        {
+                            Console.WriteLine($"{_gameManager.Player.Name}의 공격!");
+                            Console.WriteLine($"Lv.{_battle.Enemies[_monsterNum - 1].Level} {_battle.Enemies[_monsterNum - 1].Name}을(를) 맞췄습니다. [방어력 디버프 : {_battle.PlayerSkills[_skillNum - 1].Effects.EffectiveDefenseDelta}]\n");
+                        }
+                        
+                        // 2. 몬스터 턴 진행
+                        Console.WriteLine($"0. 다음\n");
+
+                        Console.Write(">> ");
+
+                        bool isWorked = int.TryParse(Console.ReadLine(), out int result);
+
+                        if (isWorked || result == 0)
+                        {
+                            EnemyTurn();
+                        }
+                        else
+                            Console.WriteLine("잘못된 입력입니다.");
+                    }
+
+                case SkillType.AttackBuff:
+                    // 미완
+                    break;
+
+                case SkillType.AttackDebuff:
+                    // 미완
+                    break;
+                
+            }
+        }
 
         // 에너미 턴 진행
         public void EnemyTurn()
@@ -317,7 +510,7 @@ namespace Text_RPG_11
                     else
                     {
                         Console.WriteLine($"Lv. {_battle.Enemies[_battle.Index].Level} {_battle.Enemies[_battle.Index].Name}의 공격!");
-                        Console.WriteLine($"{_gameManager.Player.Name} 을(를) 맞췄습니다.    [데미지 : {_battle.Enemies[_battle.Index].Attack}]\n");
+                        Console.WriteLine($"{_gameManager.Player.Name} 을(를) 맞췄습니다.    [데미지 : {_battle.Enemies[_battle.Index].Attack - _gameManager.Player.MaxDefense}]\n");
                     }
                 }
                 

@@ -3,7 +3,11 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
+using System.Threading.Tasks.Dataflow;
+using System.IO;
+using System.Text.Json;
 using Text_RPG_11;
 
 
@@ -23,6 +27,8 @@ namespace Text_RPG_11
         
         public int AtkRandInput; // 공격력 별 오차 범위
         public int AtkRand; // 오차 범위를 더한 공격력
+
+        public int SkillAtk; // 다중 타격 공격 타입 스킬 사용 시 최종 데미지
         
         public int RewardExp; // 총 보상 계산
         public int RewardGold; // 총 보상 계산
@@ -67,7 +73,8 @@ namespace Text_RPG_11
         public List<(Skill skill, int remainingDuration, int monsterNum)> DebuffdurationList = new List<(Skill, int, int)>(); 
         // 지속 시간이 남은 스킬 저장: 사용한 스킬 / 남은 지속 시간 / 대상
 
-        private List<Monster> skillHitsEnemies = new List<Monster>(); // 스킬로 공격 받은 몬스터 리스트
+        public List<Monster> SkillHitsEnemies = new List<Monster>(); // 스킬로 공격 받은 몬스터 리스트
+        public List<int> AtkRand_SkillHitsEnemies =  new List<int>(); // 스킬로 공격 받은 몬스터가 받은 데미지 리스트
         
         private GameManager _gameManager;
 
@@ -89,6 +96,8 @@ namespace Text_RPG_11
         public void EnemySpawn()
         {
             BattleState = BattleResult.InProgress; // 기본 배틀 상태는 InProgress
+
+            Enemies.Clear();
             
             // 1. 몬스터 수 생성
             Random random = new Random();
@@ -173,15 +182,16 @@ namespace Text_RPG_11
                     // 스킬 타입이 공격일 시 powerMultiplier을 사용자 공격력에 적용
                     // Duration이 없다고 가정
                     int finalDamage = (int)Math.Round(AtkRand * skillForAttack.PowerMultiplier);
+                    SkillAtk = finalDamage;
                     
                     // hits가 양수일 시 랜덤 에너미 타격
                     // enemyIndex
                     if (skillForAttack.Hits > 0)
                     {
                         // 랜덤 에너미 선택
-                        skillHitsEnemies.AddRange(Enemies.OrderBy(enemy => Guid.NewGuid()).Take(skillForAttack.Hits));
+                        SkillHitsEnemies.AddRange(Enemies.OrderBy(enemy => Guid.NewGuid()).Take(skillForAttack.Hits));
                         // 선택된 에너미 공격
-                        foreach (Monster hitsEnemies in skillHitsEnemies)
+                        foreach (Monster hitsEnemies in SkillHitsEnemies)
                         {
                             hitsEnemies.HP -= finalDamage;
                         }
@@ -261,51 +271,6 @@ namespace Text_RPG_11
                         }
                     }
                     break;
-                    
-                    /*
-                    // 본인 타겟
-                    // powerMultiplier에 따라 effect 실행
-                    if (skillForAttack.Effects.AttackBonus > 0)
-                    {
-                        // Attack일 경우 Player.Atk에 추가
-                        _gameManager.Player.Attack += skillForAttack.Effects.AttackBonus;
-                        
-                        // 지속 시간 추가
-                        if (skillForAttack.Effects.Duration > 0)
-                        {
-                            skillForAttack.LeftDuration = skillForAttack.Effects.Duration;
-                            BuffdurationList.Add((skillForAttack, skillForAttack.LeftDuration, skillForAttack.Effects.AttackBonus));
-                        }
-                    }
-                    break;
-                    
-                    // 상대 타겟
-                    // powerMultiplier에 따라 effect 실행
-                    if (skillForAttack.Effects.AttackMinus > 0)
-                    {
-                        // Attack일 경우 에너미 공격 마이너스
-                        Enemies[enemyIndex].Attack += skillForAttack.Effects.EffectiveAttackDelta;
-                        
-                        // 지속 시간 추가
-                        if (skillForAttack.Effects.Duration > 0)
-                        {
-                            skillForAttack.LeftDuration = skillForAttack.Effects.Duration;
-                            DebuffdurationList.Add((skillForAttack, skillForAttack.LeftDuration, (int)Math.Round(skillForAttack.Effects.AttackMinus)));
-                        }
-                    }
-                    else if (skillForAttack.Effects.DefenseMinus > 0)
-                    {
-                        // Defense추가 일 경우 에너미 방어 마이너스
-                        Enemies[enemyIndex].Defense -= skillForAttack.Effects.DefenseMinus;
-                        
-                        // 지속 시간 추가
-                        if (skillForAttack.Effects.Duration > 0)
-                        {
-                            skillForAttack.LeftDuration = skillForAttack.Effects.Duration;
-                            DebuffdurationList.Add((skillForAttack, skillForAttack.LeftDuration,(int)Math.Round(skillForAttack.Effects.DefenseMinus)));
-                        }
-                    }*/
-                
                 
                 case SkillType.AttackDebuff:
                     finalDamage = (int)Math.Round(AtkRand * skillForAttack.PowerMultiplier);
@@ -338,7 +303,7 @@ namespace Text_RPG_11
         // 쿨다운 체크
         public void CooldownEnd()
         {
-            for (int i = CooldownList.Count - 1; i <= 0; i--)
+            for (int i = CooldownList.Count - 1; i >= 0; i--)
             {
                 if (CooldownList[i].remainingCooldown == 0)
                     CooldownList.RemoveAt(i);
@@ -416,7 +381,7 @@ namespace Text_RPG_11
                 if (Enemies[Index].HP > 0)
                 {
                     // 플레이어 체력 > 깎인 체력
-                    _gameManager.Player.HP -= Enemies[Index].Attack;
+                    _gameManager.Player.HP -= (Enemies[Index].Attack - (int)Math.Round(_gameManager.Player.MaxDefense));
                 }
                 else
                 {
@@ -526,23 +491,5 @@ namespace Text_RPG_11
             // 몬스터를 순회하면서 체력이 0이 된 몬스터가 제공하는 exp만큼 플레이어의 경험치를 상승
             
         }
-        
-        // public void UserPotion()
-        // {
-        //     // 유저 포션 사용 기능
-        //
-        //     // 프로퍼티 접근 체인 수정 필요
-        //     if (_gameManager.inventory.Potion.Count > 0)
-        //     {
-        //         GameManager.Player.Hp += GameManager.Player.Inventory.Potion.HealPower;
-        //         GameManager.Player.Inventory.Potion.Count--;
-        //         Console.WriteLine("회복을 완료했습니다.");
-        //     }
-        //     else
-        //     {
-        //         Console.WriteLine("포션이 부족합니다.");
-        //     }
-        // }
     }
-
 }
