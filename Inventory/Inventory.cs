@@ -60,11 +60,6 @@ namespace Text_RPG_11
                 return false;
             }
 
-            if (item.IsEquipped)
-            {
-                return false;
-            }
-
             if(item is Potion p)
             {
                 if (p.PotionCount > quantity)

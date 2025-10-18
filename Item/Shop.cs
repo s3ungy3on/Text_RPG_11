@@ -52,7 +52,15 @@ namespace Text_RPG_11
                 return false;
             }
 
-            gameManager.inventory.AddItem(shopItem); //나중에 클론으로 변경
+            Items purchasedItem = ItemDatabase.GetItemById(shopItem.ItemId);
+
+            if (purchasedItem == null)
+            {
+                Console.WriteLine("아이템을 찾을 수 없습니다.");
+                return false;
+            }
+
+            gameManager.inventory.AddItem(purchasedItem);
             gameManager.Player.Gold -= shopItem.Price;
             shopItem.IsPurchased = true;
 
@@ -69,7 +77,7 @@ namespace Text_RPG_11
                 return false;
             }
 
-            if(playerItem.IsEquipped == true)
+            if(playerItem.IsEquipped)
             {
                 Console.WriteLine("장착 중인 아이템은 판매할 수 없습니다.");
                 return false;
@@ -77,7 +85,15 @@ namespace Text_RPG_11
 
             gameManager.inventory.RemoveItem(playerItem);
             gameManager.Player.Gold += playerItem.Price;
-            playerItem.IsPurchased = false;
+
+            foreach(var shopItem in shopInventory)
+            {
+                if(shopItem.ItemId == playerItem.ItemId)
+                {
+                    shopItem.IsPurchased = false;
+                    break;
+                }
+            }
 
             Console.WriteLine($"{playerItem.Name}을 판매했습니다.");
             return true;

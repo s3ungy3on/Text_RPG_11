@@ -39,23 +39,23 @@
     //  "stackable": true,
     //  "maxStack": 99
     //},
-    //{
-    //  "id": 3,
-    //  "name": "단검",
-    //  "type": "재료",
-    //  "rarity": "common",
-    //  "attackPower": 3,
-    //  "defensePower": 0,
-    //  "itemHp": 0,
-    //  "itemMp": 0,
-    //  "equipJob": null,
-    //  "price": 250,
-    //  "obtainMethods": [ "shop", "dungeon", "quest" ],
-    //  "crafting": false,
-    //  "craftingRecipe": null,
-    //  "stackable": true,
-    //  "maxStack": 99
-    //},
+    {
+      "id": 3,
+      "name": "단검",
+      "type": "재료",
+      "rarity": "common",
+      "attackPower": 3,
+      "defensePower": 0,
+      "itemHp": 0,
+      "itemMp": 0,
+      "equipJob": null,
+      "price": 250,
+      "obtainMethods": [ "shop", "dungeon", "quest" ],
+      "crafting": false,
+      "craftingRecipe": null,
+      "stackable": true,
+      "maxStack": 99
+    },
     //{
     //  "id": 4,
     //  "name": "천 갑옷",
@@ -107,57 +107,57 @@
     //  "stackable": true,
     //  "maxStack": 99
     //},
-    //{
-    //  "id": 7,
-    //  "name": "롱소드",
-    //  "type": "재료",
-    //  "rarity": "common",
-    //  "attackPower": 3,
-    //  "defensePower": 0,
-    //  "itemHp": 0,
-    //  "itemMp": 0,
-    //  "equipJob": null,
-    //  "price": 350,
-    //  "obtainMethods": [ "shop", "dungeon", "quest" ],
-    //  "crafting": false,
-    //  "craftingRecipe": null,
-    //  "stackable": true,
-    //  "maxStack": 99
-    //},
-    //{
-    //  "id": 8,
-    //  "name": "증폭의 고서",
-    //  "type": "재료",
-    //  "rarity": "common",
-    //  "attackPower": 4,
-    //  "defensePower": 0,
-    //  "itemHp": 0,
-    //  "itemMp": 0,
-    //  "equipJob": null,
-    //  "price": 400,
-    //  "obtainMethods": [ "shop", "dungeon", "quest" ],
-    //  "crafting": false,
-    //  "craftingRecipe": null,
-    //  "stackable": true,
-    //  "maxStack": 99
-    //},
-    //{
-    //  "id": 9,
-    //  "name": "루비 수정",
-    //  "type": "재료",
-    //  "rarity": "common",
-    //  "attackPower": 0,
-    //  "defensePower": 0,
-    //  "itemHp": 5,
-    //  "itemMp": 0,
-    //  "equipJob": null,
-    //  "price": 400,
-    //  "obtainMethods": [ "shop", "dungeon", "quest" ],
-    //  "crafting": false,
-    //  "craftingRecipe": null,
-    //  "stackable": true,
-    //  "maxStack": 99
-    //},
+    {
+      "id": 7,
+      "name": "롱소드",
+      "type": "재료",
+      "rarity": "common",
+      "attackPower": 3,
+      "defensePower": 0,
+      "itemHp": 0,
+      "itemMp": 0,
+      "equipJob": null,
+      "price": 350,
+      "obtainMethods": [ "shop", "dungeon", "quest" ],
+      "crafting": false,
+      "craftingRecipe": null,
+      "stackable": true,
+      "maxStack": 99
+    },
+    {
+      "id": 8,
+      "name": "증폭의 고서",
+      "type": "재료",
+      "rarity": "common",
+      "attackPower": 4,
+      "defensePower": 0,
+      "itemHp": 0,
+      "itemMp": 0,
+      "equipJob": null,
+      "price": 400,
+      "obtainMethods": [ "shop", "dungeon", "quest" ],
+      "crafting": false,
+      "craftingRecipe": null,
+      "stackable": true,
+      "maxStack": 99
+    },
+    {
+      "id": 9,
+      "name": "루비 수정",
+      "type": "재료",
+      "rarity": "common",
+      "attackPower": 0,
+      "defensePower": 0,
+      "itemHp": 5,
+      "itemMp": 0,
+      "equipJob": null,
+      "price": 400,
+      "obtainMethods": [ "shop", "dungeon", "quest" ],
+      "crafting": false,
+      "craftingRecipe": null,
+      "stackable": true,
+      "maxStack": 99
+    },
     //{
     //  "id": 10,
     //  "name": "마법 무효화의 망토",
@@ -319,7 +319,7 @@
       "itemMp": 0,
       "equipJob": null,
       "price": 900,
-      "obtainMethods": [ "shop", "dungeon", "quest" ],
+      "obtainMethods": [ "dungeon", "quest" ],
       "crafting": true,
       "craftingRecipe": {
         "requiredItems": [
@@ -343,7 +343,7 @@
       "itemMp": 0,
       "equipJob": null,
       "price": 1050,
-      "obtainMethods": [ "shop", "dungeon", "quest" ],
+      "obtainMethods": [ "dungeon", "quest" ],
       "crafting": true,
       "craftingRecipe": {
         "requiredItems": [
@@ -371,7 +371,7 @@
       "itemMp": 0,
       "equipJob": null,
       "price": 1100,
-      "obtainMethods": [ "shop", "dungeon", "quest" ],
+      "obtainMethods": [ "dungeon", "quest" ],
       "crafting": true,
       "craftingRecipe": {
         "requiredItems": [
@@ -399,7 +399,7 @@
       "itemMp": 0,
       "equipJob": null,
       "price": 1150,
-      "obtainMethods": [ "shop", "dungeon", "quest" ],
+      "obtainMethods": [ "dungeon", "quest" ],
       "crafting": true,
       "craftingRecipe": {
         "requiredItems": [
@@ -427,7 +427,7 @@
       "itemMp": 0,
       "equipJob": null,
       "price": 1200,
-      "obtainMethods": [ "shop", "dungeon", "quest" ],
+      "obtainMethods": [ "shop" ],
       "crafting": true,
       "craftingRecipe": {
         "requiredItems": [
@@ -479,7 +479,7 @@
       "itemMp": 0,
       "equipJob": null,
       "price": 1200,
-      "obtainMethods": [ "shop", "dungeon", "quest" ],
+      "obtainMethods": [ "shop" ],
       "crafting": true,
       "craftingRecipe": {
         "requiredItems": [
@@ -507,7 +507,7 @@
       "itemMp": 0,
       "equipJob": null,
       "price": 1200,
-      "obtainMethods": [ "shop", "dungeon", "quest" ],
+      "obtainMethods": [ "shop" ],
       "crafting": true,
       "craftingRecipe": {
         "requiredItems": [
@@ -1079,7 +1079,7 @@
       "itemMp": 0,
       "equipJob": null,
       "price": 800,
-      "obtainMethods": [ "shop", "dungeon", "quest" ],
+      "obtainMethods": [ "dungeon", "quest" ],
       "crafting": true,
       "craftingRecipe": {
         "requiredItems": [
@@ -1131,7 +1131,7 @@
       "itemMp": 0,
       "equipJob": null,
       "price": 800,
-      "obtainMethods": [ "shop", "dungeon", "quest" ],
+      "obtainMethods": [ "dungeon", "quest" ],
       "crafting": true,
       "craftingRecipe": {
         "requiredItems": [
@@ -1183,7 +1183,7 @@
       "itemMp": 0,
       "equipJob": null,
       "price": 850,
-      "obtainMethods": [ "shop", "dungeon", "quest" ],
+      "obtainMethods": [ "dungeon", "quest" ],
       "crafting": true,
       "craftingRecipe": {
         "requiredItems": [
@@ -1207,7 +1207,7 @@
       "itemMp": 0,
       "equipJob": null,
       "price": 900,
-      "obtainMethods": [ "shop", "dungeon", "quest" ],
+      "obtainMethods": [ "dungeon", "quest" ],
       "crafting": true,
       "craftingRecipe": {
         "requiredItems": [
@@ -1231,7 +1231,7 @@
       "itemMp": 0,
       "equipJob": null,
       "price": 1000,
-      "obtainMethods": [ "shop", "dungeon", "quest" ],
+      "obtainMethods": [ "shop" ],
       "crafting": true,
       "craftingRecipe": {
         "requiredItems": [
@@ -1283,7 +1283,7 @@
       "itemMp": 0,
       "equipJob": null,
       "price": 1250,
-      "obtainMethods": [ "shop", "dungeon", "quest" ],
+      "obtainMethods": [ "shop" ],
       "crafting": true,
       "craftingRecipe": {
         "requiredItems": [
@@ -1315,7 +1315,7 @@
       "itemMp": 0,
       "equipJob": null,
       "price": 1100,
-      "obtainMethods": [ "shop", "dungeon", "quest" ],
+      "obtainMethods": [ "shop" ],
       "crafting": true,
       "craftingRecipe": {
         "requiredItems": [
@@ -1343,7 +1343,7 @@
       "itemMp": 0,
       "equipJob": null,
       "price": 2700,
-      "obtainMethods": [ "shop", "dungeon", "quest" ],
+      "obtainMethods": [ "shop" ],
       "crafting": true,
       "craftingRecipe": {
         "requiredItems": [
@@ -1427,7 +1427,7 @@
       "itemMp": 0,
       "equipJob": [ "전사" ],
       "price": 3300,
-      "obtainMethods": [ "shop", "dungeon", "quest" ],
+      "obtainMethods": [ "shop" ],
       "crafting": true,
       "craftingRecipe": {
         "requiredItems": [
@@ -1775,7 +1775,7 @@
       "itemMp": 0,
       "equipJob": null,
       "price": 3100,
-      "obtainMethods": [ "shop", "dungeon" ],
+      "obtainMethods": [ "shop" ],
       "crafting": true,
       "craftingRecipe": {
         "requiredItems": [
@@ -1847,7 +1847,7 @@
       "itemMp": 0,
       "equipJob": [ "전사" ],
       "price": 3200,
-      "obtainMethods": [ "shop", "dungeon" ],
+      "obtainMethods": [ "shop" ],
       "crafting": true,
       "craftingRecipe": {
         "requiredItems": [
@@ -2131,7 +2131,7 @@
       "itemMp": 0,
       "equipJob": null,
       "price": 2700,
-      "obtainMethods": [ "shop", "dungeon" ],
+      "obtainMethods": [ "shop" ],
       "crafting": true,
       "craftingRecipe": {
         "requiredItems": [
@@ -2199,7 +2199,7 @@
       "itemMp": 0,
       "equipJob": [ "전사" ],
       "price": 3100,
-      "obtainMethods": [ "shop", "dungeon" ],
+      "obtainMethods": [ "shop" ],
       "crafting": true,
       "craftingRecipe": {
         "requiredItems": [
