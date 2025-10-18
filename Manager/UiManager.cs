@@ -487,7 +487,7 @@ namespace Text_RPG_11
                     Console.ForegroundColor = ConsoleColor.Green;
                 }
                 
-                Console.Write($"{story[i],100}");
+                Console.Write($"{story[i],130}");
                 Thread.Sleep(1000);
                 if (Console.KeyAvailable)
                 {
@@ -505,7 +505,6 @@ namespace Text_RPG_11
                 Console.Write(str);
                 Thread.Sleep(100);
             }
-
             Thread.Sleep(1000);
 
             Console.WriteLine("소환사의 협곡에 오신것을 환영합니다." +
@@ -605,15 +604,51 @@ namespace Text_RPG_11
 
         public void ViewStatus() // 상태보기
         {
-            Console.WriteLine($"이름: {gameManager.Player.Name}");
-            Console.WriteLine($"직업: {gameManager.Player.Job}");
-            Console.WriteLine($"레벨: {gameManager.Player.Level}");
-            Console.WriteLine($"레벨: {gameManager.Player.Exp}");
-            Console.WriteLine($"체력: {gameManager.Player.HP}/{gameManager.Player.MaxHP}");
-            Console.WriteLine($"마나: {gameManager.Player.MP}/{gameManager.Player.MaxMP}");
-            Console.WriteLine($"공격력: {gameManager.Player.Attack}");
-            Console.WriteLine($"방어력: {gameManager.Player.Defense}");
-            Console.WriteLine($"골드: {gameManager.Player.Gold}G");
+            var player = gameManager.Player;
+
+            Console.Clear();
+            Console.ForegroundColor = ConsoleColor.Cyan;
+            Console.WriteLine("═══════════════════════════════════════════════");
+            Console.WriteLine("                🧙 플레이어 상태창               ");
+            Console.WriteLine("═══════════════════════════════════════════════");
+            Console.ResetColor();
+
+            Console.WriteLine();
+
+            Console.ForegroundColor = ConsoleColor.Magenta;
+            Console.WriteLine($"이름 : {player.Name,-15} 직업 : {player.Job}");
+            Console.ResetColor();
+
+            Console.WriteLine($"레벨 : {player.Level,-15} 경험치 : {player.Exp}");
+            Console.WriteLine();
+
+            Console.WriteLine("───────────────────────────────");
+            Console.ForegroundColor = ConsoleColor.Green;
+            Console.Write("체력 : ");
+            ShowHPBarInline(player.HP, player.MaxHP);
+            Console.ResetColor();
+            Console.WriteLine($"  {player.HP}/{player.MaxHP}");
+
+            Console.ForegroundColor = ConsoleColor.Blue;
+            Console.Write("마나 : ");
+            ShowMPBarInline(player.MP, player.MaxMP);
+            Console.ResetColor();
+            Console.WriteLine($"  {player.MP}/{player.MaxMP}");
+            Console.WriteLine("───────────────────────────────");
+
+            Console.ForegroundColor = ConsoleColor.Red;
+            Console.WriteLine($"공격력 : {player.Attack}");
+            Console.ForegroundColor = ConsoleColor.DarkGreen;
+            Console.WriteLine($"방어력 : {player.Defense}");
+            Console.ForegroundColor = ConsoleColor.Yellow;
+            Console.WriteLine($"골드   : {player.Gold} G");
+            Console.WriteLine();
+
+            Console.ForegroundColor = ConsoleColor.Cyan;
+            Console.WriteLine("═══════════════════════════════════════════════");
+            Console.ResetColor();
+            Console.WriteLine("아무 키나 눌러 돌아가기...");
+            Console.ReadKey(true);
         }
 
 
@@ -721,7 +756,7 @@ namespace Text_RPG_11
             ShowBattleLog();
         }
 
-        private void ShowPlayerStatus()
+        private void ShowPlayerStatus() // 배틀중에 띄울 스테이터스
         {
             var player = gameManager.Player;
 
@@ -732,7 +767,7 @@ namespace Text_RPG_11
             Console.WriteLine();
             Console.Write("MP ");
             ShowMPBar(player.MP, player.MaxMP);
-
+            Console.WriteLine();
             Console.WriteLine($"Gold: {player.Gold}  Exp: {player.Exp}");
         }
 
