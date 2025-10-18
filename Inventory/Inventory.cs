@@ -1,246 +1,141 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Text_RPG_11
 {
     public class Inventory
     {
         private GameManager gameManager;
-        public Items[] EquipSlots { get; private set; }
-        public const int MAX_EQUIP_SLOTS = 7;
-        public List<Items> Bag { get; private set; }
-        public enum SlotType
-        {
-            Item1 = 0,
-            Item2 = 1,
-            Item3 = 2,
-            Item4 = 3,
-            Item5 = 4,
-            Item6 = 5,
-            Potion = 6
-        }
+        public List<Items> Items { get; private set; }
 
         public Inventory(GameManager manager)
         {
             gameManager = manager;
-            EquipSlots = new Items[MAX_EQUIP_SLOTS];
-            Bag = new List<Items>();
+            Items = new List<Items>();
         }
 
-        #region 아이템 추가 기능
-        public void AddItem(Items item) //EquipSlots에 아이템 추가
+        #region 아이템 추가
+        public void AddItem(Items item)
         {
-            if (item is Potion newPotion) //포션이면 수량 합치기
+            if(item == null) //입력한 값이 null 이라면 return
             {
-                int potionSlot = (int)SlotType.Potion;
-
-                if (EquipSlots[potionSlot] is Potion existingPotion && existingPotion.Name == newPotion.Name)
-                {
-                    existingPotion.PotionCount += newPotion.PotionCount;
-                    return;
-                }
-                else if (EquipSlots[potionSlot] == null)
-                {
-                    EquipSlots[potionSlot] = newPotion;
-                    newPotion.IsPurchased = true;
-                }
-
                 return;
             }
 
-            for (int i = (int)SlotType.Item1; i <= (int)SlotType.Item6; i++) //비어있는 슬롯에 아이템 넣기
+            if(item is Potion newPotion) //입력한 값이 포션인지 체크
             {
-                if (EquipSlots[i] == null)
+                Potion existing = null; //기존 포션을 넣을 변수. 기본값은 null
+
+                foreach (var i in Items) //Items 리스트 순회, i는 리스트의 각 항목
                 {
-                    EquipSlots[i] = item;
-                    item.IsPurchased = true;
-                    return;
+                    if(i is Potion p && p.ItemId == newPotion.ItemId) //i가 포션일경우 p에 저장, p의 id와 입력한 값의 id가 같다면
+                    {
+                        existing = p; //existing에 p를 저장
+                        break; //찾았으니 순회 중단
+                    }
+                }
+
+                if(existing != null) //existing 이 null 이 아니라면
+                {
+                    existing.PotionCount += newPotion.PotionCount; //기존 포션 개수에 새 포션의 수량을 더한다.
+                    return; //합쳤으니 메소드 종료
+                }
+                else
+                {
+                    newPotion.IsPurchased = true; //existing이 null이라면 새 포션을 구매 상태로 변경
                 }
             }
+
+            item.IsPurchased = true;
+            Items.Add(item); //포션이 아니라면 리스트에 새 아이템 추가
         }
         #endregion
 
-        //public Items GetItemById(int itemId) //id로 아이템 검색하기
-        //{
-        //    foreach (var item in EquipSlots) //장착 슬롯에서 검색
-        //    {
-        //        if(item != null && item.Get)
-        //    }
-
-        //    return Bag.FirstOrDefault(i => i.)
-        //}
-        //}
-
-        //public int GetItemQuantity(int itemId) //아이템 수량 확인
-        //{
-
-        //}
-
-        //public void RemoveItem(int itemId) //아이템 제거
-        //{
-
-        //}
-
-        //public bool IsFull() //아이템 꽉찼는지
-        //{
-
-        //}
-
-        //public int? GetEmptySlotIndex() //비어있는 칸 찾기
-        //{
-
-        //}
-
-        //public void SortItems() //정렬기능
-        //{
-
-        //}
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-        public void ShowInventoryDisplay()
+        #region 아이템 제거
+        public bool RemoveItem(Items item, int quantity = 1)
         {
-            Console.Clear();
-            Messages.TextTitleHlight("인벤토리");
-            Console.WriteLine("보유 중인 아이템을 관리할 수 있습니다.\n\n[아이템 목록]");
-
-            for (int i = 0; i < gameManager.GameItems.Length; i++)
+            if(item == null)
             {
-                Items items = gameManager.GameItems[i];
+                return false;
+            }
 
-                if (items.IsPurchased == true) //보유중인 아이템만 출력
+            if (item.IsEquipped)
+            {
+                return false;
+            }
+
+            if(item is Potion p)
+            {
+                if (p.PotionCount > quantity)
                 {
-                    Console.Write("- ");
-                    Messages.TextMagentaHlight($"{i + 1} ");
-                    Messages.Equipped(items.IsEquipped);
-
-                    if(items is Potion potion && potion.PotionCount > 0) //포션을 0개 이상 보유중이면 개수 출력
-                    {
-                        Console.WriteLine($"{items.Name} x{potion.PotionCount}\t | {items.ItemStats()}\t | ");
-                    }
-                    else
-                    {
-                        Console.WriteLine($" {items.Name}\t | {items.ItemStats()}\t |");
-                    }
+                    p.PotionCount -= quantity;
+                    return true;
+                }
+                else
+                {
+                    return Items.Remove(p);
                 }
             }
 
-            Console.WriteLine();
-            Messages.TextMagentaHlight("1");
-            Console.WriteLine(". 장착 관리");
-            Messages.TextMagentaHlight("2");
-            Console.WriteLine(". 아이템 정렬");
-            Messages.TextMagentaHlight("0");
-            Console.WriteLine(". 나가기\n\n원하시는 행동을 입력해주세요.\n>> ");
-
-            int intNumber = Messages.ReadInput(0, 2);
-
-            switch (intNumber)
-            {
-                case 0:
-                    gameManager.GameMain(); //메인으로
-                    break;
-
-                case 1:
-                    ItemEquipped(); //장착관리
-                    break;
-
-                case 2:
-                    //아이템 정렬
-                    break;  
-            }
+            return Items.Remove(item); //리스트에서 해당 아이템 제거
         }
+        #endregion
 
-        public void ItemEquipped()
+        #region 타입 별 필터링
+        public List<Weapon> GetWeapons()
         {
-            Console.Clear();
-            Messages.TextTitleHlight("인벤토리 - 장착 관리");
-            Console.WriteLine("보유 중인 아이템을 관리할 수 있습니다.\n\n[아이템 목록]");
+            List<Weapon> weapons = new List<Weapon>();
 
-            for (int i = 0; i < gameManager.GameItems.Length; i++)
+            foreach (var item in Items)
             {
-                Items items = gameManager.GameItems[i];
-
-                if (items.IsPurchased == true && items.ItemType() != "물약") //물약 타입 제외하고 출력
+                if (item is Weapon weapon)
                 {
-                    Console.Write("- ");
-                    Messages.TextMagentaHlight($"{i + 1} ");
-                    Messages.Equipped(items.IsEquipped);
-                    Console.WriteLine($" {items.Name}\t | {items.ItemStats()}\t");
+                    weapons.Add(weapon);
                 }
             }
 
-            Console.WriteLine();
-            Messages.TextMagentaHlight("0");
-            Console.Write(". 나가기\n\n원하시는 행동을 입력해주세요.\n>> ");
-
-            int intNumber = Messages.ReadInput(0, gameManager.GameItems.Length);
-
-            switch (intNumber)
-            {
-                case 0:
-                    ShowInventoryDisplay(); //인벤토리로 돌아가기
-                    return;
-
-                default:
-                    int itemIndex = intNumber - 1;
-                    Items selectItem = gameManager.GameItems[itemIndex];
-
-                    if (!selectItem.IsEquipped)
-                    {
-                        foreach(var items in gameManager.GameItems)
-                        {
-                            if(items.ItemType() == selectItem.ItemType())
-                            {
-                                items.IsEquipped = false; //같은 타입 장착 해제
-                            }
-                        }
-
-                        selectItem.IsEquipped = true; //아이템 장착
-                    }
-                    else
-                    {
-                        selectItem.IsEquipped = false; //장착된 걸 선택하면 장착 해제
-                    }
-
-                    gameManager.Player.StatUpdate(gameManager);
-                    ItemEquipped();
-                    break;
-
-            }
+            return weapons;
         }
 
+        public List<Armor> GetArmors()
+        {
+            List<Armor> armors = new List<Armor>();
 
+            foreach (var item in Items)
+            {
+                if( item is Armor armor)
+                {
+                    armors.Add(armor);
+                }
+            }
+
+            return armors;
+        }
+
+        public List<Potion> GetPotions()
+        {
+            List<Potion> potions = new List<Potion>();
+
+            foreach (var item in Items)
+            {
+                if(item is Potion potion)
+                {
+                    potions.Add(potion);
+                }
+            }
+
+            return potions;
+        }
+        #endregion
+
+        #region 아이템 정렬
+        public void SortItems()
+        {
+            Items = Items.OrderBy(i => i.ItemType())
+                .ThenBy(i => i.Name)
+                .ToList();
+        }
+        #endregion
     }
 }
