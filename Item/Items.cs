@@ -14,16 +14,14 @@ namespace Text_RPG_11
         public int Price { get; set; } // 아이템 가격
         public bool IsEquipped { get; set; } //아이템 장착 유무
         public bool IsPurchased { get; set; } // 아이템 구매 유무
-        public int Quantity {  get; set; } //아이템 개수
         public List<string> EquipableJobs { get; set; }
 
-        public Items(string name, int price, bool isEquipped = false, bool isPurchased = false, int quantity = 1)
+        public Items(string name, int price, bool isEquipped = false, bool isPurchased = false)
         {
             Name = name;
             Price = price;
             IsEquipped = isEquipped;
             IsPurchased = isPurchased;
-            Quantity = quantity;
         }
 
         public abstract string ItemType();
@@ -124,56 +122,46 @@ namespace Text_RPG_11
         {
             return $"체력 회복 +{HealPower}";
         }
-
-        //public void UsePotion(Player player) //포션 사용 기능
-        //{
-        //    //포션 개수 ui 출력도 여기서?
-
-        //    int healAmount = Math.Min(HealPower, player.MaxHP - player.HP);
-        //    player.HP += healAmount;
-        //    PotionCount--;
-
-        //    //회복 대사 출력
-
-        //    if (PotionCount == 0)
-        //    {
-        //        IsPurchased = false;
-        //    }
-        //}
     }
-    public class Material : Items
-    {
-        public int AttackPower { get; }
-        public int DefensePower { get; }
-        public int ItemHp { get; }
-        public int ItemMp { get; }
-        public bool IsStackable { get; } = true;
-        public int MaxStack { get; } = 99;
 
-        public Material(string name, int attackPower, int defensePower, int price, int itemHp, int itemMp, bool isEquipped = false, bool isPurchased = false) : base(name, price, isEquipped, isPurchased)
-        {
-            AttackPower = attackPower;
-            DefensePower = defensePower;
-            ItemHp = itemHp;
-            ItemMp = itemMp;
-        }
+    //#region 재료 아이템 관련 (사용 안함)
+    //public class Material : Items
+    //{
+    //    public int AttackPower { get; }
+    //    public int DefensePower { get; }
+    //    public int ItemHp { get; }
+    //    public int ItemMp { get; }
+    //    public bool IsStackable { get; set; }
+    //    public int MaxStack { get; set; }
 
-        public override string ItemType()
-        {
-            return "재료";
-        }
+    //    public Material(string name, int attackPower, int defensePower, int price, int itemHp, int itemMp, bool isEquipped = false, bool isPurchased = false, bool isStackable = true, int maxStack = 99) : base(name, price, isEquipped, isPurchased)
+    //    {
+    //        AttackPower = attackPower;
+    //        DefensePower = defensePower;
+    //        ItemHp = itemHp;
+    //        ItemMp = itemMp;
+    //        IsStackable = isStackable;
+    //        MaxStack = maxStack;
+    //        Quantity = 1;
+    //    }
 
-        public override string ItemStats()
-        {
-            List<string> stats = new List<string>();
+    //    public override string ItemType()
+    //    {
+    //        return "재료";
+    //    }
 
-            if (AttackPower > 0) stats.Add($"공격력 +{AttackPower}");
-            if (DefensePower > 0) stats.Add($"방어력 +{DefensePower}");
-            if (ItemHp > 0) stats.Add($"체력 +{ItemHp}");
-            if (ItemMp > 0) stats.Add($"마나 +{ItemMp}");
+    //    public override string ItemStats()
+    //    {
+    //        List<string> stats = new List<string>();
 
-            return stats.Count > 0 ? string.Join(", ", stats) : "효과 없음";
-        }
-    }
+    //        if (AttackPower > 0) stats.Add($"공격력 +{AttackPower}");
+    //        if (DefensePower > 0) stats.Add($"방어력 +{DefensePower}");
+    //        if (ItemHp > 0) stats.Add($"체력 +{ItemHp}");
+    //        if (ItemMp > 0) stats.Add($"마나 +{ItemMp}");
+
+    //        return stats.Count > 0 ? string.Join(", ", stats) : "효과 없음";
+    //    }
+    //}
+    //#endregion
 }
 

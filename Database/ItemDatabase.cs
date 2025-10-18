@@ -20,34 +20,34 @@ namespace Text_RPG_11
 
         static ItemDatabase()
         {
-            InitDatabase();
-        }
-
-        private static void InitDatabase()
-        {
             cachedItems = LoadItems();
-
-            foreach (var item in cachedItems.items)
-            {
-                itemOriginals[item.id] = item;
-            }
-
-            foreach (var potion in cachedItems.potions)
-            {
-                potionOriginals[potion.id] = potion;
-            }
         }
 
-        public static ItemDataContainer LoadItems()
+        private static ItemDataContainer LoadItems()
         {
             try
             {
+                if (!File.Exists(itemDataPath))
+                {
+                    Console.WriteLine($"items.json을 찾을 수 없습니다: {itemDataPath}");
+                    return GetDefaultContainer();
+                }
+
                 string json = File.ReadAllText(itemDataPath);
-                return JsonConvert.DeserializeObject<ItemDataContainer>(json);
+                var container = JsonConvert.DeserializeObject<ItemDataContainer>(json);
+
+                if(container == null || container.items == null)
+                {
+                    Console.WriteLine("아이템 데이터 파싱 실패");
+                    return GetDefaultContainer();
+                }
+
+                Console.WriteLine($"아이템 로드 완료: {container.items.Count}개");
+                return container;
             }
-            catch (Exception ex)
+            catch(Exception ex)
             {
-                Console.WriteLine($"아이템 데이터 로드 오류:{ex.Message}");
+                Console.WriteLine($"아이템 로드 오류: {ex.Message}");
                 return GetDefaultContainer();
             }
         }
@@ -56,22 +56,22 @@ namespace Text_RPG_11
         {
             return new ItemDataContainer
             {
-                craftingConfig = new CraftingConfig { alwaysSuccess = true },
                 items = new List<ItemDataBase>(),
                 potions = new List<PotionData>(),
                 rarityInfo = new Dictionary<string, RarityInfo>()
             };
         }
 
-        #region 아이템 반환 메서드 (복제본)
         public static Items GetItemById(int itemId)
         {
-            if (itemOriginals.TryGetValue(itemId, out var itemData))
+            var itemData = cachedItems.items.FirstOrDefault(i => i.id ==itemId);
+            if(itemData != null)
             {
                 return CreateItemFromData(itemData);
             }
 
-            if (potionOriginals.TryGetValue(itemId, out var potionData))
+            var potionData = cachedItems.potions.FirstOrDefault(p => p.id == itemId);
+            if(potionData != null)
             {
                 return CreatePotionFromData(potionData);
             }
@@ -82,7 +82,6 @@ namespace Text_RPG_11
         public static Items GetItemByName(string name)
         {
             var itemData = cachedItems.items.FirstOrDefault(i => i.name == name);
-
             if (itemData != null)
             {
                 return CreateItemFromData(itemData);
@@ -97,42 +96,23 @@ namespace Text_RPG_11
             return null;
         }
 
-        public static Weapon GetWeapon(string name)
-        {
-            var item = GetItemByName(name);
-            return item as Weapon;
-        }
-
-        public static Armor GetArmor(string name)
-        {
-            var item = GetItemByName(name);
-            return item as Armor;
-        }
-
-        public static Potion GetPotion(string name)
-        {
-            var item = GetItemByName(name);
-            return item as Potion;
-        }
-
-        public static Material GetMaterial(string name)
-        {
-            var item = GetItemByName(name);
-            return item as Material;
-        }
-        #endregion
-
-        #region 획득 경로별 아이템 목록
-        public static List<Items> GetShopItems() //상점 아이템
+        public static List<Items> GetShopItems()
         {
             List<Items> shopItems = new List<Items>();
 
-            foreach (var item in cachedItems.items.Where(i => i.obtainMethods.Contains("shop")))
+            // 무기/방어구 중 상점 판매 아이템
+            foreach (var item in cachedItems.items.Where(i =>
+                i.obtainMethods != null &&
+                i.obtainMethods.Contains("shop") &&
+                (i.type == "무기" || i.type == "방어구")))  // ⭐ 재료 제외
             {
                 shopItems.Add(CreateItemFromData(item));
             }
 
-            foreach(var potion in cachedItems.potions.Where(p => p.obtainMethods.Contains("shop")))
+            // 포션
+            foreach (var potion in cachedItems.potions.Where(p =>
+                p.obtainMethods != null &&
+                p.obtainMethods.Contains("shop")))
             {
                 shopItems.Add(CreatePotionFromData(potion));
             }
@@ -140,92 +120,47 @@ namespace Text_RPG_11
             return shopItems;
         }
 
-        public static List<Items> GetCraftableItems() //합성 아이템
+        public static List<Items> GetDungeonItems()
         {
-            List<Items> craftableItems = new List<Items>();
+            List<Items> dungeonItems = new List<Items>();
 
-            foreach(var item in cachedItems.items.Where(i => i.crafting))
+            foreach (var item in cachedItems.items.Where(i =>
+                i.obtainMethods != null &&
+                i.obtainMethods.Contains("dungeon") &&
+                (i.type == "무기" || i.type == "방어구")))
             {
-                craftableItems.Add(CreateItemFromData(item));
+                dungeonItems.Add(CreateItemFromData(item));
             }
 
-            return craftableItems;
+            foreach (var potion in cachedItems.potions.Where(p =>
+                p.obtainMethods != null &&
+                p.obtainMethods.Contains("dungeon")))
+            {
+                dungeonItems.Add(CreatePotionFromData(potion));
+            }
+
+            return dungeonItems;
         }
 
-        public static List<Items> GetItemsByRarity(string rarity) //등급 별 아이템
+        public static List<Items> GetItemsByRarity(string rarity)
         {
             List<Items> items = new List<Items>();
 
-            foreach (var item in cachedItems.items.Where(i=>i.rarity == rarity))
+            foreach (var item in cachedItems.items.Where(i =>
+                i.rarity == rarity &&
+                (i.type == "무기" || i.type == "방어구")))
             {
                 items.Add(CreateItemFromData(item));
             }
 
-            foreach(var potion in cachedItems.potions.Where(p=>p.rarity == rarity))
+            foreach (var potion in cachedItems.potions.Where(p => p.rarity == rarity))
             {
                 items.Add(CreatePotionFromData(potion));
             }
 
             return items;
         }
-        #endregion
 
-        #region 합성 관련
-
-        public static bool CanCraft(int itemId, Dictionary<int, int> ownedItems, int playerGold)
-        {
-            if (!itemOriginals.TryGetValue(itemId, out var itemData))
-            {
-                return false;
-            }
-
-            if (!itemData.crafting || itemData.craftingRecipe == null)
-            {
-                return false;
-            }
-
-            var rarityInfo = GetRarityInfo(itemData.rarity);
-            if (playerGold < rarityInfo.craftingGoldCost)
-            {
-                return false;
-            }
-
-            foreach (var requird in itemData.craftingRecipe.requiredItems)
-            {
-                if (!ownedItems.ContainsKey(requird.itemId) || ownedItems[requird.itemId] < requird.quantity)
-                {
-                    return false;
-                }
-            }
-
-            return true;
-        }
-
-        public static CraftingRecipe GetCraftingRecipe(int itemId)
-        {
-            if(itemOriginals.TryGetValue(itemId, out var itemData))
-            {
-                return itemData.craftingRecipe;
-            }
-
-            return null;
-        }
-        #endregion
-
-        #region 등급 정보
-        public static RarityInfo GetRarityInfo(string rarity)
-        {
-            if (cachedItems.rarityInfo.ContainsKey(rarity))
-            {
-                return cachedItems.rarityInfo[rarity];
-            }
-
-            return null;
-        }
-
-        #endregion
-
-        #region 데이터 변환 메서드
         private static Items CreateItemFromData(ItemDataBase data)
         {
             switch (data.type)
@@ -256,18 +191,7 @@ namespace Text_RPG_11
                         EquipableJobs = data.equipJob
                     };
 
-                case "재료":
-                    return new Material(
-                        name: data.name,
-                        attackPower: data.attackPower,
-                        defensePower: data.defensePower,
-                        price: data.price,
-                        itemHp: data.itemHp,
-                        itemMp: data.itemMp)
-                    {
-                        ItemId = data.id
-                    };
-
+                // ⭐ 재료는 무시 (사용 안 함)
                 default:
                     return null;
             }
@@ -284,7 +208,5 @@ namespace Text_RPG_11
                 ItemId = data.id
             };
         }
-
-        #endregion
     }
 }
