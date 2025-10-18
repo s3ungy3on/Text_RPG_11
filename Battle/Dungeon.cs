@@ -559,10 +559,12 @@ namespace Text_RPG_11
         // 플레이어 승리 시 출력
         public void Victory()
         {
+            _battle.ClearReward();
+            _battle.Stage++;
+            _battle.ClearRewardItem();
+            
             while (true)
             {
-                _battle.ClearReward();
-                _battle.Stage++;
                 Console.WriteLine("Battle!! - Result\n");
                 Console.WriteLine("Victory\n");
                 Console.WriteLine($"던전에서 몬스터 {_battle.Enemies.Count}마리를 잡았습니다.\n");
@@ -571,10 +573,21 @@ namespace Text_RPG_11
                 Console.WriteLine($"Lv.{_gameManager.Player.Level} Chad ({_gameManager.Player.Job})");
                 Console.WriteLine($"HP {_battle.PlayerInitialHP} -> {_gameManager.Player.HP}\n");
                 
-                // 1. 획득 아이템 출력
+                
                 Console.WriteLine("[획득 아이템]");
+                // 1. 획득 골드 출력
                 Console.WriteLine($"{_battle.RewardGold} Gold\n");
-            
+                
+                // 2. 획득 아이템 출력
+                foreach (var rewardItem in _battle.RewardItems)
+                {
+                    var item = _gameManager.GameItems.FirstOrDefault(i => i.ItemId == rewardItem.itemId);
+                    
+                    if (item != null) 
+                        Console.WriteLine($"{item.Name}");
+                }
+                
+                // 배틀 종료
                 Console.WriteLine($"0. 다음\n");
             
                 Console.Write(">> ");
