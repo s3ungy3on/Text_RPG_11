@@ -77,7 +77,12 @@ namespace Text_RPG_11
         public List<Monster> SkillHitsEnemies = new List<Monster>(); // 스킬로 공격 받은 몬스터 리스트
         public List<int> AtkRand_SkillHitsEnemies =  new List<int>(); // 스킬로 공격 받은 몬스터가 받은 데미지 리스트
         
+        public List<RewardData.DungeonRewardItem> RewardItems = new List<RewardData.DungeonRewardItem>(); // 보상용 아이템을 담는 리스트
+        
         private GameManager _gameManager;
+        private RewardData.RewardDataContainer _rewardContainer = new RewardData.RewardDataContainer();
+
+        private Random rand = new Random();
 
         private Skill skillForAttack;
         
@@ -101,8 +106,6 @@ namespace Text_RPG_11
             BattleState = BattleResult.InProgress; // 기본 배틀 상태는 InProgress
 
             Enemies.Clear(); // 몬스터 리스트 초기화
-            
-            Random random = new Random();
 
             // 25층 이하일 경우 몬스터 스폰 1~5마리
             // 25층 이상일 경우 몬스터 스폰 1~11마리
@@ -119,15 +122,15 @@ namespace Text_RPG_11
             };
             
             // 1. 몬스터 수 생성
-            int spawnNum = random.Next(spawnNumMin, spawnNumMax);
+            int spawnNum = rand.Next(spawnNumMin, spawnNumMax);
             
             for (int i = 0; i < spawnNum; i++)
             {
                 // 2. 등장할 몬스터 랜덤 선택
-                Enemies.Add(Monsters[random.Next(0, Monsters.Count)]);
+                Enemies.Add(Monsters[rand.Next(0, Monsters.Count)]);
                 
                 // 3. 몬스터 레벨 설정
-                int enemyLevel = random.Next(Stage - (int)Math.Round(Stage * 10.0 / 100.0),
+                int enemyLevel = rand.Next(Stage - (int)Math.Round(Stage * 10.0 / 100.0),
                     Stage + (int)Math.Round(Stage * 10.0 / 100.0));
 
                 Enemies[i].Level = enemyLevel;
@@ -142,8 +145,6 @@ namespace Text_RPG_11
         // 플레이어 공격(평타)
         public void Attack(int enemyIndex)
         {
-            Random rand = new Random();
-            
             int criticalPercent = rand.Next(1, 100);
             // 공격 오차 범위
             AtkRandInput = (int)Math.Round(_gameManager.Player.MaxAttack * 0.1);
@@ -477,7 +478,6 @@ namespace Text_RPG_11
         // Enemy가 사용자 공격
         public void EnemyTurn()
         {
-            Random rand = new Random();
             int missPercent = rand.Next(1, 101);
 
             // 10퍼센트 확률로 공격 미스
@@ -533,12 +533,25 @@ namespace Text_RPG_11
             _gameManager.Player.MP += (int)Math.Round(_gameManager.Player.DefaultMP * (10.0 / 100.0));
         }
 
+        // 던전 클리어 보상 아이템 지급
+        public void ClearRewardItem()
+        {
+            int itemPercent = rand.Next(1, 101);
+            
+            // 1. stage에 맞는 아이템 그룹 확인
+            var stageItem = _rewardContainer.dungeonRewards.Find(d => Stage >= d.stageRange[0] && Stage <= d.stageRange[1]);
+            if (stageItem == null) return;
+            
+            // 2. 확률에 따라 보상 아이템 추가
+            foreach (var item in stageItem.rewardItems)
+                if (item.dropChance >= itemPercent)
+                    RewardItems.Add(item);
+        }
+        
         /*public void ClearRewardItem()
         {
             List<Items> GetItems = new List<Items>(); // 모든 아이템을 하나씩 담는 리스트
             List<Items> RewardItems = new List<Items>(); // 보상으로 출력할 아이템을 담는 리스트
-            
-            Random rand = new Random();
 
             for (int i = 0; i < Enemies.Count; i++)
             {
