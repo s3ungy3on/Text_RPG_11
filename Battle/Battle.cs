@@ -7,13 +7,14 @@ using System.Threading;
 using System.Threading.Tasks;
 using System.Threading.Tasks.Dataflow;
 using System.IO;
+using System.Reflection.Metadata.Ecma335;
 using System.Text.Json;
 using Text_RPG_11;
 
 
 namespace Text_RPG_11
 {
-    internal class Battle
+    public class Battle
     {
         // 담은 몬스터에 관련된 변수명은 enemy로 통일, 담기 전 몬스터에 관련된 변수명은 monster로 통일
         // 변경 사항 + 추가 기능에 따라 수정해야 할 사항은 "추가 수정 필요" 로 주석 달아둠
@@ -78,11 +79,14 @@ namespace Text_RPG_11
         public List<Monster> SkillHitsEnemies = new List<Monster>(); // 스킬로 공격 받은 몬스터 리스트
         public List<(Monster EnemyHits, int EnemyHpHit)> HitsEnemies = new List<(Monster, int)>(); // 스킬로 공격 받은 몬스터 hp 리스트
         // public List<int> AtkRand_SkillHitsEnemies =  new List<int>(); // 스킬로 공격 받은 몬스터가 받은 데미지 리스트
+
+        private int currentStage; // 현재 스테이지
+        public DungeonRewardData stageItem; // stageItem을 받아옴
         
-        public List<RewardData.DungeonRewardItem> RewardItems = new List<RewardData.DungeonRewardItem>(); // 보상용 아이템을 담는 리스트
+        public List<DungeonRewardItem> RewardItems = new List<DungeonRewardItem>(); // 보상용 아이템을 담는 리스트
         
         private GameManager _gameManager;
-        private RewardData.RewardDataContainer _rewardContainer = new RewardData.RewardDataContainer();
+        private RewardDataContainer _rewardContainer = new RewardDataContainer();
 
         private Random rand = new Random();
 
@@ -100,12 +104,15 @@ namespace Text_RPG_11
         public Battle(GameManager manager)
         {
             _gameManager = manager;
+            // currentStage = this.Stage;
+            stageItem = RewardDatabase.GetDungeonRewardByStage(this.Stage);
         }
 
         public class Cooldown
         {
             public Skill Skill;
             public int RemainingCooldown;
+            public bool IsFirstTurn = true;
         }
 
         public class BuffDuration
@@ -349,12 +356,34 @@ namespace Text_RPG_11
         {
             for (int i = CooldownList.Count - 1; i >= 0; i--)
             {
+                var skillInPlayer = PlayerSkills.FirstOrDefault(s => s.Name == CooldownList[i].Skill.Name);
+
                 if (CooldownList[i].RemainingCooldown == 0)
+                {
+                    if (skillInPlayer != null)
+                        skillInPlayer.CurrentCooldown = 0;
                     CooldownList.RemoveAt(i);
+                }
                 else
-                    CooldownList[i].RemainingCooldown--;
+                {
+                    // 첫 턴이 아닐 때만 감소, 첫 턴은 유지
+                    if (!CooldownList[i].IsFirstTurn)
+                    {
+                        CooldownList[i].RemainingCooldown--;
+                    }
+                    else
+                    {
+                        CooldownList[i].IsFirstTurn = false; // 플래그 해제
+                    }
+
+                    // Skill 내 CurrentCooldown과 동기화
+                    if (skillInPlayer != null)
+                        skillInPlayer.CurrentCooldown = CooldownList[i].RemainingCooldown;
+                }
             }
         }
+
+
         
         // 지속시간 체크
         public void DurationEnd()
@@ -422,7 +451,7 @@ namespace Text_RPG_11
         public void EnemyTurn()
         {
             int missPercent = rand.Next(1, 101);
-
+            
             // 10퍼센트 확률로 공격 미스
             // 차후 Player dodgeChance에 맞춰 추후 수정 필요
             if (missPercent <= 10)
@@ -433,8 +462,9 @@ namespace Text_RPG_11
             {
                 if (Enemies[Index].HP > 0)
                 {
-                    // 플레이어 체력 > 깎인 체력
-                    _gameManager.Player.HP -= (Enemies[Index].Attack - (int)Math.Round(_gameManager.Player.MaxDefense));
+                    if(Enemies[Index].Attack - (int)Math.Round(_gameManager.Player.MaxDefense) > 0)
+                        // 플레이어 체력 > 깎인 체력
+                        _gameManager.Player.HP -= (Enemies[Index].Attack - (int)Math.Round(_gameManager.Player.MaxDefense));
                 }
                 else
                 {
@@ -479,16 +509,39 @@ namespace Text_RPG_11
         // 던전 클리어 보상 아이템 지급
         public void ClearRewardItem()
         {
+            int itemGroupPercent = rand.Next(1, 101);
             int itemPercent = rand.Next(1, 101);
             
-            // 1. stage에 맞는 아이템 그룹 확인
+            if (stageItem == null) return;
+            
+            foreach (var group in stageItem.rewardGroups)
+            {
+                if (itemGroupPercent <= group.groupChance)
+                {
+                    if (group.items != null)
+                    {
+                        foreach (var item in group.items)
+                        {
+                            if (itemPercent <= item.dropChance)
+                            {
+                                RewardItems.Add(item);
+                            }
+                        }
+                    }
+                }
+            }
+            
+            /*// 1. stage에 맞는 아이템 그룹 확인
             var stageItem = _rewardContainer?.dungeonRewards?.Find(d => Stage >= d.stageRange[0] && Stage <= d.stageRange[1]);
-            if (stageItem == null || stageItem.rewardItems == null) return; // null이면 바로 종료
+            if (stageItem == null) return; // null이면 바로 종료
   
             // 2. 확률에 따라 보상 아이템 추가
             foreach (var item in stageItem.rewardItems)
                 if (item.dropChance >= itemPercent)
-                    RewardItems.Add(item);
+                    RewardItems.Add(item);*/
+            
+            // int cumulativeChance = 0;
+            // RewardDatabase.DungeonReward SelectGroup = null;
         }
         
         /*public void ClearRewardItem()
