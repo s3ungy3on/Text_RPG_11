@@ -11,10 +11,12 @@ namespace Text_RPG_11
     {
         public int ItemId {  get; set; }
         public string Name { get; } // 아이템 이름
+        public string Rarity { get; set; } //아이템 등급
         public int Price { get; set; } // 아이템 가격
         public bool IsEquipped { get; set; } //아이템 장착 유무
         public bool IsPurchased { get; set; } // 아이템 구매 유무
         public List<string> EquipableJobs { get; set; }
+
 
         public Items(string name, int price, bool isEquipped = false, bool isPurchased = false)
         {

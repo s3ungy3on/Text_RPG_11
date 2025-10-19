@@ -2825,32 +2825,32 @@
   "rarityInfo": {
     "common": {
       "displayName": "일반",
-      "color": "#FFFFFF",
+      "color": "White",
       "craftingGoldCost": 0
     },
     "rare": {
       "displayName": "레어",
-      "color": "",
+      "color": "Blue",
       "craftingGoldCost": 500
     },
     "epic": {
       "displayName": "에픽",
-      "color": "",
+      "color": "Magenta",
       "craftingGoldCost": 1000
     },
     "legend": {
       "displayName": "전설",
-      "color": "",
+      "color": "Yellow",
       "craftingGoldCost": 2000
     },
     "myth": {
       "displayName": "신화",
-      "color": "",
+      "color": "Cyan",
       "craftingGoldCost": 3000
     },
     "transcended": {
       "displayName": "초월",
-      "color": "",
+      "color": "Red",
       "craftingGoldCost": 5000
     }
   }

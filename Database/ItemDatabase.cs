@@ -175,7 +175,8 @@ namespace Text_RPG_11
                         itemMp: data.itemMp)
                     {
                         ItemId = data.id,
-                        EquipableJobs = data.equipJob
+                        EquipableJobs = data.equipJob,
+                        Rarity = data.rarity
                     };
 
                 case "방어구":
@@ -188,10 +189,11 @@ namespace Text_RPG_11
                         itemMp: data.itemMp)
                     {
                         ItemId = data.id,
-                        EquipableJobs = data.equipJob
+                        EquipableJobs = data.equipJob,
+                        Rarity = data.rarity
                     };
 
-                // ⭐ 재료는 무시 (사용 안 함)
+                //재료는 무시 (사용 안 함)
                 default:
                     return null;
             }
@@ -205,8 +207,14 @@ namespace Text_RPG_11
                 price: data.price,
                 potionCount: 1)
             {
-                ItemId = data.id
+                ItemId = data.id,
+                Rarity = data.rarity
             };
+        }
+
+        public static Dictionary<string, RarityInfo> GetRarityInfo()
+        {
+            return cachedItems.rarityInfo;
         }
     }
 }
