@@ -27,6 +27,8 @@ namespace Text_RPG_11
 
         public void DungeonBattle()
         {
+            Console.WriteLine($"[던전 {_battle.Stage}층]");
+            
             while (_battle.BattleState == Battle.BattleResult.InProgress)
             {
                 // 1. 배틀 시작
@@ -88,6 +90,9 @@ namespace Text_RPG_11
                 Console.WriteLine($"{_battle.PlayerSkills[i].Description}");
                 Console.WriteLine($"{_battle.PlayerSkills[i].Desc}");
             }
+            
+            if (_battle.PlayerSkills.Count == 0)
+                Console.WriteLine("사용할 수 있는 스킬이 없습니다.");
         }
 
         // 공격 / 스킬 사용 선택
@@ -157,8 +162,15 @@ namespace Text_RPG_11
                 // 2. 몬스터 공격
                 if(_monsterNum > 0 && _monsterNum <= _battle.Enemies.Count)
                 {
-                    _battle.Attack(_monsterNum - 1);
-                    AttackTurnEnd();
+                    if (_battle.Enemies[_monsterNum - 1].IsDead)
+                    {
+                        Console.WriteLine("죽은 몬스터는 공격할 수 없습니다.");
+                    }
+                    else
+                    {
+                        _battle.Attack(_monsterNum - 1);
+                        AttackTurnEnd();
+                    }
                 }
                 else if (isWorked || _monsterNum == 0)
                 {
@@ -193,39 +205,52 @@ namespace Text_RPG_11
                 bool isWorked = int.TryParse(Console.ReadLine(), out _skillNum);
 
                 // 2. 스킬 선택
-                if(_skillNum > 0 && _skillNum <= _battle.PlayerSkills.Count)
+                if (_battle.PlayerSkills.Count > 0)
                 {
-                    // 선택한 스킬에 쿨타임이 남아 있다면 사용 불가능
-                    if (_battle.PlayerSkills[_skillNum - 1].CurrentCooldown != 0)
+                    if(_skillNum > 0 && _skillNum <= _battle.PlayerSkills.Count)
                     {
-                        Console.WriteLine($"쿨타임 {_battle.PlayerSkills[_skillNum - 1].CurrentCooldown}턴: 사용 불가");
-                    }
-                    else
-                    {
-                        // Hits(다중 타격)가 0 이상이거나, 스킬 타입이 힐 또는 버프거나, 스킬 타입이 공격+버프이고 다중 타격이 0인 경우 몬스터 선택 없이 진행
-                        if (_battle.PlayerSkills[_skillNum - 1].Hits > 0 || _battle.PlayerSkills[_skillNum - 1].Type == SkillType.Heal || _battle.PlayerSkills[_skillNum - 1].Type == SkillType.Buff || (_battle.PlayerSkills[_skillNum - 1].Hits > 0 && _battle.PlayerSkills[_skillNum - 1].Type == SkillType.AttackBuff))
+                        // 선택한 스킬에 쿨타임이 남아 있다면 사용 불가능
+                        if (_battle.PlayerSkills[_skillNum - 1].CurrentCooldown != 0)
                         {
-                            _monsterNum = 1;
-                            
-                            _battle.SkillSelect(_skillNum - 1);
-                            _battle.SkillUse(-1);
-                            
-                            SkillTurnEnd();
+                            Console.WriteLine($"쿨타임 {_battle.PlayerSkills[_skillNum - 1].CurrentCooldown}턴: 사용 불가");
                         }
                         else
                         {
-                            _battle.SkillSelect(_skillNum - 1);
-                            PlayerTurnSkill();
+                            // Hits(다중 타격)가 0 이상이거나, 스킬 타입이 힐 또는 버프거나, 스킬 타입이 공격+버프이고 다중 타격이 0인 경우 몬스터 선택 없이 진행
+                            if (_battle.PlayerSkills[_skillNum - 1].Hits > 1 || _battle.PlayerSkills[_skillNum - 1].Type == SkillType.Heal || _battle.PlayerSkills[_skillNum - 1].Type == SkillType.Buff || (_battle.PlayerSkills[_skillNum - 1].Hits > 1 && _battle.PlayerSkills[_skillNum - 1].Type == SkillType.AttackBuff))
+                            {
+                                _monsterNum = 1;
+                            
+                                _battle.SkillSelect(_skillNum - 1);
+                                _battle.SkillUse(-1);
+                            
+                                SkillTurnEnd();
+                            }
+                            else
+                            {
+                                _battle.SkillSelect(_skillNum - 1);
+                                PlayerTurnSkill();
+                            }
                         }
                     }
-                }
-                else if (isWorked || _monsterNum == 0)
-                {
-                    // 공격 or 스킬 재선택
-                    PlayerTurn();
+                    else if (isWorked && _skillNum == 0)
+                    {
+                        // 공격 or 스킬 재선택
+                        PlayerTurn();
+                    }
+                    else
+                        Console.WriteLine("잘못된 입력입니다.");
                 }
                 else
-                    Console.WriteLine("잘못된 입력입니다.");
+                {
+                    if (isWorked && _skillNum == 0)
+                    {
+                        // 공격 or 스킬 재선택
+                        PlayerTurn();
+                    }
+                    else
+                        Console.WriteLine("잘못된 입력입니다.");
+                }
             }
         }
         
@@ -250,11 +275,19 @@ namespace Text_RPG_11
             
                 bool isWorked = int.TryParse(Console.ReadLine(), out _monsterNum);
 
+                
                 // 2. 몬스터 공격
                 if(_monsterNum > 0 && _monsterNum <= _battle.Enemies.Count)
                 {
-                    _battle.SkillUse(_monsterNum - 1);
-                    SkillTurnEnd();
+                    if (_battle.Enemies[_monsterNum - 1].IsDead)
+                    {
+                        Console.WriteLine("죽은 몬스터는 공격할 수 없습니다.");
+                    }
+                    else
+                    {
+                        _battle.SkillUse(_monsterNum - 1);
+                        SkillTurnEnd();
+                    }
                 }
                 else if (isWorked || _monsterNum == 0)
                 {
@@ -309,7 +342,7 @@ namespace Text_RPG_11
                     while (true)
                     {
                         // 일반 타격 스크립트
-                        if (_battle.PlayerSkills[_skillNum - 1].Hits == 0)
+                        if (_battle.PlayerSkills[_skillNum - 1].Hits <= 1)
                         {
                             while (true)
                             {
@@ -317,8 +350,8 @@ namespace Text_RPG_11
                                 Console.WriteLine("\nBattle!!\n");
             
                                 Console.WriteLine($"{_gameManager.Player.Name}의 공격!");
-                                Console.WriteLine($"Lv.{_battle.Enemies[_monsterNum - 1].Level} {_battle.Enemies[_monsterNum - 1].Name}을(를) 맞췄습니다. [데미지 : {_battle.AtkRand}]\n");
-                
+                                Console.WriteLine($"Lv.{_battle.Enemies[_monsterNum - 1].Level} {_battle.Enemies[_monsterNum - 1].Name}을(를) 맞췄습니다. [데미지 : {_battle.FinalDamage}]\n");
+                                
                                 // 1. 플레이어 공격으로 몬스터 사망 시 Dead 처리
                                 if (_battle.Enemies[_monsterNum - 1].IsDead)
                                 {
@@ -348,22 +381,20 @@ namespace Text_RPG_11
                             {
                                 EnemyInfo();
                                 Console.WriteLine("\nBattle!!\n");
-            
-                                Console.WriteLine($"{_gameManager.Player.Name}의 공격!");
                                 
-                                foreach (var t in _battle.SkillHitsEnemies)
+                                for (int i = 0; i < _battle.SkillHitsEnemies.Count; i++)
                                 {
-                                    Console.WriteLine($"Lv. {t.Level} {t.Name}");
-                                    Console.WriteLine($"Lv.{_battle.Enemies[_monsterNum - 1].Level} {_battle.Enemies[_monsterNum - 1].Name}을(를) 맞췄습니다. [데미지 : {_battle.SkillAtk}]\n");
+                                    Console.WriteLine($"{_gameManager.Player.Name}의 공격!");
+                                    Console.WriteLine($"Lv.{_battle.SkillHitsEnemies[i].Level} {_battle.SkillHitsEnemies[i].Name}을(를) 맞췄습니다. [데미지 : {_battle.SkillAtk}]\n");
+                                    
+                                    // 1. 플레이어 공격으로 몬스터 사망 시 Dead 처리
+                                    if (_battle.SkillHitsEnemies[i].IsDead)
+                                    {
+                                        Console.WriteLine($"Lv. {_battle.SkillHitsEnemies[i].Level} {_battle.SkillHitsEnemies[i].Name}");
+                                        Console.WriteLine($"HP {_battle.HitsEnemies[i].EnemyHpHit} -> Dead\n");
+                                    }
                                 }
                                 
-                                // 1. 플레이어 공격으로 몬스터 사망 시 Dead 처리
-                                if (_battle.Enemies[_monsterNum - 1].IsDead)
-                                {
-                                    Console.WriteLine($"Lv. {_battle.Enemies[_monsterNum - 1].Level} {_battle.Enemies[_monsterNum - 1].Name}");
-                                    Console.WriteLine($"HP {_battle.EnemyHP} -> Dead\n");
-                                }
-                
                                 // 2. 몬스터 턴 진행
                                 Console.WriteLine($"0. 다음\n");
                 
@@ -373,6 +404,10 @@ namespace Text_RPG_11
                 
                                 if (isWorked || result== 0)
                                 {
+                                    // 다음 턴 시작 전 다중 타격 리스트 클리어
+                                    _battle.SkillHitsEnemies.Clear();
+                                    _battle.HitsEnemies.Clear();
+                                    
                                     EnemyTurn();
                                 }
                                 else
@@ -481,7 +516,6 @@ namespace Text_RPG_11
                 case SkillType.AttackDebuff:
                     // 미완
                     break;
-                
             }
         }
 
