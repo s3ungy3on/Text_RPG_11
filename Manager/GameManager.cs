@@ -1,44 +1,40 @@
-﻿using Google.Apis.Sheets.v4.Data;
-using System;
+﻿using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Numerics;
 using System.Text;
+using System.Text.Json;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Threading.Tasks.Dataflow;
-using System.IO;
-using System.Text.Json;
 
 namespace Text_RPG_11
 {
-    internal class GameManager
+    public class GameManager
     {
-        private Player player;
-        private Inventory inventory;
-        private Shop shop;
+        public Player player { get; set; }
+        public Inventory inventory;
+        public Shop shop;
         private Dungeon dungeon;
-        private SaveManager saveManager;
-        private Skill skill;
-        private Quest quest;
-        private Monster monster;
-        private UIManager uiManager;
+        public Skill skill;
+        public Quest quest;
+        public Monster monster;
+        public UIManager uiManager;
         private Battle battle;
+        public RewardManager rewardManager;
 
         public Player Player => player;
-        public Items[] GameItems { get; private set; }
 
         public GameManager()
         {
-            GameItems = ItemDatabase.CreateItemsData();
             inventory = new Inventory(this);
             shop = new Shop(this);
             dungeon = new Dungeon(this);
-            saveManager = new SaveManager(this);
-            // skill = new Skill(this);
-            // quest = new Quest(this);
-            // monster = new Monster(this);
+            skill = new Skill(this);
+            quest = new Quest(this);
+            monster = new Monster(this);
             uiManager = new UIManager(this);
             battle = new Battle(this);
 
@@ -46,41 +42,40 @@ namespace Text_RPG_11
 
         public void GameStart()
         {
-            string jsonString = File.ReadAllText("jobs.json");
-
-            JobData? jobData = JsonSerializer.Deserialize<JobData>(jsonString);
-
-            Job? selectedJob = jobData.jobs.Find(j => j.name == "전사");
-
-            player = new Player
-            (
-                name: "",
-                level: 1,
-                job: selectedJob.name,
-                attack: selectedJob.baseStats.attack,
-                defense: selectedJob.baseStats.defense,
-                defaultHP: selectedJob.baseStats.hp,
-                defaultMP: selectedJob.baseStats.mp,
-                gold: selectedJob.baseStats.gold
-            );
-
+            ItemDatabase.GetShopItems();
             uiManager.Intro();
             GameMain();
+        }
+
+        public void CreatdPlayer(string name, Job job) //ui매니저에서 호출
+        {
+            player = new Player(name, job, inventory);
         }
 
         public void GameMain()
         {
             uiManager.MainScreen();
-        }
 
-        public void InventoryOpen()
-        {
-            inventory.ShowInventoryDisplay();
-        }
+            int choice = Messages.ReadInput(0, 5);
 
-        public void ShopOpen()
-        {
-            shop.ShowShopDisplay();
+            switch (choice)
+            {
+                case 0:
+                    Environment.Exit(0); //종료
+                    break;
+                case 1://상태보기
+                    break;
+                case 2://인벤토리
+                    uiManager.ShowInventoryDisplay(inventory);
+                    break;
+                case 3://탐험하기
+                    break;
+                case 4:
+                    uiManager.ShowShopDisplay();
+                    break;
+                case 5://휴식하기
+                    break;
+            }
         }
     }
 }

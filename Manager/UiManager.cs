@@ -941,5 +941,10 @@ namespace Text_RPG_11
         {
             inventory.ItemEquipped();
         }
+
+        public void ShowShopDisplay()
+        {
+
+        }
     }
 }
