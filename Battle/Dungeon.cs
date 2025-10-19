@@ -7,7 +7,7 @@ using Text_RPG_11;
 
 namespace Text_RPG_11
 {
-    internal class Dungeon
+    public class Dungeon
     {
         // 평타 관련 메서드는 이름에 Attack을 포함
         // 스킬 관련 메서드는 이름에 Skill을 포함
@@ -615,8 +615,10 @@ namespace Text_RPG_11
                 // 2. 획득 아이템 출력
                 foreach (var rewardItem in _battle.RewardItems)
                 {
-                    var item = _gameManager.GameItems.FirstOrDefault(i => i.ItemId == rewardItem.itemId);
-                    
+                    // var item = _gameManager.GameItems.FirstOrDefault(i => i.ItemId == rewardItem.itemId);
+                    // 추후 수정 예정
+                    var item = ItemDatabase.GetItemById(rewardItem.itemId);
+
                     if (item != null) 
                         Console.WriteLine($"{item.Name}");
                 }
