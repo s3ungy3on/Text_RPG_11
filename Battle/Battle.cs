@@ -18,7 +18,7 @@ namespace Text_RPG_11
         // 담은 몬스터에 관련된 변수명은 enemy로 통일, 담기 전 몬스터에 관련된 변수명은 monster로 통일
         // 변경 사항 + 추가 기능에 따라 수정해야 할 사항은 "추가 수정 필요" 로 주석 달아둠
         
-        public int Stage; // 던전 층
+        public int Stage = 1; // 던전 층
         
         public int PlayerInitialHP; // 플레이어 던전 진입 시 체력
         public int PlayerHP; // 플레이어 던전 진입 이후 턴 별 체력(에너미에게 공격 당하기 전)
@@ -29,6 +29,7 @@ namespace Text_RPG_11
         public int AtkRandInput; // 공격력 별 오차 범위
         public int AtkRand; // 오차 범위를 더한 공격력
 
+        public int FinalDamage; // 개체 타격 공격 스킬 사용 시 최종 데미지
         public int SkillAtk; // 다중 타격 공격 타입 스킬 사용 시 최종 데미지
         
         public int RewardExp; // 총 보상 계산
@@ -68,14 +69,15 @@ namespace Text_RPG_11
         };
         public List<Skill> PlayerSkills = new List<Skill>(); // 모든 스킬 중 플레이어의 직업, 레벨에 맞는 스킬을 담을 리스트 생성
         
-        public List<(Skill skill, int remainingCooldown)> CooldownList = new List<(Skill, int)>(); // 쿨타임이 남은 스킬 저장
-        public List<(Skill skill, int remainingDuration)> BuffdurationList = new List<(Skill, int)>(); 
+        public List<Cooldown> CooldownList = new List<Cooldown>(); // 쿨타임이 남은 스킬 저장
+        public List<BuffDuration> BuffdurationList = new List<BuffDuration>(); 
         // 지속 시간이 남은 스킬 저장: 사용한 스킬 / 남은 지속 시간
-        public List<(Skill skill, int remainingDuration, int monsterNum)> DebuffdurationList = new List<(Skill, int, int)>(); 
+        public List<DebuffDuration> DebuffdurationList = new List<DebuffDuration>(); 
         // 지속 시간이 남은 스킬 저장: 사용한 스킬 / 남은 지속 시간 / 대상
 
         public List<Monster> SkillHitsEnemies = new List<Monster>(); // 스킬로 공격 받은 몬스터 리스트
-        public List<int> AtkRand_SkillHitsEnemies =  new List<int>(); // 스킬로 공격 받은 몬스터가 받은 데미지 리스트
+        public List<(Monster EnemyHits, int EnemyHpHit)> HitsEnemies = new List<(Monster, int)>(); // 스킬로 공격 받은 몬스터 hp 리스트
+        // public List<int> AtkRand_SkillHitsEnemies =  new List<int>(); // 스킬로 공격 받은 몬스터가 받은 데미지 리스트
         
         public List<RewardData.DungeonRewardItem> RewardItems = new List<RewardData.DungeonRewardItem>(); // 보상용 아이템을 담는 리스트
         
@@ -99,6 +101,25 @@ namespace Text_RPG_11
         {
             _gameManager = manager;
         }
+
+        public class Cooldown
+        {
+            public Skill Skill;
+            public int RemainingCooldown;
+        }
+
+        public class BuffDuration
+        {
+            public Skill Skill;
+            public int RemainingDuration;
+        }
+        
+        public class DebuffDuration
+        {
+            public Skill Skill;
+            public int RemainingDuration;
+            public int EnemyIndex;
+        }
         
         // 배틀 시작 후 몬스터 랜덤 등장
         public void EnemySpawn()
@@ -111,13 +132,13 @@ namespace Text_RPG_11
             // 25층 이상일 경우 몬스터 스폰 1~11마리
             int spawnNumMax = Stage switch
             {
-                >= 25 => 6,
+                <= 25 => 6,
                 _ => 11
             };
             
             int spawnNumMin = Stage switch
             {
-                >= 25 => 1,
+                <= 25 => 1,
                 _ => 5
             };
             
@@ -126,19 +147,28 @@ namespace Text_RPG_11
             
             for (int i = 0; i < spawnNum; i++)
             {
-                // 2. 등장할 몬스터 랜덤 선택
-                Enemies.Add(Monsters[rand.Next(0, Monsters.Count)]);
+                var monsterTypeName = Monsters[rand.Next(Monsters.Count)].Name;
                 
-                // 3. 몬스터 레벨 설정
-                int enemyLevel = rand.Next(Stage - (int)Math.Round(Stage * 10.0 / 100.0),
-                    Stage + (int)Math.Round(Stage * 10.0 / 100.0));
-
-                Enemies[i].Level = enemyLevel;
+                // 객체 생성
+                Enemies.Add(
+                    monsterTypeName switch
+                    {
+                        "미니언" => Monster.Minion(),
+                        "공허충 (Voidgrub)" => Monster.Voidgrub(),
+                        "대포 미니언" => Monster.CannonMinion(),
+                        "슈퍼 미니언" => Monster.SuperMinion(),
+                        "그롬프 (Gromp)" => Monster.Gromp(),
+                        "칼날부리 (Raptors)" => Monster.Raptors(),
+                        "돌거북 (Krugs)" => Monster.Krugs(),
+                        "블루 센티널" => Monster.BlueSentinel(),
+                        "레드 브램블백" => Monster.RedBrambleback(),
+                        "바위게 (Scuttle Crab)" => Monster.ScuttleCrab(),
+                        _ => Monster.Minion(),
+                    }
+                );
                 
-                // 에너미 레벨이 0보다 작게 설정된 경우, 층 수 + 3레벨로 설정
-                if (Enemies[i].Level < 0)
-                    // 임시 설정
-                    Enemies[i].Level = Stage + 3;
+                // 에너미 레벨 설정
+                Enemies[i].Level = rand.Next(1, Stage + 5);
             }
         }
         
@@ -150,19 +180,18 @@ namespace Text_RPG_11
             AtkRandInput = (int)Math.Round(_gameManager.Player.MaxAttack * 0.1);
             // 공격 값
             AtkRand = rand.Next(_gameManager.Player.MaxAttack - AtkRandInput, _gameManager.Player.MaxAttack + AtkRandInput);
+            EnemyHP = Enemies[enemyIndex].HP;
             
             // 치명타
             // 차후 Player CriticalChance에 맞춰 추후 수정 필요
             if (criticalPercent <= 10)
             {
                 AtkRand = (int)Math.Round(AtkRand * 1.6);
-                EnemyHP = Enemies[enemyIndex].HP;
                 Enemies[enemyIndex].HP -= ((int)Math.Round(AtkRand * 1.6) - Enemies[enemyIndex].Defense);
             }
             // 그 외
             else
             {
-                EnemyHP = Enemies[enemyIndex].HP;
                 Enemies[enemyIndex].HP -= (AtkRand - Enemies[enemyIndex].Defense);
             }
             
@@ -180,7 +209,7 @@ namespace Text_RPG_11
             PlayerSkills.AddRange(
                 Skills.Where(skill =>
                     skill.RequiredJob == _gameManager.Player.Job &&
-                    skill.RequiredLevel == _gameManager.Player.Level
+                    skill.RequiredLevel <= _gameManager.Player.Level
                 )
             );
         }
@@ -195,11 +224,13 @@ namespace Text_RPG_11
         // 스킬을 사용해 에너미 공격
         public void SkillUse(int enemyIndex)
         {
-            // 스킬을 사용한다 
+            AtkRandInput = (int)Math.Round(_gameManager.Player.MaxAttack * 0.1);
+            // 공격 값
+            AtkRand = rand.Next(_gameManager.Player.MaxAttack - AtkRandInput, _gameManager.Player.MaxAttack + AtkRandInput);
             
             // 사용할 스킬은 쿨타임에 할당
             skillForAttack.CurrentCooldown = skillForAttack.Cooldown;
-            CooldownList.Add((skillForAttack, skillForAttack.Cooldown));
+            CooldownList.Add(new Cooldown { Skill = skillForAttack, RemainingCooldown = skillForAttack.Cooldown});
             // 만약 플레이어가 선택한 스킬의 currentCooldown != 0이라면 사용 불가
             // 플레이어가 선택한 스킬의 currentCooldown == 0이라면 사용 가능
             
@@ -211,25 +242,27 @@ namespace Text_RPG_11
                 case SkillType.Attack:
                     // 스킬 타입이 공격일 시 powerMultiplier을 사용자 공격력에 적용
                     // Duration이 없다고 가정
-                    int finalDamage = (int)Math.Round(AtkRand * skillForAttack.PowerMultiplier);
-                    SkillAtk = finalDamage;
+                    FinalDamage = (int)Math.Round(AtkRand * skillForAttack.PowerMultiplier);
+                    SkillAtk = FinalDamage;
                     
-                    // hits가 양수일 시 랜덤 에너미 타격
+                    // hits가 1 이상 일 시 랜덤 에너미 타격
                     // enemyIndex
-                    if (skillForAttack.Hits > 0)
+                    if (skillForAttack.Hits > 1)
                     {
                         // 랜덤 에너미 선택
                         SkillHitsEnemies.AddRange(Enemies.OrderBy(enemy => Guid.NewGuid()).Take(skillForAttack.Hits));
                         // 선택된 에너미 공격
                         foreach (Monster hitsEnemies in SkillHitsEnemies)
                         {
-                            hitsEnemies.HP -= finalDamage;
+                            HitsEnemies.Add((hitsEnemies, hitsEnemies.HP));
+                            hitsEnemies.HP -= FinalDamage;
                         }
                     }
                     // 그 외 일시 입력받은 enemy를 타격
                     else
                     {
-                        Enemies[enemyIndex].HP -= finalDamage;
+                        EnemyHP = Enemies[enemyIndex].HP;
+                        Enemies[enemyIndex].HP -= FinalDamage;
                     }
                     break;
                 
@@ -258,7 +291,7 @@ namespace Text_RPG_11
                             // 스킬의 남은 지속 시간을 기본 지속 시간과 동기화
                             skillForAttack.LeftDuration = skillForAttack.Effects.Duration;
                             // 지속이 남은 스킬 리스트에 입력
-                            BuffdurationList.Add((skillForAttack, skillForAttack.LeftDuration));
+                            BuffdurationList.Add(new BuffDuration { Skill = skillForAttack, RemainingDuration = skillForAttack.LeftDuration});
                         }
                     }
                     
@@ -270,7 +303,7 @@ namespace Text_RPG_11
                         if (skillForAttack.Effects.Duration > 0)
                         {
                             skillForAttack.LeftDuration = skillForAttack.Effects.Duration;
-                            BuffdurationList.Add((skillForAttack, skillForAttack.LeftDuration));
+                            BuffdurationList.Add(new BuffDuration { Skill = skillForAttack, RemainingDuration = skillForAttack.LeftDuration});
                         }
                     }
 
@@ -285,7 +318,7 @@ namespace Text_RPG_11
                         if (skillForAttack.Effects.Duration > 0)
                         {
                             skillForAttack.LeftDuration = skillForAttack.Effects.Duration;
-                            DebuffdurationList.Add((skillForAttack, skillForAttack.LeftDuration, enemyIndex));
+                            DebuffdurationList.Add(new DebuffDuration { Skill = skillForAttack, RemainingDuration = skillForAttack.LeftDuration, EnemyIndex = enemyIndex });
                         }
                     }
                     
@@ -297,116 +330,16 @@ namespace Text_RPG_11
                         if (skillForAttack.Effects.Duration > 0)
                         {
                             skillForAttack.LeftDuration = skillForAttack.Effects.Duration;
-                            DebuffdurationList.Add((skillForAttack, skillForAttack.LeftDuration, enemyIndex));
+                            DebuffdurationList.Add(new DebuffDuration { Skill = skillForAttack, RemainingDuration = skillForAttack.LeftDuration, EnemyIndex = enemyIndex });
                         }
                     }
                     break;
                 
                 case SkillType.AttackBuff:
-                    // 스킬 타입이 공격일 시 powerMultiplier을 사용자 공격력에 적용
-                    // Duration이 없다고 가정
-                    finalDamage = (int)Math.Round(AtkRand * skillForAttack.PowerMultiplier);
-                    SkillAtk = finalDamage;
-                    
-                    // hits가 양수일 시 랜덤 에너미 타격
-                    // enemyIndex
-                    if (skillForAttack.Hits > 0)
-                    {
-                        // 랜덤 에너미 선택
-                        SkillHitsEnemies.AddRange(Enemies.OrderBy(enemy => Guid.NewGuid()).Take(skillForAttack.Hits));
-                        // 선택된 에너미 공격
-                        foreach (Monster hitsEnemies in SkillHitsEnemies)
-                        {
-                            hitsEnemies.HP -= finalDamage;
-                        }
-                    }
-                    // 그 외 일시 입력받은 enemy를 타격
-                    else
-                    {
-                        Enemies[enemyIndex].HP -= finalDamage;
-                    }
-                    
-                    // 타겟에 상관 없이 Attack / Defense만 구분
-                    // 공격값이나 방어값이 없는 스킬의 초기화가 0으로 되어있는지 / 아닌지 모름 > 추후 수정 필요
-                    // 중복되는 코드 리팩토링 필요
-                    if (skillForAttack.Effects.EffectiveAttackDelta != 0)
-                    {
-                        _gameManager.Player.Attack += skillForAttack.Effects.EffectiveAttackDelta;
-                        
-                        // 지속 시간이 있는 경우
-                        if (skillForAttack.Effects.Duration > 0)
-                        {
-                            // 스킬의 남은 지속 시간을 기본 지속 시간과 동기화
-                            skillForAttack.LeftDuration = skillForAttack.Effects.Duration;
-                            // 지속이 남은 스킬 리스트에 입력
-                            BuffdurationList.Add((skillForAttack, skillForAttack.LeftDuration));
-                        }
-                    }
-                    
-                    if (skillForAttack.Effects.EffectiveDefenseDelta != 0)
-                    {
-                        _gameManager.Player.Defense += skillForAttack.Effects.EffectiveDefenseDelta;
-                        
-                        // 지속 시간이 있는 경우
-                        if (skillForAttack.Effects.Duration > 0)
-                        {
-                            skillForAttack.LeftDuration = skillForAttack.Effects.Duration;
-                            BuffdurationList.Add((skillForAttack, skillForAttack.LeftDuration));
-                        }
-                    }
-                    
                     break;
                     
                 
                 case SkillType.AttackDebuff:
-                    finalDamage = (int)Math.Round(AtkRand * skillForAttack.PowerMultiplier);
-
-                    // hits가 양수일 시 랜덤 에너미 타격
-                    // enemyIndex
-                    if (skillForAttack.Hits > 0)
-                    {
-                        finalDamage = (int)Math.Round(AtkRand * skillForAttack.PowerMultiplier);
-                    
-                        List<Monster> skillHitsEnemies = new List<Monster>();
-                        
-                        // 랜덤 에너미 선택
-                        skillHitsEnemies.AddRange(Enemies.OrderBy(enemy => Guid.NewGuid()).Take(skillForAttack.Hits));
-                        // 선택된 에너미 공격
-                        foreach (Monster hitsEnemies in skillHitsEnemies)
-                        {
-                            hitsEnemies.HP -= finalDamage;
-                        }
-                    }
-                    // 그 외 일시 입력받은 enemy를 타격
-                    else
-                    {
-                        Enemies[enemyIndex].HP -= finalDamage;
-                    }
-                    
-                    if (skillForAttack.Effects.EffectiveAttackDelta != 0)
-                    {
-                        Enemies[enemyIndex].Attack += skillForAttack.Effects.EffectiveAttackDelta;
-                        
-                        // 지속 시간이 있는 경우
-                        if (skillForAttack.Effects.Duration > 0)
-                        {
-                            skillForAttack.LeftDuration = skillForAttack.Effects.Duration;
-                            DebuffdurationList.Add((skillForAttack, skillForAttack.LeftDuration, enemyIndex));
-                        }
-                    }
-                    
-                    if (skillForAttack.Effects.EffectiveDefenseDelta != 0)
-                    {
-                        Enemies[enemyIndex].Defense += skillForAttack.Effects.EffectiveDefenseDelta;
-                        
-                        // 지속 시간이 있는 경우
-                        if (skillForAttack.Effects.Duration > 0)
-                        {
-                            skillForAttack.LeftDuration = skillForAttack.Effects.Duration;
-                            DebuffdurationList.Add((skillForAttack, skillForAttack.LeftDuration, enemyIndex));
-                        }
-                    }
-                    
                     break;
             }
         }
@@ -416,8 +349,10 @@ namespace Text_RPG_11
         {
             for (int i = CooldownList.Count - 1; i >= 0; i--)
             {
-                if (CooldownList[i].remainingCooldown == 0)
+                if (CooldownList[i].RemainingCooldown == 0)
                     CooldownList.RemoveAt(i);
+                else
+                    CooldownList[i].RemainingCooldown--;
             }
         }
         
@@ -428,24 +363,28 @@ namespace Text_RPG_11
             for (int i = BuffdurationList.Count - 1; i >= 0; i--)
             {
                 // 버프 지속 시간이 끝난 경우
-                if (BuffdurationList[i].remainingDuration == 0)
+                if (BuffdurationList[i].RemainingDuration == 0)
                 {
                     // 공격 버프 체크
-                    if (BuffdurationList[i].skill.Effects.EffectiveAttackDelta != 0)
+                    if (BuffdurationList[i].Skill.Effects.EffectiveAttackDelta != 0)
                     {
                         // 버프 받은 만큼 음수 처리
-                        _gameManager.Player.Attack -= BuffdurationList[i].skill.Effects.EffectiveAttackDelta;
+                        _gameManager.Player.Attack -= BuffdurationList[i].Skill.Effects.EffectiveAttackDelta;
                     }
                     
                     // 방어 버프 체크
-                    if (DebuffdurationList[i].skill.Effects.EffectiveDefenseDelta != 0)
+                    if (BuffdurationList[i].Skill.Effects.EffectiveDefenseDelta != 0)
                     {
                         // 버프 받은 만큼 음수 처리
-                        _gameManager.Player.Defense -= BuffdurationList[i].skill.Effects.EffectiveDefenseDelta;
+                        _gameManager.Player.Defense -= BuffdurationList[i].Skill.Effects.EffectiveDefenseDelta;
                     }
                     
                     // 체크 후 삭제
                     BuffdurationList.RemoveAt(i);
+                }
+                else
+                {
+                    BuffdurationList[i].RemainingDuration--;
                 }
             }
             
@@ -453,24 +392,28 @@ namespace Text_RPG_11
             for (int i = DebuffdurationList.Count - 1; i >= 0; i--)
             {
                 // 디버프 지속 시간이 끝난 경우
-                if (DebuffdurationList[i].remainingDuration == 0)
+                if (DebuffdurationList[i].RemainingDuration == 0)
                 {
                     // 공격 디버프 체크
-                    if (DebuffdurationList[i].skill.Effects.EffectiveAttackDelta != 0)
+                    if (DebuffdurationList[i].Skill.Effects.EffectiveAttackDelta != 0)
                     {
                         // 디버프 받은 만큼 음수 처리
-                        Enemies[DebuffdurationList[i].monsterNum].Attack -= DebuffdurationList[i].skill.Effects.EffectiveAttackDelta;
+                        Enemies[DebuffdurationList[i].EnemyIndex].Attack -= DebuffdurationList[i].Skill.Effects.EffectiveAttackDelta;
                     }
                     
                     // 방어 디버프 체크
-                    if (DebuffdurationList[i].skill.Effects.EffectiveDefenseDelta != 0)
+                    if (DebuffdurationList[i].Skill.Effects.EffectiveDefenseDelta != 0)
                     {
                         // 디버프 받은 만큼 음수 처리
-                        Enemies[DebuffdurationList[i].monsterNum].Defense -= DebuffdurationList[i].skill.Effects.EffectiveDefenseDelta;
+                        Enemies[DebuffdurationList[i].EnemyIndex].Defense -= DebuffdurationList[i].Skill.Effects.EffectiveDefenseDelta;
                     }
                     
                     // 체크 후 삭제
-                    BuffdurationList.RemoveAt(i);
+                    DebuffdurationList.RemoveAt(i);
+                }
+                else
+                {
+                    DebuffdurationList[i].RemainingDuration--;
                 }
             }
         }
@@ -539,9 +482,9 @@ namespace Text_RPG_11
             int itemPercent = rand.Next(1, 101);
             
             // 1. stage에 맞는 아이템 그룹 확인
-            var stageItem = _rewardContainer.dungeonRewards.Find(d => Stage >= d.stageRange[0] && Stage <= d.stageRange[1]);
-            if (stageItem == null) return;
-            
+            var stageItem = _rewardContainer?.dungeonRewards?.Find(d => Stage >= d.stageRange[0] && Stage <= d.stageRange[1]);
+            if (stageItem == null || stageItem.rewardItems == null) return; // null이면 바로 종료
+  
             // 2. 확률에 따라 보상 아이템 추가
             foreach (var item in stageItem.rewardItems)
                 if (item.dropChance >= itemPercent)
