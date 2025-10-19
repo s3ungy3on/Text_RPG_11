@@ -7,6 +7,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using System.Threading.Tasks.Dataflow;
 using System.IO;
+using System.IO.Enumeration;
 using System.Reflection.Metadata.Ecma335;
 using System.Text.Json;
 using Text_RPG_11;
@@ -77,7 +78,7 @@ namespace Text_RPG_11
         // 지속 시간이 남은 스킬 저장: 사용한 스킬 / 남은 지속 시간 / 대상
 
         public List<Monster> SkillHitsEnemies = new List<Monster>(); // 스킬로 공격 받은 몬스터 리스트
-        public List<(Monster EnemyHits, int EnemyHpHit)> HitsEnemies = new List<(Monster, int)>(); // 스킬로 공격 받은 몬스터 hp 리스트
+        public List<(Monster EnemyHits, int EnemyHpHit, int Damage)> HitsEnemies = new List<(Monster, int, int)>(); // 스킬로 공격 받은 몬스터 hp 리스트
         // public List<int> AtkRand_SkillHitsEnemies =  new List<int>(); // 스킬로 공격 받은 몬스터가 받은 데미지 리스트
 
         private int currentStage; // 현재 스테이지
@@ -231,6 +232,10 @@ namespace Text_RPG_11
         // 스킬을 사용해 에너미 공격
         public void SkillUse(int enemyIndex)
         {
+            // 스킬 사용 직전 초기화
+            SkillHitsEnemies.Clear();
+            HitsEnemies.Clear();
+            
             AtkRandInput = (int)Math.Round(_gameManager.Player.MaxAttack * 0.1);
             // 공격 값
             AtkRand = rand.Next(_gameManager.Player.MaxAttack - AtkRandInput, _gameManager.Player.MaxAttack + AtkRandInput);
@@ -250,26 +255,33 @@ namespace Text_RPG_11
                     // 스킬 타입이 공격일 시 powerMultiplier을 사용자 공격력에 적용
                     // Duration이 없다고 가정
                     FinalDamage = (int)Math.Round(AtkRand * skillForAttack.PowerMultiplier);
-                    SkillAtk = FinalDamage;
+                    
                     
                     // hits가 1 이상 일 시 랜덤 에너미 타격
                     // enemyIndex
                     if (skillForAttack.Hits > 1)
                     {
                         // 랜덤 에너미 선택
-                        SkillHitsEnemies.AddRange(Enemies.OrderBy(enemy => Guid.NewGuid()).Take(skillForAttack.Hits));
+                        SkillHitsEnemies.AddRange(
+                            Enemies
+                                .Where(enemy => !enemy.IsDead)
+                                .OrderBy(enemy => Guid.NewGuid())
+                                .Take(skillForAttack.Hits)
+                        );
                         // 선택된 에너미 공격
                         foreach (Monster hitsEnemies in SkillHitsEnemies)
                         {
-                            HitsEnemies.Add((hitsEnemies, hitsEnemies.HP));
-                            hitsEnemies.HP -= FinalDamage;
+                            SkillAtk = FinalDamage - hitsEnemies.Defense;
+                            HitsEnemies.Add((hitsEnemies, hitsEnemies.HP, SkillAtk));
+                            hitsEnemies.HP -= FinalDamage - hitsEnemies.Defense;
                         }
                     }
                     // 그 외 일시 입력받은 enemy를 타격
                     else
                     {
+                        SkillAtk = FinalDamage - Enemies[enemyIndex].Defense;
                         EnemyHP = Enemies[enemyIndex].HP;
-                        Enemies[enemyIndex].HP -= FinalDamage;
+                        Enemies[enemyIndex].HP -= FinalDamage - Enemies[enemyIndex].Defense;
                     }
                     break;
                 

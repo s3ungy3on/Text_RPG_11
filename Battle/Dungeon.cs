@@ -350,7 +350,7 @@ namespace Text_RPG_11
                                 Console.WriteLine("\nBattle!!\n");
             
                                 Console.WriteLine($"{_gameManager.Player.Name}의 공격!");
-                                Console.WriteLine($"Lv.{_battle.Enemies[_monsterNum - 1].Level} {_battle.Enemies[_monsterNum - 1].Name}을(를) 맞췄습니다. [데미지 : {_battle.FinalDamage}]\n");
+                                Console.WriteLine($"Lv.{_battle.Enemies[_monsterNum - 1].Level} {_battle.Enemies[_monsterNum - 1].Name}을(를) 맞췄습니다. [데미지 : {_battle.SkillAtk}]\n");
                                 
                                 // 1. 플레이어 공격으로 몬스터 사망 시 Dead 처리
                                 if (_battle.Enemies[_monsterNum - 1].IsDead)
@@ -382,15 +382,15 @@ namespace Text_RPG_11
                                 EnemyInfo();
                                 Console.WriteLine("\nBattle!!\n");
                                 
-                                for (int i = 0; i < _battle.SkillHitsEnemies.Count; i++)
+                                for (int i = 0; i < _battle.HitsEnemies.Count; i++)
                                 {
                                     Console.WriteLine($"{_gameManager.Player.Name}의 공격!");
-                                    Console.WriteLine($"Lv.{_battle.SkillHitsEnemies[i].Level} {_battle.SkillHitsEnemies[i].Name}을(를) 맞췄습니다. [데미지 : {_battle.SkillAtk}]\n");
+                                    Console.WriteLine($"Lv.{_battle.HitsEnemies[i].EnemyHits.Level} {_battle.HitsEnemies[i].EnemyHits.Name}을(를) 맞췄습니다. [데미지 : {_battle.HitsEnemies[i].Damage}]\n");
                                     
                                     // 1. 플레이어 공격으로 몬스터 사망 시 Dead 처리
-                                    if (_battle.SkillHitsEnemies[i].IsDead)
+                                    if (_battle.HitsEnemies[i].EnemyHits.IsDead)
                                     {
-                                        Console.WriteLine($"Lv. {_battle.SkillHitsEnemies[i].Level} {_battle.SkillHitsEnemies[i].Name}");
+                                        Console.WriteLine($"Lv. {_battle.HitsEnemies[i].EnemyHits.Level} {_battle.HitsEnemies[i].EnemyHits.Name}");
                                         Console.WriteLine($"HP {_battle.HitsEnemies[i].EnemyHpHit} -> Dead\n");
                                     }
                                 }
