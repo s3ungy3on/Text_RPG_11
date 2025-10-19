@@ -46,6 +46,16 @@ namespace Text_RPG_11
                 return false;
             }
 
+            if(shopItem is Potion potion)
+            {
+                gameManager.inventory.AddItem(potion);
+                gameManager.Player.Gold -= potion.Price;
+                potion.IsPurchased = true;
+                Console.WriteLine($"{shopItem.Name}을 구매했습니다.");
+                return true;
+
+            }
+
             if (shopItem.IsPurchased)
             {
                 Console.WriteLine("이미 구매한 아이템입니다.");
