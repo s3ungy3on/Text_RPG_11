@@ -45,7 +45,7 @@ namespace Text_RPG_11
         public int expReward { get; set; }
         public int goldReward { get; set; }
         public int potionReward { get; set; }
-        public Dictionary<string, string> itemRewards { get; set; }  // 직업별 아이템
-        public string type { get; set; }  // "KillMonster", "EquipItem" 등
+        public Dictionary<string, string> itemRewards { get; set; }
+        public string type { get; set; }
     }
 }
