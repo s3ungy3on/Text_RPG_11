@@ -24,6 +24,7 @@ namespace Text_RPG_11
         public UIManager uiManager;
         private Battle battle;
         public RewardManager rewardManager;
+        public QuestManager questManager;
 
         public Player Player => player;
 
@@ -33,7 +34,7 @@ namespace Text_RPG_11
             shop = new Shop(this);
             dungeon = new Dungeon(this);
             skill = new Skill(this);
-            quest = new Quest(this);
+            questManager = new QuestManager(this);
             monster = new Monster(this);
             uiManager = new UIManager(this);
             battle = new Battle(this);
@@ -47,7 +48,7 @@ namespace Text_RPG_11
             GameMain();
         }
 
-        public void CreatdPlayer(string name, Job job) //ui매니저에서 호출
+        public void CreatdPlayer(string name, Job job) //플레이어 생성, ui매니저에서 호출
         {
             player = new Player(name, job, inventory);
         }
