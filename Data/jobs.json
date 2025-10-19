@@ -2,6 +2,7 @@
   "jobs": [
     {
       "name": "전사",
+      "displayName": "가렌",
       "description": "높은 체력을 가진 근접 클래스",
       "baseStats": {
         "hp": 120,
@@ -15,6 +16,7 @@
     },
     {
       "name": "마법사",
+      "displayName": "럭스",
       "description": "강력한 공격력을 가진 원거리 클래스",
       "baseStats": {
         "hp": 80,
@@ -28,6 +30,7 @@
     },
     {
       "name": "도적",
+      "displayName": "제드",
       "description": "높은 회피율을 가진 민첩한 근접 클래스",
       "baseStats": {
         "hp": 100,
@@ -41,6 +44,7 @@
     },
     {
       "name": "궁수",
+      "displayName": "애쉬",
       "description": "자연의 힘을 빌려 멀리 있는 적에게 정확한 공격을 가하는 원거리 클래스",
       "baseStats": {
         "hp": 90,
