@@ -100,7 +100,7 @@ namespace Text_RPG_11
             if (ItemHp > 0) stats.Add($"체력 +{ItemHp}");
             if (ItemMp > 0) stats.Add($"마나 +{ItemMp}");
 
-            return stats.Count > 0 ? string.Join(", ", stats) : "효과 없음";
+            return stats.Count > 0 ? string.Join(" | ", stats) : "효과 없음";
         }
     }
 
