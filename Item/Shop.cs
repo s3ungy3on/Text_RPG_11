@@ -35,34 +35,34 @@ namespace Text_RPG_11
         #region 아이템 구매
         public bool BuyItem(Items shopItem)
         {
-            if (shopItem == null)
+            if (shopItem == null) //shopItem 값이 null 이라면 false 리턴(되돌아감)
             {
                 return false;
             }
 
-            if (shopItem.Price > gameManager.Player.Gold)
+            if (shopItem.Price > gameManager.Player.Gold) //shopItem의 가격이 플레이어가 보유중인 골드보다 크다면 false 리턴(되돌아감)
             {
                 Console.WriteLine("보유중인 골드가 부족합니다.");
                 return false;
             }
 
-            if(shopItem is Potion potion)
+            if(shopItem is Potion potion) //shopItem이 포션이라면,
             {
-                gameManager.inventory.AddItem(potion);
-                gameManager.Player.Gold -= potion.Price;
-                potion.IsPurchased = true;
+                gameManager.inventory.AddItem(potion); //인벤토리에 해당 아이템 추가
+                gameManager.Player.Gold -= potion.Price; //플레이어 골드에서 아이템 가격만큼 빼기
+                potion.IsPurchased = true; //아이템 구매 상태로 변경
                 Console.WriteLine($"{shopItem.Name}을 구매했습니다.");
-                return true;
+                return true; //true 값을 리턴해서 해당 메소드 종료
 
             }
 
-            if (shopItem.IsPurchased)
+            if (shopItem.IsPurchased) //아이템이 이미 구매한 상태라면, false 리턴(되돌아감)
             {
                 Console.WriteLine("이미 구매한 아이템입니다.");
                 return false;
             }
 
-            Items purchasedItem = ItemDatabase.GetItemById(shopItem.ItemId);
+            Items purchasedItem = ItemDatabase.GetItemById(shopItem.ItemId); //상점에 있는 아이템은 원본 데이터임, 데이터 변경을 방지하기 위해 인벤토리에 넣을 새로운 아이템 객체(클론)를 Id로 불러옴
 
             if (purchasedItem == null)
             {
@@ -70,12 +70,12 @@ namespace Text_RPG_11
                 return false;
             }
 
-            gameManager.inventory.AddItem(purchasedItem);
-            gameManager.Player.Gold -= shopItem.Price;
-            shopItem.IsPurchased = true;
+            gameManager.inventory.AddItem(purchasedItem); //인벤토리에 아이템 추가
+            gameManager.Player.Gold -= shopItem.Price; //플레이어 골드에서 아이템 가격만큼 빼기
+            shopItem.IsPurchased = true; //아이템 구매 상태로 변경
 
             Console.WriteLine($"{shopItem.Name}을 구매했습니다.");
-            return true;
+            return true; //true값 리턴해서 메소드 종료
         }
         #endregion
 
