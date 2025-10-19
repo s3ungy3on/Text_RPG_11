@@ -107,7 +107,7 @@ namespace Text_RPG_11
             // currentStage = this.Stage;
             stageItem = RewardDatabase.GetDungeonRewardByStage(this.Stage);
         }
-
+        
         public class Cooldown
         {
             public Skill Skill;
@@ -462,9 +462,9 @@ namespace Text_RPG_11
             {
                 if (Enemies[Index].HP > 0)
                 {
-                    if(Enemies[Index].Attack - (int)Math.Round(_gameManager.Player.MaxDefense) > 0)
-                        // 플레이어 체력 > 깎인 체력
-                        _gameManager.Player.HP -= (Enemies[Index].Attack - (int)Math.Round(_gameManager.Player.MaxDefense));
+                    int damage = Math.Max(1, Enemies[Index].Attack - (int)Math.Round(_gameManager.Player.MaxDefense));
+                    // 플레이어 체력 > 깎인 체력
+                    _gameManager.Player.HP -= damage;
                 }
                 else
                 {

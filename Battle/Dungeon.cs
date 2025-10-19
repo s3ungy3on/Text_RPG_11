@@ -543,8 +543,16 @@ namespace Text_RPG_11
                     }
                     else
                     {
-                        Console.WriteLine($"Lv. {_battle.Enemies[_battle.Index].Level} {_battle.Enemies[_battle.Index].Name}의 공격!");
-                        Console.WriteLine($"{_gameManager.Player.Name} 을(를) 맞췄습니다.    [데미지 : {_battle.Enemies[_battle.Index].Attack - _gameManager.Player.MaxDefense}]\n");
+                        if (_battle.Enemies[_battle.Index].Attack - (int)Math.Round(_gameManager.Player.MaxDefense) > 0)
+                        {
+                            Console.WriteLine($"Lv. {_battle.Enemies[_battle.Index].Level} {_battle.Enemies[_battle.Index].Name}의 공격!");
+                            Console.WriteLine($"{_gameManager.Player.Name} 을(를) 맞췄습니다.    [데미지 : {_battle.Enemies[_battle.Index].Attack - _gameManager.Player.MaxDefense}]\n");
+                        }
+                        else
+                        {
+                            Console.WriteLine($"Lv. {_battle.Enemies[_battle.Index].Level} {_battle.Enemies[_battle.Index].Name}의 공격!");
+                            Console.WriteLine($"{_gameManager.Player.Name} 을(를) 맞췄습니다.    [데미지 : 1]\n");
+                        }
                     }
                 }
                 
