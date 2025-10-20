@@ -963,6 +963,34 @@ namespace Text_RPG_11
         }
         #endregion
 
+        private void SetRarityColor(string rarity)
+        {
+            switch (rarity)
+            {
+                case "common":
+                    Console.ForegroundColor = ConsoleColor.White;
+                    break;
+                case "rare":
+                    Console.ForegroundColor = ConsoleColor.Blue;
+                    break;
+                case "epic":
+                    Console.ForegroundColor = ConsoleColor.Magenta;
+                    break;
+                case "legend":
+                    Console.ForegroundColor = ConsoleColor.Yellow;
+                    break;
+                case "myth":
+                    Console.ForegroundColor = ConsoleColor.Cyan;
+                    break;
+                case "transcended":
+                    Console.ForegroundColor = ConsoleColor.Red;
+                    break;
+                default:
+                    Console.ResetColor();
+                    break;
+            }
+        }
+
         public void ShowInventory()
         {
             Console.Clear();
@@ -970,10 +998,8 @@ namespace Text_RPG_11
             Console.WriteLine("============ [ 🎒 인벤토리 ] ============");
             Console.ResetColor();
 
-            // 인벤토리가 null일 경우 안전 처리
             var playerItems = gameManager?.inventory?.Items ?? new List<Items>();
 
-            // Items 클래스의 ItemType() 메서드로 분류
             var weapons = playerItems.Where(i => i.ItemType() == "무기").OfType<Weapon>().ToList();
             var armors = playerItems.Where(i => i.ItemType() == "방어구").OfType<Armor>().ToList();
             var potions = playerItems.Where(i => i.ItemType() == "물약").OfType<Potion>().ToList();
@@ -986,7 +1012,11 @@ namespace Text_RPG_11
                 Console.WriteLine("  (보유 무기 없음)");
             else
                 foreach (var w in weapons)
+                {
+                    SetRarityColor(w.Rarity);
                     Console.WriteLine($"  - {w.Name} | 공격력 +{w.AttackPower} | 희귀도: {w.Rarity}");
+                    Console.ResetColor();
+                }
 
             // 방어구 표시
             Console.ForegroundColor = ConsoleColor.Yellow;
@@ -996,7 +1026,11 @@ namespace Text_RPG_11
                 Console.WriteLine("  (보유 방어구 없음)");
             else
                 foreach (var a in armors)
+                {
+                    SetRarityColor(a.Rarity);
                     Console.WriteLine($"  - {a.Name} | 방어력 +{a.DefensePower} | 희귀도: {a.Rarity}");
+                    Console.ResetColor();
+                }
 
             // 포션 표시
             Console.ForegroundColor = ConsoleColor.Yellow;
@@ -1006,7 +1040,11 @@ namespace Text_RPG_11
                 Console.WriteLine("  (보유 포션 없음)");
             else
                 foreach (var p in potions)
-                    Console.WriteLine($"  - {p.Name} | HP 회복 +{p.HealPower}");
+                {
+                    SetRarityColor(p.Rarity);
+                    Console.WriteLine($"  - {p.Name} | HP 회복 +{p.HealPower} | 희귀도: {p.Rarity}");
+                    Console.ResetColor();
+                }
 
             Console.WriteLine("=====================================");
             Console.WriteLine("1) 사용   2) 장착   3) 버리기   0) 나가기");
@@ -1032,18 +1070,13 @@ namespace Text_RPG_11
             {
                 var item = shopItems[i];
                 string type = item.ItemType();
-                string statInfo = item switch
-                {
-                    Weapon w => $"+공격력 {w.AttackPower}, 방어력 {w.DefensePower}",
-                    Armor a => $"+방어력 {a.DefensePower}, 체력 {a.ItemHp}",
-                    Potion p => $"+HP 회복 {p.HealPower}",
-                    _ => "-"
-                };
+                string statInfo = item.ItemStats();
 
-                Console.WriteLine($"{i + 1}. {item.Name,-15} | {item.Price,5}G | {type,-5} | {statInfo}");
+                SetRarityColor(item.Rarity);
+                Console.WriteLine($"{i + 1}. {item.Name,-15} | {item.Price,5}G | {type,-5} | {statInfo} | {item.Rarity}");
+                Console.ResetColor();
             }
 
-            Console.ResetColor();
             Console.WriteLine("====================================");
             Console.WriteLine("1) 구매   2) 판매   0) 뒤로가기");
             Console.Write(">> ");
@@ -1062,7 +1095,7 @@ namespace Text_RPG_11
             }
         }
 
-        private void HandleShopPurchase(Shop shop)
+        private void HandleShopPurchase(Shop shop) // 아이템 구매 UI
         {
             var items = shop.GetShopInventory();
 
@@ -1093,7 +1126,8 @@ namespace Text_RPG_11
             Console.ReadKey();
         }
 
-        private void HandleShopSell(Shop shop)
+        
+        private void HandleShopSell(Shop shop) // 아이템 판매 UI
         {
             var inventory = gameManager.inventory.Items;
 
