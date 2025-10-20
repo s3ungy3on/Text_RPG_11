@@ -496,6 +496,7 @@ namespace Text_RPG_11
             else if (_gameManager.Player.HP <= 0)
             {
                 // 플레이어의 체력이 0이하일 시 승리
+                _gameManager.Player.HP = 0;
                 BattleState = BattleResult.Defeat;
             }
 
