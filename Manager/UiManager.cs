@@ -512,7 +512,7 @@ namespace Text_RPG_11
             }
             Console.Clear();
             Console.ForegroundColor = ConsoleColor.Cyan;
-            foreach (string str in logo2)
+            foreach (string str in logo2) // 게임 로고 출력
             {
                 Console.Write(str);
                 Thread.Sleep(100);
