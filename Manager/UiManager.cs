@@ -512,7 +512,7 @@ namespace Text_RPG_11
             }
             Console.Clear();
             Console.ForegroundColor = ConsoleColor.Cyan;
-            foreach (string str in logo2)
+            foreach (string str in logo2) // 게임 로고 출력
             {
                 Console.Write(str);
                 Thread.Sleep(100);
@@ -931,7 +931,7 @@ namespace Text_RPG_11
 
 
             Console.WriteLine("=====================================");
-            Console.WriteLine("1. 포션 사용\n2. 아이템 장착\n0. 나가기");
+            Console.WriteLine("1. 포션 사용\n2. 아이템 장착 및 해제\n0. 나가기");
             Console.Write(">> ");
             int choice = Messages.ReadInput(0, 2);
 
@@ -984,8 +984,14 @@ namespace Text_RPG_11
             }
 
             var selectedItem = items[choice - 1];
-            gameManager.Player.EquipItem(selectedItem);
-            Console.WriteLine($"\n{selectedItem.Name} 장착 완료!");
+            if (selectedItem.IsEquipped == false)
+            {
+                gameManager.Player.EquipItem(selectedItem);
+            }
+            else
+            {
+                gameManager.Player.UnequipItem(selectedItem);
+            }
             Console.ReadKey();
 
             ShowInventory(); // 장착 후 다시 인벤토리로
