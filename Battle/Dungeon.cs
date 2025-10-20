@@ -115,7 +115,7 @@ namespace Text_RPG_11
                 Console.WriteLine();
                 
                 Console.WriteLine("[내 정보]");
-                Console.WriteLine($"Lv.{_gameManager.Player.Level} {_gameManager.Player.Job}\n\nHP {_gameManager.Player.HP} / {_gameManager.Player.MaxHP}\nMP {_gameManager.Player.MP} / {_gameManager.Player.MaxMP}\n");
+                Console.WriteLine($"Lv.{_gameManager.Player.Level} {_gameManager.Player.Job.Name}\n\nHP {_gameManager.Player.HP} / {_gameManager.Player.MaxHP}\nMP {_gameManager.Player.MP} / {_gameManager.Player.MaxMP}\n");
             
                 // 3. 플레이어 행동 선택
                 Console.WriteLine("1. 공격");
