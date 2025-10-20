@@ -70,7 +70,7 @@ namespace Text_RPG_11
                 return false;
             }
 
-            gameManager.inventory.AddItem(purchasedItem); //인벤토리에 아이템 추가
+            gameManager.inventory.AddItem(purchasedItem); //인벤토리에 아이템(클론) 추가
             gameManager.Player.Gold -= shopItem.Price; //플레이어 골드에서 아이템 가격만큼 빼기
             shopItem.IsPurchased = true; //아이템 구매 상태로 변경
 
@@ -82,26 +82,26 @@ namespace Text_RPG_11
         #region 아이템 판매
         public bool SellItem(Items playerItem)
         {
-            if (playerItem == null)
+            if (playerItem == null) //playerItem 이 null이라면
             {
-                return false;
+                return false; //false 반환하여 메서드 종료
             }
 
-            if (playerItem.IsEquipped)
+            if (playerItem.IsEquipped) //playerItem이 착용중이라면
             {
                 Console.WriteLine("장착 중인 아이템은 판매할 수 없습니다.");
-                return false;
+                return false; //false 반환하여 메서드 종료
             }
 
-            gameManager.inventory.RemoveItem(playerItem);
-            gameManager.Player.Gold += playerItem.Price;
+            gameManager.inventory.RemoveItem(playerItem); //인벤토리에서 playerItem 제거
+            gameManager.Player.Gold += playerItem.Price; //플레이어 골드에 playerItem 가격만큼 추가해서 넣어줌
 
-            foreach (var shopItem in shopInventory)
+            foreach (var shopItem in shopInventory) //shopInventory 리스트를 순회하면서 shopItem이란 지역 변수를 찾는다
             {
-                if (shopItem.ItemId == playerItem.ItemId)
+                if (shopItem.ItemId == playerItem.ItemId) //shopItem의 Id와 playerItem의 Id가 같다면
                 {
-                    shopItem.IsPurchased = false;
-                    break;
+                    shopItem.IsPurchased = false; //shopItem의 구매 여부를 false로 설정(다시 구매 가능하게)
+                    break; //반복문 종료
                 }
             }
 
