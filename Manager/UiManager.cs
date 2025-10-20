@@ -4,15 +4,22 @@ using System.Linq;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
+using Newtonsoft.Json;
 using Text_RPG_11;
 
 namespace Text_RPG_11
 {
-    internal class UIManager
+    public class UIManager
     {
         public string act; // 행동 번호 입력
         public string name; // 플레이어 이름
         public string job; // 플레이어 직업
+
+        private readonly GameManager gameManager;
+        private ItemDataContainer itemData;
+        private JobDataContainer jobData;
+        private string itemsPath = "items.json";
+        private string jobsPath = "jobs.json";
 
         // 로고
         public List<string> logo1 = new List<string>(); // 로고1 0~14 -> 1차제목, 15~18 -> 1차 소제목
@@ -26,11 +33,24 @@ namespace Text_RPG_11
         private const int LogShowCount = 6;           // 화면에 보일 로그 줄 수
         private const int HpBarLength = 24;           // HP바 길이
         private const int MpBarLength = 24;           // MP바 길이
-        private GameManager gameManager;
 
         public UIManager(GameManager manager)
         {
             gameManager = manager;
+            LoadJsonData();
+        }
+
+        private void LoadJsonData()
+        {
+            if (File.Exists(itemsPath))
+                itemData = JsonConvert.DeserializeObject<ItemDataContainer>(File.ReadAllText(itemsPath));
+            else
+                itemData = new ItemDataContainer { items = new List<ItemDataBase>(), potions = new List<PotionData>() };
+
+            if (File.Exists(jobsPath))
+                jobData = JsonConvert.DeserializeObject<JobDataContainer>(File.ReadAllText(jobsPath));
+            else
+                jobData = new JobDataContainer { jobs = new List<JobInfo>() };
         }
 
         public void SafeResize(int cols, int rows)
@@ -486,7 +506,7 @@ namespace Text_RPG_11
                 {
                     Console.ForegroundColor = ConsoleColor.Green;
                 }
-                
+
                 Console.Write($"{story[i],130}");
                 Thread.Sleep(1000);
                 if (Console.KeyAvailable)
@@ -536,12 +556,11 @@ namespace Text_RPG_11
                     act = Console.ReadLine();
                     continue;
                 }
-                Console.Clear() ;
+                Console.Clear();
                 Console.WriteLine($"{name} 이름이 맞으십니까?\n\n1. 맞습니다\n2. 아닙니다\n\n");
                 act = Console.ReadLine();
             }
 
-            gameManager.Player.Name = name; // 게임매니저에다가 이름 넣어주기
             Console.WriteLine($"{name} 소환사님 과연 이름부터가 휘황찬란하시군요\n소환사님을 위한 챔피언을 준비했습니다 어서 골라보시지요\n\n" +
                 $"1. 가렌 (전사)\n2. 럭스 (마법사)\n3. 제드 (암살자)\n4. 애쉬 (궁수)\n\n");
             Console.Write(">>");
@@ -581,7 +600,16 @@ namespace Text_RPG_11
                 }
             }
             Console.WriteLine($"{job}을(를) 고르시다니 기대가 되는군요.");
-            gameManager.Player.Job = job;
+            // JobDatabase에서 직업 객체를 불러와 Player 생성
+            var selectedJob = JobDatabase.GetJobByName(job);
+            if (selectedJob != null)
+            {
+                gameManager.CreatdPlayer(name, selectedJob);
+            }
+            else
+            {
+                Console.WriteLine("직업 데이터 어디감?. jobs.json 파일 확인하고 기도해라.");
+            }
         }
         #endregion
 
@@ -651,7 +679,7 @@ namespace Text_RPG_11
             Console.ReadKey(true);
         }
 
-
+        #region 배틀
         // 적들과 배틀하는 UI를 실행 (Battle이 이미 준비된 상태여야 함 즉 몹을 생성한 뒤 돌려야 함)
         public void RunBattleLoop(Battle battle)
         {
@@ -811,7 +839,9 @@ namespace Text_RPG_11
             Console.WriteLine("4. 도망");
             Console.Write(">> ");
         }
+        #endregion
 
+        #region 체력/마나 바 출력 등 자잘한 꾸미기
         private void ShowHPBar(int current, int max)
         {
             // 라인 단독 출력용 (바 + 숫자)
@@ -881,9 +911,9 @@ namespace Text_RPG_11
         {
             Console.WriteLine(new string(c, repeat));
         }
+        #endregion
 
-
-
+        #region 배틀2
         private void AddLog(string msg)
         {
             string time = DateTime.Now.ToString("HH:mm:ss");
@@ -931,20 +961,219 @@ namespace Text_RPG_11
 
             return pick - 1;
         }
+        #endregion
 
-        public void ShowInventoryDisplay(Inventory inventory) // 고맙게 만들어주신거 그대로 쓰겠습니다
+        private void SetRarityColor(string rarity)
         {
-            inventory.ShowInventoryDisplay();
+            switch (rarity)
+            {
+                case "common":
+                    Console.ForegroundColor = ConsoleColor.White;
+                    break;
+                case "rare":
+                    Console.ForegroundColor = ConsoleColor.Blue;
+                    break;
+                case "epic":
+                    Console.ForegroundColor = ConsoleColor.Magenta;
+                    break;
+                case "legend":
+                    Console.ForegroundColor = ConsoleColor.Yellow;
+                    break;
+                case "myth":
+                    Console.ForegroundColor = ConsoleColor.Cyan;
+                    break;
+                case "transcended":
+                    Console.ForegroundColor = ConsoleColor.Red;
+                    break;
+                default:
+                    Console.ResetColor();
+                    break;
+            }
         }
 
-        public void ItemEquipped(Inventory inventory) // 이하 동문
+        public void ShowInventory()
         {
-            inventory.ItemEquipped();
+            Console.Clear();
+            Console.ForegroundColor = ConsoleColor.Cyan;
+            Console.WriteLine("============ [ 🎒 인벤토리 ] ============");
+            Console.ResetColor();
+
+            var playerItems = gameManager?.inventory?.Items ?? new List<Items>();
+
+            var weapons = playerItems.Where(i => i.ItemType() == "무기").OfType<Weapon>().ToList();
+            var armors = playerItems.Where(i => i.ItemType() == "방어구").OfType<Armor>().ToList();
+            var potions = playerItems.Where(i => i.ItemType() == "물약").OfType<Potion>().ToList();
+
+            // 무기 표시
+            Console.ForegroundColor = ConsoleColor.Yellow;
+            Console.WriteLine("[무기]");
+            Console.ResetColor();
+            if (weapons.Count == 0)
+                Console.WriteLine("  (보유 무기 없음)");
+            else
+                foreach (var w in weapons)
+                {
+                    SetRarityColor(w.Rarity);
+                    Console.WriteLine($"  - {w.Name} | 공격력 +{w.AttackPower} | 희귀도: {w.Rarity}");
+                    Console.ResetColor();
+                }
+
+            // 방어구 표시
+            Console.ForegroundColor = ConsoleColor.Yellow;
+            Console.WriteLine("\n[방어구]");
+            Console.ResetColor();
+            if (armors.Count == 0)
+                Console.WriteLine("  (보유 방어구 없음)");
+            else
+                foreach (var a in armors)
+                {
+                    SetRarityColor(a.Rarity);
+                    Console.WriteLine($"  - {a.Name} | 방어력 +{a.DefensePower} | 희귀도: {a.Rarity}");
+                    Console.ResetColor();
+                }
+
+            // 포션 표시
+            Console.ForegroundColor = ConsoleColor.Yellow;
+            Console.WriteLine("\n[포션]");
+            Console.ResetColor();
+            if (potions.Count == 0)
+                Console.WriteLine("  (보유 포션 없음)");
+            else
+                foreach (var p in potions)
+                {
+                    SetRarityColor(p.Rarity);
+                    Console.WriteLine($"  - {p.Name} | HP 회복 +{p.HealPower} | 희귀도: {p.Rarity}");
+                    Console.ResetColor();
+                }
+
+            Console.WriteLine("=====================================");
+            Console.WriteLine("1) 사용   2) 장착   3) 버리기   0) 나가기");
+            Console.Write(">> ");
+            Console.ReadKey();
         }
 
-        public void ShowShopDisplay()
-        {
 
+        public void ShowShop()
+        {
+            Console.Clear();
+            Console.ForegroundColor = ConsoleColor.Yellow;
+            Console.WriteLine("============== [ 🏪 상점 ] ==============");
+            Console.ResetColor();
+
+            var shop = new Shop(gameManager);
+            var shopItems = shop.GetShopInventory();
+
+            Console.WriteLine("[판매 목록]");
+            Console.ForegroundColor = ConsoleColor.White;
+
+            for (int i = 0; i < shopItems.Count; i++)
+            {
+                var item = shopItems[i];
+                string type = item.ItemType();
+                string statInfo = item.ItemStats();
+
+                SetRarityColor(item.Rarity);
+                Console.WriteLine($"{i + 1}. {item.Name,-15} | {item.Price,5}G | {type,-5} | {statInfo} | {item.Rarity}");
+                Console.ResetColor();
+            }
+
+            Console.WriteLine("====================================");
+            Console.WriteLine("1) 구매   2) 판매   0) 뒤로가기");
+            Console.Write(">> ");
+            var input = Console.ReadLine();
+
+            switch (input)
+            {
+                case "1":
+                    HandleShopPurchase(shop);
+                    break;
+                case "2":
+                    HandleShopSell(shop);
+                    break;
+                default:
+                    return;
+            }
+        }
+
+        private void HandleShopPurchase(Shop shop) // 아이템 구매 UI
+        {
+            var items = shop.GetShopInventory();
+
+            Console.WriteLine("\n구매할 아이템 번호를 입력하세요 (0: 취소): ");
+            Console.Write(">> ");
+            if (!int.TryParse(Console.ReadLine(), out int choice) || choice <= 0 || choice > items.Count)
+            {
+                Console.WriteLine("잘못된 입력입니다.");
+                Console.ReadKey();
+                return;
+            }
+
+            var selectedItem = items[choice - 1];
+            bool success = shop.BuyItem(selectedItem);
+
+            if (success)
+            {
+                Console.ForegroundColor = ConsoleColor.Green;
+                Console.WriteLine($"\n'{selectedItem.Name}' 구매 완료! (남은 골드: {gameManager.Player.Gold}G)");
+            }
+            else
+            {
+                Console.ForegroundColor = ConsoleColor.Red;
+                Console.WriteLine("\n구매에 실패했습니다.");
+            }
+
+            Console.ResetColor();
+            Console.ReadKey();
+        }
+
+        
+        private void HandleShopSell(Shop shop) // 아이템 판매 UI
+        {
+            var inventory = gameManager.inventory.Items;
+
+            if (inventory.Count == 0)
+            {
+                Console.WriteLine("판매할 아이템이 없습니다.");
+                Console.ReadKey();
+                return;
+            }
+
+            Console.Clear();
+            Console.WriteLine("=========== [ 판매 목록 ] ===========");
+            for (int i = 0; i < inventory.Count; i++)
+            {
+                var item = inventory[i];
+                Console.WriteLine($"{i + 1}. {item.Name,-15} | {item.Price / 2,5}G | {item.ItemType()}");
+            }
+
+            Console.WriteLine("===================================");
+            Console.WriteLine("판매할 아이템 번호를 입력하세요 (0: 취소): ");
+            Console.Write(">> ");
+
+            if (!int.TryParse(Console.ReadLine(), out int choice) || choice <= 0 || choice > inventory.Count)
+            {
+                Console.WriteLine("잘못된 입력입니다.");
+                Console.ReadKey();
+                return;
+            }
+
+            var selectedItem = inventory[choice - 1];
+            bool success = shop.SellItem(selectedItem);
+
+            if (success)
+            {
+                Console.ForegroundColor = ConsoleColor.Green;
+                Console.WriteLine($"\n'{selectedItem.Name}' 판매 완료! (+{selectedItem.Price / 2}G)");
+            }
+            else
+            {
+                Console.ForegroundColor = ConsoleColor.Red;
+                Console.WriteLine("\n판매에 실패했습니다.");
+            }
+
+            Console.ResetColor();
+            Console.WriteLine($"현재 골드: {gameManager.Player.Gold}G");
+            Console.ReadKey();
         }
     }
 }
