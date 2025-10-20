@@ -1104,7 +1104,10 @@ namespace Text_RPG_11
             for (int i = 0; i < inventory.Count; i++)
             {
                 var item = inventory[i];
-                Console.WriteLine($"{i + 1}. {item.Name,-15} | {item.Price / 2,5}G | {item.ItemType()}");
+                Console.WriteLine($"{i + 1}. {gameManager.messages.PaddingKorean_Right(item.Name, 20)} | " +
+                    $"{gameManager.messages.PaddingKorean_Right(item.ItemType(), 10)} | " +
+                    $"{gameManager.messages.PaddingKorean_Right(item.ItemStats(), 50)} | " +
+                    $"{gameManager.messages.PaddingKorean_Right(item.Rarity, 10)} | {item.Price}G");
             }
 
             Console.WriteLine("===============================================================");
