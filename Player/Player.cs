@@ -18,12 +18,12 @@ namespace Text_RPG_11
 
         public int Attack { get; private set; }                                             //기본 공격력
         public float Defense { get; private set; }                                            //기본 방어력
-        public int HP { get; private set; }                                                 //플레이어 현재 체력
-        public int MP { get; private set; }                                                //플레이어 현재 마나
+        public int HP { get; set; }                                                 //플레이어 현재 체력
+        public int MP { get; set; }                                                //플레이어 현재 마나
 
 
-        public int Gold { get; private set; }                                               //소지 골드
-        public int Exp { get; private set; }                                                //경험치
+        public int Gold { get; set; }                                               //소지 골드
+        public int Exp { get;  set; }                                                //경험치
         public int DefaultHP { get; private set; }                                          // 기본 체력
         public int DefaultMP { get; private set; }                                          //기본 마나
 
