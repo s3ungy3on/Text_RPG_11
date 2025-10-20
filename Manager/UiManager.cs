@@ -944,7 +944,6 @@ namespace Text_RPG_11
                     break;
                 case 1:
                     gameManager.Player.UsePotion();
-                    Console.WriteLine("\n포션을 사용했습니다!");
                     Console.ReadKey();
                     ShowInventory();
                     break;

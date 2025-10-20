@@ -31,10 +31,10 @@ namespace Text_RPG_11
         private int itemHP = 0, itemMP = 0, itemAttack = 0;                                 //장착 아이템을 얻는 능력치
         private float itemDefense = 0;
 
-        public int MaxHP => DefaultHP + itemHP;                                             //최대 체력
-        public int MaxMP => DefaultMP + itemMP;                                             //최대 마나
-        public int MaxAttack => Attack + itemAttack;                                        //최종 공격력
-        public float MaxDefense => Defense + itemDefense;                                     //최종 방어력
+        public int MaxHP { get; set; }
+        public int MaxMP { get; set; }
+        public int MaxAttack { get; set; }
+        public float MaxDefense { get; set; }
 
         //인벤토리
         private readonly Inventory _inventory;                                      
@@ -143,6 +143,7 @@ namespace Text_RPG_11
             // 포션 개수가 0이면 인벤토리에서 제거
             if (potion.PotionCount <= 0)
                 inventory.Items.Remove(potion);
+            Console.WriteLine("\n포션을 사용했습니다!");
         }
 
         // 장착 아이템 기반으로 스탯 계산
@@ -166,6 +167,11 @@ namespace Text_RPG_11
                     itemMP += a.ItemMp;
                 }
             }
+
+            MaxHP = DefaultHP + itemHP;
+            MaxMP = DefaultMP + itemMP;
+            MaxAttack = Attack + itemAttack;
+            MaxDefense = Defense + itemDefense;
 
             if (HP > MaxHP) HP = MaxHP;
             if (MP > MaxMP) MP = MaxMP;

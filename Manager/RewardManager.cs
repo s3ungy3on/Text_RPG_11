@@ -18,21 +18,21 @@ namespace Text_RPG_11
         }
 
         #region 던전 보상
-        public Items GetDungeonReward(int stage)
-        {
+        //public Items GetDungeonReward(int stage)
+        //{
 
-        }
+        //}
 
-        private RewardGroup SelectRewardGroup(List<RewardGroup> groups) //보상 그룹 뽑기
-        {
+        //private RewardGroup SelectRewardGroup(List<RewardGroup> groups) //보상 그룹 뽑기
+        //{
 
-        }
+        //}
 
-        private DungeonRewardItem SelectRewardItem(List<DungeonRewardItem> items) //그룹 내 아이템 뽑기
-        {
+        //private DungeonRewardItem SelectRewardItem(List<DungeonRewardItem> items) //그룹 내 아이템 뽑기
+        //{
 
-        }
-        #endregion
+        //}
+        //#endregion
 
         #region 퀘스트 보상
         public void QuestReward(int questId)
@@ -42,3 +42,4 @@ namespace Text_RPG_11
         #endregion
     }
 }
+#endregion

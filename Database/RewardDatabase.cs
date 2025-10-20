@@ -5,8 +5,6 @@ using System.Linq;
 using System.Runtime.CompilerServices;
 using System.Text;
 using System.Threading.Tasks;
-using static Text_RPG_11.ItemData;
-using static Text_RPG_11.RewardData;
 
 namespace Text_RPG_11
 {
