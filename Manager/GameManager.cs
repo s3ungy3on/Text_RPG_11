@@ -19,12 +19,10 @@ namespace Text_RPG_11
         public Shop shop;
         private Dungeon dungeon;
         public Skill skill;
-        //public Quest quest;
         public Monster monster;
         public UIManager uiManager;
         private Battle battle;
-        public RewardManager rewardManager;
-        //public QuestManager questManager;
+        public Messages messages;
 
         public Player Player => player;
 
@@ -33,11 +31,9 @@ namespace Text_RPG_11
             inventory = new Inventory(this);
             shop = new Shop(this);
             dungeon = new Dungeon(this);
-            //skill = new Skill(this);
-            //questManager = new QuestManager(this);
-            //monster = new Monster(this);
             uiManager = new UIManager(this);
             battle = new Battle(this);
+            messages = new Messages(this);
 
         }
 
@@ -45,7 +41,7 @@ namespace Text_RPG_11
         {
             ItemDatabase.GetShopItems();
             uiManager.Intro();
-            player.GainExp(2000);
+            //player.GainExp(2000);
             GameMain();
         }
 
