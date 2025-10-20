@@ -20,7 +20,7 @@ namespace Text_RPG_11
         private int _skillNum;
         
         private const int HpBarLength = 24;           // HP바 길이
-        private const int MpBarLength = 24;
+        private const int MpBarLength = 24;           // MP바 길이
         
         public Dungeon(GameManager manager)
         {
@@ -50,12 +50,7 @@ namespace Text_RPG_11
                 _battle.Skill();
                 
                 // 4. 내 정보 출력
-                Console.WriteLine("[내 정보]");
-                Console.WriteLine($"Lv.{_gameManager.Player.Level} {_gameManager.Player.Job.Name}\n\nHP {_gameManager.Player.HP} / {_gameManager.Player.MaxHP}\nMP {_gameManager.Player.MP} / {_gameManager.Player.MaxMP}\n");
-                PrintStatusBar("체력", _gameManager.Player.HP, _gameManager.Player.MaxHP, ConsoleColor.Green, ShowHPBarInline);
-                PrintStatusBar("마나", _gameManager.Player.MP, _gameManager.Player.MaxMP, ConsoleColor.Blue, ShowMPBarInline);
-                Console.WriteLine();
-                
+                PlayerInfo();
                 
                 // 5. 행동 입력
                 Console.WriteLine("1. 공격\n");
@@ -99,10 +94,20 @@ namespace Text_RPG_11
                 
                 Console.WriteLine($"{_battle.PlayerSkills[i].Description}");
                 Console.WriteLine($"{_battle.PlayerSkills[i].Desc}");
+                Console.WriteLine();
             }
             
             if (_battle.PlayerSkills.Count == 0)
                 Console.WriteLine("사용할 수 있는 스킬이 없습니다.");
+        }
+
+        public void PlayerInfo()
+        {
+            Console.WriteLine("[내 정보]");
+            Console.WriteLine($"Lv.{_gameManager.Player.Level} {_gameManager.Player.Job.Name}\n\nHP {_gameManager.Player.HP} / {_gameManager.Player.MaxHP}\nMP {_gameManager.Player.MP} / {_gameManager.Player.MaxMP}\n");
+            PrintStatusBar("체력", _gameManager.Player.HP, _gameManager.Player.MaxHP, ConsoleColor.Green, ShowHPBarInline);
+            PrintStatusBar("마나", _gameManager.Player.MP, _gameManager.Player.MaxMP, ConsoleColor.Blue, ShowMPBarInline);
+            Console.WriteLine();
         }
 
         // 공격 / 스킬 사용 선택
@@ -123,9 +128,8 @@ namespace Text_RPG_11
                 EnemyInfo();
                 Console.WriteLine();
                 
-                Console.WriteLine("[내 정보]");
-                Console.WriteLine($"Lv.{_gameManager.Player.Level} {_gameManager.Player.Job.Name}\n\nHP {_gameManager.Player.HP} / {_gameManager.Player.MaxHP}\nMP {_gameManager.Player.MP} / {_gameManager.Player.MaxMP}\n");
-            
+                PlayerInfo();
+                
                 // 3. 플레이어 행동 선택
                 Console.WriteLine("1. 공격");
                 Console.WriteLine("2. 스킬\n");
@@ -160,8 +164,7 @@ namespace Text_RPG_11
                 EnemyInfo();
                 Console.WriteLine();
             
-                Console.WriteLine("[내 정보]");
-                Console.WriteLine($"Lv.{_gameManager.Player.Level} {_gameManager.Player.Job.Name}\nHP {_gameManager.Player.HP} / {_gameManager.Player.MaxHP}\n");
+                PlayerInfo();
                 
                 // 1. 공격할 몬스터 입력
                 Console.WriteLine("몬스터 숫자. 공격");
@@ -205,8 +208,7 @@ namespace Text_RPG_11
                 EnemyInfo();
                 Console.WriteLine();
             
-                Console.WriteLine("[내 정보]");
-                Console.WriteLine($"Lv.{_gameManager.Player.Level} {_gameManager.Player.Job.Name}\nHP {_gameManager.Player.HP} / {_gameManager.Player.MaxHP}\n");
+                PlayerInfo();
                 
                 // 1. 사용하고 싶은 스킬 확인
                 
@@ -278,8 +280,7 @@ namespace Text_RPG_11
                 EnemyInfo();
                 Console.WriteLine();
             
-                Console.WriteLine("[내 정보]");
-                Console.WriteLine($"Lv.{_gameManager.Player.Level} {_gameManager.Player.Job.Name}\nHP {_gameManager.Player.HP} / {_gameManager.Player.MaxHP}\n");
+                PlayerInfo();
                 
                 // 1. 공격할 몬스터 입력
                 Console.WriteLine("몬스터 숫자. 공격");
