@@ -519,6 +519,7 @@ namespace Text_RPG_11
             }
             Thread.Sleep(1000);
 
+            Console.ResetColor();
             Console.WriteLine("소환사의 협곡에 오신것을 환영합니다." +
                 "\n소환사님의 이름은 무엇인가요.\n");
             Console.Write(">>");
@@ -1013,7 +1014,7 @@ namespace Text_RPG_11
         public void ShowShop()
         {
             Console.Clear();
-            PrintColoredLine("============== [ 🏪 상점 ] ==============", ConsoleColor.Yellow);
+            PrintColoredLine("============================ [ 🏪 상점 ] ============================", ConsoleColor.Yellow);
 
             var shopItems = gameManager.shop.GetShopInventory();
 
@@ -1026,7 +1027,8 @@ namespace Text_RPG_11
                 Console.ResetColor();
             }
 
-            Console.WriteLine("====================================");
+            Console.WriteLine("================================================================");
+            Console.WriteLine($"현재 골드: {gameManager.Player.Gold}G");
             Console.WriteLine("1) 구매   2) 판매   0) 뒤로가기");
             Console.Write(">> ");
 
@@ -1090,14 +1092,14 @@ namespace Text_RPG_11
             }
 
             Console.Clear();
-            Console.WriteLine("=========== [ 판매 목록 ] ===========");
+            Console.WriteLine("========================= [ 판매 목록 ] =========================");
             for (int i = 0; i < inventory.Count; i++)
             {
                 var item = inventory[i];
                 Console.WriteLine($"{i + 1}. {item.Name,-15} | {item.Price / 2,5}G | {item.ItemType()}");
             }
 
-            Console.WriteLine("===================================");
+            Console.WriteLine("===============================================================");
             Console.WriteLine("판매할 아이템 번호를 입력하세요 (0: 돌아가기): ");
             Console.Write(">> ");
             int choice = Messages.ReadInput(0, inventory.Count);
