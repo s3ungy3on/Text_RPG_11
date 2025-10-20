@@ -12,43 +12,28 @@ namespace Text_RPG_11
 {
         public class Player
     {
-        public string Name { get; set; }                                            //플레이어 이름       
-        public int Level { get; set; }                                              //플레이어 레벨
+        public string Name { get; }                                            //플레이어 이름       
+        public int Level { get; private set; }                                              //플레이어 레벨
 
-        public string Job { get; set; }                                             //직업 이름
-
-        public int Attack { get; set; }                                             //기본 공격력
-        public float Defense { get; set; }                                            //기본 방어력
-        public int HP { get; set; }                                                 //플레이어 현재 체력
-        public int MP { get; set; }                                                //플레이어 현재 마나
+        public int Attack { get; private set; }                                             //기본 공격력
+        public float Defense { get; private set; }                                            //기본 방어력
+        public int HP { get; private set; }                                                 //플레이어 현재 체력
+        public int MP { get; private set; }                                                //플레이어 현재 마나
 
 
-        public int Gold { get; set; }                                               //소지 골드
-        public int Exp { get; set; }                                                //경험치
-        public int DefaultHP { get; set; }                                          // 기본 체력
-        public int DefaultMP { get; set; }                                          //기본 마나
-        public int Potions { get; set; } = 0;                                       //소지 포션 수량
+        public int Gold { get; private set; }                                               //소지 골드
+        public int Exp { get; private set; }                                                //경험치
+        public int DefaultHP { get; private set; }                                          // 기본 체력
+        public int DefaultMP { get; private set; }                                          //기본 마나
+
 
         //현재 던전 스테이지
         private int currentStage = 1;
-        public int CurrentStage
-        {
-            get => currentStage;
-            private set
-            {
-                currentStage = Math.Max(1, value); // 최소 1 이상 보장
-            }
-        }
-
-        public void ClearDungeon()                                          //던전 클리어시  스테이지상승
-        {
-            CurrentStage++;
-        }
+        public int CurrentStage => currentStage;
+        public void ClearDungeon() => currentStage++;                                       //던전 클리어시 스테이지 상승
 
 
-        private int itemHP = 0;                                                             //장착 아이템으로 얻는 능력치
-        private int itemMP = 0;
-        private int itemAttack = 0;
+        private int itemHP = 0, itemMP = 0, itemAttack = 0;                                 //장착 아이템을 얻는 능력치
         private float itemDefense = 0;
 
         public int MaxHP => DefaultHP + itemHP;                                             //최대 체력
@@ -56,17 +41,18 @@ namespace Text_RPG_11
         public int MaxAttack => Attack + itemAttack;                                        //최종 공격력
         public float MaxDefense => Defense + itemDefense;                                     //최종 방어력
 
+        //인벤토리
+        private readonly Inventory _inventory;                                      
+        public Inventory Inventory => _inventory;
 
-        private Inventory inventory; // 기존 코드에서 누락되어 있던 private 필드
-        public Inventory Inventory => inventory ??= new Inventory();
 
         //장착 아이템 관리
-        private readonly List<Items> equippedItems = new List<Items>();
-        public IReadOnlyList<Items> EquippedItems => equippedItems.AsReadOnly();
-        public bool HasEquippedItem => equippedItems.Count > 0;
+        private readonly List<Items> _equippedItems = new List<Items>();
+        public IReadOnlyList<Items> EquippedItems => _equippedItems.AsReadOnly();
+        public bool HasEquippedItem => _equippedItems.Count > 0;
 
 
-        public Player(string name, int level, string job, int baseAttack, int baseDefense, int defaultHP, int defaultMP, int gold, int exp = 0)
+        public Player(string name, int level, int baseAttack, int baseDefense, int defaultHP, int defaultMP, int gold, int exp = 0, Inventory inventory)
         {
             Name = name;
             Level = Math.Max(1, level);
@@ -78,6 +64,8 @@ namespace Text_RPG_11
             MP = DefaultMP;                                                         //현재 마나 초기화
             Gold = gold;
             Exp = exp;
+
+            _inventory = inventory;
         }
 
 
@@ -109,7 +97,7 @@ namespace Text_RPG_11
             HP = MaxHP;                                                         //레벨업시 체력회복
             MP = MaxMP;                                                         //레벨업시 마나회복
         }
-        public void AddItem(Items item)
+        public void AddItem(Items item)                                         //아이템 추가
         {
             if (item != null)
             Inventory.Items.Add(item);
@@ -118,11 +106,9 @@ namespace Text_RPG_11
         // 아이템 장착
         public void EquipItem(Items item)
         {
-            if (item == null) return;
-            if (!Inventory.Items.Contains(item)) return;                            // 인벤토리에 없는 아이템이면 X
-            if (item.IsEquipped) return;                                        // 이미 장착 중이면 X
+            if (item == null || !Inventory.Items.Contains(item) || item.IsEquipped) return;          // 이미 장착 중이면 X
 
-            equippedItems.Add(item);
+            _equippedItems.Add(item);
             item.IsEquipped = true;
             StatUpdate();
         }
@@ -130,10 +116,9 @@ namespace Text_RPG_11
         // 아이템 해제
         public void UnequipItem(Items item)
         {
-            if (item == null) return;
-            if (!equippedItems.Contains(item)) return;
+            if (item == null || !_equippedItems.Contains(item)) return;
 
-            equippedItems.Remove(item);
+            _equippedItems.Remove(item);
             item.IsEquipped = false;
             StatUpdate();
         }
@@ -141,22 +126,17 @@ namespace Text_RPG_11
         // 포션 사용
         public void UsePotion()
         {
-            var potion = Inventory.Items.OfType<Potion>().FirstOrDefault();
-            if (potion == null)
-            {
-                // 인벤토리에 포션 없음
-                return;
-            }
+            var potion = Inventory.Items.OfType<Potion>().FirstOrDefault(p => p.PotionCount > 0);
 
+            if (potion == null) return; // 포션 없으면 종료
 
-            // 포션 소비
-            Inventory.Items.Remove(potion);
-
-
-            // 치유량은 포션의 HealAmount 프로퍼티(가정)를 사용, 없다면 기본 50
-            int heal = (potion?.HealAmount) ?? 50;
-            HP += heal;
+            potion.PotionCount--;
+            HP += potion.HealPower;
             if (HP > MaxHP) HP = MaxHP;
+
+            // 포션 개수가 0이면 인벤토리에서 제거
+            if (potion.PotionCount <= 0)
+                Inventory.Items.Remove(potion);
         }
 
         // 장착 아이템 기반으로 스탯 계산
@@ -165,7 +145,7 @@ namespace Text_RPG_11
             itemHP = itemMP = itemAttack = 0;
             itemDefense = 0;
 
-            foreach (var item in equippedItems)
+            foreach (var item in _equippedItems.Where(i => i.IsEquipped))
             {
                 if (item is Weapon w)
                 {
