@@ -1162,7 +1162,7 @@ namespace Text_RPG_11
 
             PrintColoredLine(
                 success
-                    ? $"\n'{selectedItem.Name}' 판매 완료! (+{selectedItem.Price / 2}G)"
+                    ? $"\n'{selectedItem.Name}' 판매 완료! (+{selectedItem.Price}G)"
                     : "\n판매에 실패했습니다.",
                 success ? ConsoleColor.Green : ConsoleColor.Red
             );
