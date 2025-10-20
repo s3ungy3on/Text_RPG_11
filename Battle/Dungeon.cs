@@ -670,5 +670,17 @@ namespace Text_RPG_11
                     Console.WriteLine("잘못된 입력입니다.");
             }
         }
+        
+        private void PrintColoredLine(string text, ConsoleColor color) // 색상 있는 텍스트 출력
+        {
+            Console.ForegroundColor = color;
+            Console.WriteLine(text);
+            Console.ResetColor();
+        }
+
+        private void WriteLineDivider(char c = '-', int repeat = 40) // 선 구분선 출력
+        {
+            Console.WriteLine(new string(c, repeat));
+        }
     }
 }
