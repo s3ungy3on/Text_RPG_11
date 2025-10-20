@@ -106,7 +106,6 @@ namespace Text_RPG_11
         {
             _gameManager = manager;
             // currentStage = this.Stage;
-            stageItem = RewardDatabase.GetDungeonRewardByStage(this.Stage);
         }
         
         public class Cooldown
@@ -521,40 +520,48 @@ namespace Text_RPG_11
         // 던전 클리어 보상 아이템 지급
         public void ClearRewardItem()
         {
+            DungeonRewardData rewardData = RewardDatabase.GetDungeonRewardByStage(Stage);
+    
+            if (rewardData == null) return;
+    
+            // 1단계: 그룹 선택 (item / potion / 꽝)
             int itemGroupPercent = rand.Next(1, 101);
-            int itemPercent = rand.Next(1, 101);
-            
-            if (stageItem == null) return;
-            
-            foreach (var group in stageItem.rewardGroups)
+            int cumulativeGroupChance = 0;
+            RewardGroup selectedGroup = null;
+    
+            foreach (var group in rewardData.rewardGroups)
             {
-                if (itemGroupPercent <= group.groupChance)
+                cumulativeGroupChance += group.groupChance;
+        
+                if (itemGroupPercent <= cumulativeGroupChance)
                 {
-                    if (group.items != null)
-                    {
-                        foreach (var item in group.items)
-                        {
-                            if (itemPercent <= item.dropChance)
-                            {
-                                RewardItems.Add(item);
-                            }
-                        }
-                    }
+                    selectedGroup = group;
+                    break; // 하나만 선택!
                 }
             }
-            
-            /*// 1. stage에 맞는 아이템 그룹 확인
-            var stageItem = _rewardContainer?.dungeonRewards?.Find(d => Stage >= d.stageRange[0] && Stage <= d.stageRange[1]);
-            if (stageItem == null) return; // null이면 바로 종료
-  
-            // 2. 확률에 따라 보상 아이템 추가
-            foreach (var item in stageItem.rewardItems)
-                if (item.dropChance >= itemPercent)
-                    RewardItems.Add(item);*/
-            
-            // int cumulativeChance = 0;
-            // RewardDatabase.DungeonReward SelectGroup = null;
+    
+            // 꽝이거나 그룹이 없으면 종료
+            if (selectedGroup == null || selectedGroup.items == null || selectedGroup.items.Count == 0)
+            {
+                return;
+            }
+    
+            // 2단계: 선택된 그룹 내에서 아이템 선택
+            int itemPercent = rand.Next(1, 101);
+            int cumulativeItemChance = 0;
+    
+            foreach (var item in selectedGroup.items)
+            {
+                cumulativeItemChance += (int)(item.dropChance);
+        
+                if (itemPercent <= cumulativeItemChance)
+                {
+                    RewardItems.Add(item);
+                    break; // 하나만 선택!
+                }
+            }
         }
+
         
         /*public void ClearRewardItem()
         {

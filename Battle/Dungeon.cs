@@ -613,7 +613,6 @@ namespace Text_RPG_11
                 Console.WriteLine($"Lv.{_gameManager.Player.Level} Chad ({_gameManager.Player.Job})");
                 Console.WriteLine($"HP {_battle.PlayerInitialHP} -> {_gameManager.Player.HP}\n");
                 
-                
                 Console.WriteLine("[획득 아이템]");
                 // 1. 획득 골드 출력
                 Console.WriteLine($"{_battle.RewardGold} Gold\n");
@@ -624,7 +623,7 @@ namespace Text_RPG_11
                     // var item = _gameManager.GameItems.FirstOrDefault(i => i.ItemId == rewardItem.itemId);
                     // 추후 수정 예정
                     var item = ItemDatabase.GetItemById(rewardItem.itemId);
-
+                    
                     if (item != null) 
                         Console.WriteLine($"{item.Name}");
                 }
