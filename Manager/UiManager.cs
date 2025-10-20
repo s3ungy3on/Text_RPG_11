@@ -1034,7 +1034,7 @@ namespace Text_RPG_11
             Console.WriteLine("1) 구매   2) 판매   0) 뒤로가기");
             Console.Write(">> ");
 
-            int choice = Messages.ReadInput(0, 5);
+            int choice = Messages.ReadInput(0, 2);
             switch (choice)
             {
                 case 0:
