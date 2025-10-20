@@ -508,7 +508,7 @@ namespace Text_RPG_11
         {
             foreach (Monster monster in Enemies)
             {
-                RewardExp += monster.RewardExp;
+                _gameManager.Player.GainExp(monster.RewardExp);
                 RewardGold += monster.RewardGold;
             }
             

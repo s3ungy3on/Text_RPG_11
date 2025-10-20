@@ -19,6 +19,9 @@ namespace Text_RPG_11
         private int _monsterNum = 1;
         private int _skillNum;
         
+        private const int HpBarLength = 24;           // HP바 길이
+        private const int MpBarLength = 24;
+        
         public Dungeon(GameManager manager)
         {
             _gameManager = manager;
@@ -49,6 +52,9 @@ namespace Text_RPG_11
                 // 4. 내 정보 출력
                 Console.WriteLine("[내 정보]");
                 Console.WriteLine($"Lv.{_gameManager.Player.Level} {_gameManager.Player.Job.Name}\n\nHP {_gameManager.Player.HP} / {_gameManager.Player.MaxHP}\nMP {_gameManager.Player.MP} / {_gameManager.Player.MaxMP}\n");
+                PrintStatusBar("체력", _gameManager.Player.HP, _gameManager.Player.MaxHP, ConsoleColor.Green, ShowHPBarInline);
+                PrintStatusBar("마나", _gameManager.Player.MP, _gameManager.Player.MaxMP, ConsoleColor.Blue, ShowMPBarInline);
+                
                 
                 // 5. 행동 입력
                 Console.WriteLine("1. 공격\n");
@@ -699,5 +705,60 @@ namespace Text_RPG_11
         {
             Console.WriteLine(new string(c, repeat));
         }
+        
+        #region HP/MP 바 출력
+        private void ShowHPBar(int current, int max)
+        {
+            ShowHPBarInline(current, max);
+            Console.Write($"  {current}/{max}");
+        }
+
+        private void ShowHPBarInline(int current, int max)
+        {
+            ShowBarInline(current, max, HpBarLength, GetHPColor);
+        }
+
+        private void ShowMPBar(int current, int max)
+        {
+            ShowMPBarInline(current, max);
+            Console.Write($"  {current}/{max}");
+        }
+
+        private void ShowMPBarInline(int current, int max)
+        {
+            ShowBarInline(current, max, MpBarLength, _ => ConsoleColor.Blue);
+        }
+
+        private void ShowBarInline(int current, int max, int barLength, Func<double, ConsoleColor> colorSelector)
+        {
+            double ratio = max <= 0 ? 0.0 : (double)current / max;
+            ratio = Math.Clamp(ratio, 0.0, 1.0);
+            int filled = (int)Math.Round(ratio * barLength);
+            int empty = barLength - filled;
+
+            Console.Write("[");
+            Console.ForegroundColor = colorSelector(ratio);
+            Console.Write(new string('█', filled));
+            Console.ResetColor();
+            Console.Write(new string('░', empty));
+            Console.Write("]");
+        }
+
+        private ConsoleColor GetHPColor(double ratio)
+        {
+            if (ratio > 0.4) return ConsoleColor.Green;
+            if (ratio > 0.2) return ConsoleColor.Yellow;
+            return ConsoleColor.Red;
+        }
+        
+        private void PrintStatusBar(string label, int current, int max, ConsoleColor color, Action<int, int> barAction)
+        {
+            Console.ForegroundColor = color;
+            Console.Write($"{label} : ");
+            barAction(current, max);
+            Console.ResetColor();
+            Console.WriteLine($"  {current}/{max}");
+        }
+        #endregion
     }
 }
