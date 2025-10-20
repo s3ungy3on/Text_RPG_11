@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 namespace Text_RPG_11
 {
 
-    internal enum SkillType
+    public enum SkillType
     {
         Attack,       //기존 Damage에서 Attack으로 변경하였습니다.
         Heal,
@@ -17,7 +17,7 @@ namespace Text_RPG_11
         AttackBuff    // 공격 + 버프 
     }
 
-    internal sealed class SkillEffects
+    public sealed class SkillEffects
     {
         // Buff(+)
         public int AttackBonus { get; set; } = 0;
@@ -35,7 +35,7 @@ namespace Text_RPG_11
         public int EffectiveDefenseDelta => DefenseBonus - DefenseMinus;
     }
 
-    internal class Skill
+    public class Skill
     {
         public int Id { get; private set; }                     //스킬 고유 번호
         public string Name { get; private set; }                //스킬 이름
