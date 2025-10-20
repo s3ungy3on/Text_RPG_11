@@ -914,17 +914,23 @@ namespace Text_RPG_11
             ShowItemCategory("무기", weapons, w =>
             {
                 Messages.Equipped(w.IsEquipped);
+                SetRarityColor(w.Rarity);
                 return $"  - {w.Name} | {w.ItemStats()} | 희귀도: {w.Rarity}";
             });
 
             ShowItemCategory("방어구", armors, a =>
             {
                 Messages.Equipped(a.IsEquipped);
+                SetRarityColor(a.Rarity);
                 return $"  - {a.Name} | {a.ItemStats()} | 희귀도: {a.Rarity}";
             });
 
             ShowItemCategory("포션", potions, p =>
-                $"  - {p.Name} | {p.ItemStats()} | 개수: {p.PotionCount}");
+            {
+                SetRarityColor(p.Rarity);
+                return $"  - {p.Name} | {p.ItemStats()} | 개수: {p.PotionCount}";
+            });
+
 
             Console.WriteLine("=====================================");
             Console.WriteLine("1. 포션 사용\n2. 아이템 장착\n0. 나가기");
