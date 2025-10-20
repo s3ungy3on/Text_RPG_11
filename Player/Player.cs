@@ -10,7 +10,7 @@ using System.Xml.Linq;
 
 namespace Text_RPG_11
 {
-    internal class Player
+        public class Player
     {
         public string Name { get; set; }                                            //플레이어 이름       
         public int Level { get; set; }                                              //플레이어 레벨
@@ -29,8 +29,21 @@ namespace Text_RPG_11
         public int DefaultMP { get; set; }                                          //기본 마나
         public int Potions { get; set; } = 0;                                       //소지 포션 수량
 
+        //현재 던전 스테이지
+        private int currentStage = 1;
+        public int CurrentStage
+        {
+            get => currentStage;
+            private set
+            {
+                currentStage = Math.Max(1, value); // 최소 1 이상 보장
+            }
+        }
 
-        public int CurrentStage { get; set; } = 1;                              // 현재 던전 스테이지
+        public void ClearDungeon()                                          //던전 클리어시  스테이지상승
+        {
+            CurrentStage++;
+        }
 
 
         private int itemHP = 0;                                                             //장착 아이템으로 얻는 능력치
@@ -44,23 +57,21 @@ namespace Text_RPG_11
         public float MaxDefense => Defense + itemDefense;                                     //최종 방어력
 
 
-        private List<Items> inventory = new();                                           //인벤토리
-        public IReadOnlyList<Items> Inventory => inventory.AsReadOnly();
+        private Inventory inventory; // 기존 코드에서 누락되어 있던 private 필드
+        public Inventory Inventory => inventory ??= new Inventory();
 
-        private List<Items> equippedItems = new();                                           //장착 아이템
+        //장착 아이템 관리
+        private readonly List<Items> equippedItems = new List<Items>();
         public IReadOnlyList<Items> EquippedItems => equippedItems.AsReadOnly();
-
         public bool HasEquippedItem => equippedItems.Count > 0;
 
 
-
-        public Player(string name, int level, string job, int attack, int defense, int defaultHP, int defaultMP, int gold, int exp = 0)
+        public Player(string name, int level, string job, int baseAttack, int baseDefense, int defaultHP, int defaultMP, int gold, int exp = 0)
         {
             Name = name;
-            Level = level;
-            Job = job;
-            Attack = attack;
-            Defense = defense;
+            Level = Math.Max(1, level);
+            Attack = baseAttack;
+            Defense = baseDefense;
             DefaultHP = defaultHP;                                                  //최대체력 기준값 저장
             DefaultMP = defaultMP;                                                  //최대 마나 기준값 저장
             HP = DefaultHP;                                                         //현재 체력 초기화
@@ -69,8 +80,11 @@ namespace Text_RPG_11
             Exp = exp;
         }
 
+
         public void GainExp(int amount)
         {
+            if (amount <= 0) return;
+
             Exp += amount; // 경험치 추가
             int maxExp = Level * 20 + Level;
 
@@ -98,26 +112,26 @@ namespace Text_RPG_11
         public void AddItem(Items item)
         {
             if (item != null)
-                inventory.Add(item);
+            Inventory.Items.Add(item);
         }
 
         // 아이템 장착
         public void EquipItem(Items item)
         {
-            if (item == null || !inventory.Contains(item)) return;
+            if (item == null) return;
+            if (!Inventory.Items.Contains(item)) return;                            // 인벤토리에 없는 아이템이면 X
+            if (item.IsEquipped) return;                                        // 이미 장착 중이면 X
 
-            if (!equippedItems.Contains(item))
-            {
-                equippedItems.Add(item);
-                item.IsEquipped = true;
-                StatUpdate();
-            }
+            equippedItems.Add(item);
+            item.IsEquipped = true;
+            StatUpdate();
         }
 
         // 아이템 해제
         public void UnequipItem(Items item)
         {
-            if (item == null || !equippedItems.Contains(item)) return;
+            if (item == null) return;
+            if (!equippedItems.Contains(item)) return;
 
             equippedItems.Remove(item);
             item.IsEquipped = false;
@@ -127,12 +141,22 @@ namespace Text_RPG_11
         // 포션 사용
         public void UsePotion()
         {
-            if (Potions > 0)
+            var potion = Inventory.Items.OfType<Potion>().FirstOrDefault();
+            if (potion == null)
             {
-                Potions--;
-                HP += 50;
-                if (HP > MaxHP) HP = MaxHP;
+                // 인벤토리에 포션 없음
+                return;
             }
+
+
+            // 포션 소비
+            Inventory.Items.Remove(potion);
+
+
+            // 치유량은 포션의 HealAmount 프로퍼티(가정)를 사용, 없다면 기본 50
+            int heal = (potion?.HealAmount) ?? 50;
+            HP += heal;
+            if (HP > MaxHP) HP = MaxHP;
         }
 
         // 장착 아이템 기반으로 스탯 계산
@@ -163,26 +187,3 @@ namespace Text_RPG_11
     } 
     
 }
-
-    internal class JobData
-    {
-        public List<Job> jobs { get; set; } = new List<Job>();                                      //직업 리스트
-    }
-
-    internal class Job                                                                                //직업 정보
-    {
-        public string name { get; set; } = "";                                                      //직업 이름
-        public string description { get; set; } = "";                                               //직업 설명
-        public BaseStats baseStats { get; set; } = new BaseStats();                             //직업 기본 능력치
-    }
-
-    internal class BaseStats                                      //직업 기본 능력치
-    {
-        public int hp { get; set; } = 0;                    //기본 체력
-        public int mp { get; set; } = 0;                    //기본 마나
-        public int attack { get; set; } = 0;                //기본 공격력
-        public int defense { get; set; } = 0;               //기본 방어력
-        public int criticalChance { get; set; } = 0;  // 치명타 확률
-        public int dodgeChance { get; set; } = 0;     // 회피 확률
-        public int gold { get; set; } = 0;              //시작골드
-    }

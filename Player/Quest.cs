@@ -9,12 +9,12 @@ using System.Text.Json.Serialization;
 
 namespace Text_RPG_11
 {
-    internal enum QuestType
+    public enum QuestType
     {
         KillMonster,
         EquipItem
     }
-    internal class Quest
+    public class Quest
     {
         public string QuestName { get; }                      //퀘스트 이름
         public string Description { get; }                   //퀘스트 설명
@@ -133,7 +133,7 @@ namespace Text_RPG_11
 
     }
 
-    internal class QuestManager
+    public class QuestManager
     {
         private List<Quest> quests = new List<Quest>();   // 전체 퀘스트 목록
         private int currentQuestIndex = 0;                // 현재 진행 중인 퀘스트 인덱스
@@ -200,7 +200,7 @@ namespace Text_RPG_11
         }
     }
 
-    internal class QuestRewardData
+    public class QuestRewardData
     {
         public int questId { get; set; }
         public string questName { get; set; }
@@ -212,7 +212,7 @@ namespace Text_RPG_11
 
     }
 
-    internal class QuestData
+    public class QuestData
     {
         public List<QuestRewardData> questRewards { get; set; }
     }
