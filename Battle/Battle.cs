@@ -93,7 +93,7 @@ namespace Text_RPG_11
 
         private Skill skillForAttack;
         
-        private JobData jobData;
+        // private JobData jobData;
         
         public enum BattleResult // 현재 배틀 상태
         {
@@ -215,7 +215,7 @@ namespace Text_RPG_11
             // Player가 사용할 수 있는 스킬만 PlayerSkills에 입력
             PlayerSkills.AddRange(
                 Skills.Where(skill =>
-                    skill.RequiredJob == _gameManager.Player.Job &&
+                    skill.RequiredJob == _gameManager.Player.Job.Name &&
                     skill.RequiredLevel <= _gameManager.Player.Level
                 )
             );
@@ -301,7 +301,7 @@ namespace Text_RPG_11
                     // 중복되는 코드 리팩토링 필요
                     if (skillForAttack.Effects.EffectiveAttackDelta != 0)
                     {
-                        _gameManager.Player.Attack += skillForAttack.Effects.EffectiveAttackDelta;
+                        _gameManager.Player.MaxAttack += skillForAttack.Effects.EffectiveAttackDelta;
                         
                         // 지속 시간이 있는 경우
                         if (skillForAttack.Effects.Duration > 0)
@@ -315,7 +315,7 @@ namespace Text_RPG_11
                     
                     if (skillForAttack.Effects.EffectiveDefenseDelta != 0)
                     {
-                        _gameManager.Player.Defense += skillForAttack.Effects.EffectiveDefenseDelta;
+                        _gameManager.Player.MaxDefense += skillForAttack.Effects.EffectiveDefenseDelta;
                         
                         // 지속 시간이 있는 경우
                         if (skillForAttack.Effects.Duration > 0)
@@ -409,14 +409,14 @@ namespace Text_RPG_11
                     if (BuffdurationList[i].Skill.Effects.EffectiveAttackDelta != 0)
                     {
                         // 버프 받은 만큼 음수 처리
-                        _gameManager.Player.Attack -= BuffdurationList[i].Skill.Effects.EffectiveAttackDelta;
+                        _gameManager.Player.MaxAttack -= BuffdurationList[i].Skill.Effects.EffectiveAttackDelta;
                     }
                     
                     // 방어 버프 체크
                     if (BuffdurationList[i].Skill.Effects.EffectiveDefenseDelta != 0)
                     {
                         // 버프 받은 만큼 음수 처리
-                        _gameManager.Player.Defense -= BuffdurationList[i].Skill.Effects.EffectiveDefenseDelta;
+                        _gameManager.Player.MaxDefense -= BuffdurationList[i].Skill.Effects.EffectiveDefenseDelta;
                     }
                     
                     // 체크 후 삭제
