@@ -1014,7 +1014,7 @@ namespace Text_RPG_11
             Console.ReadKey();
         }
 
-        
+
         public void ShowShop()
         {
             Console.Clear();
@@ -1022,28 +1022,28 @@ namespace Text_RPG_11
             Console.WriteLine("============== [ 🏪 상점 ] ==============");
             Console.ResetColor();
 
-            var shopWeapons = itemData.items.Where(i => i.type == "무기" && i.obtainMethods.Contains("shop")).ToList();
-            var shopArmors = itemData.items.Where(i => i.type == "방어구" && i.obtainMethods.Contains("shop")).ToList();
-            var shopPotions = itemData.potions.Where(p => p.obtainMethods.Contains("shop")).ToList();
+            var shop = new Shop(gameManager);
+            var shopItems = shop.GetShopInventory();
 
-            // 리스트 통합
-            List<object> allShopItems = new List<object>();
-            allShopItems.AddRange(shopWeapons);
-            allShopItems.AddRange(shopArmors);
-            allShopItems.AddRange(shopPotions);
-
-            int index = 1;
             Console.WriteLine("[판매 목록]");
             Console.ForegroundColor = ConsoleColor.White;
-            foreach (var obj in allShopItems)
-            {
-                if (obj is ItemDataBase i)
-                    Console.WriteLine($"{index++}. {i.name,-15} | {i.price,5}G | {i.type} | +{(i.type == "무기" ? i.attackPower : i.defensePower)}");
-                else if (obj is PotionData p)
-                    Console.WriteLine($"{index++}. {p.name,-15} | {p.price,5}G | 포션 | HP +{p.healPower}");
-            }
-            Console.ResetColor();
 
+            for (int i = 0; i < shopItems.Count; i++)
+            {
+                var item = shopItems[i];
+                string type = item.ItemType();
+                string statInfo = item switch
+                {
+                    Weapon w => $"+공격력 {w.AttackPower}, 방어력 {w.DefensePower}",
+                    Armor a => $"+방어력 {a.DefensePower}, 체력 {a.ItemHp}",
+                    Potion p => $"+HP 회복 {p.HealPower}",
+                    _ => "-"
+                };
+
+                Console.WriteLine($"{i + 1}. {item.Name,-15} | {item.Price,5}G | {type,-5} | {statInfo}");
+            }
+
+            Console.ResetColor();
             Console.WriteLine("====================================");
             Console.WriteLine("1) 구매   2) 판매   0) 뒤로가기");
             Console.Write(">> ");
@@ -1052,61 +1052,51 @@ namespace Text_RPG_11
             switch (input)
             {
                 case "1":
-                    HandleShopPurchase(allShopItems);
+                    HandleShopPurchase(shop);
                     break;
                 case "2":
-                    HandleShopSell();
+                    HandleShopSell(shop);
                     break;
                 default:
                     return;
             }
         }
 
-        private void HandleShopPurchase(List<object> allShopItems)
+        private void HandleShopPurchase(Shop shop)
         {
+            var items = shop.GetShopInventory();
+
             Console.WriteLine("\n구매할 아이템 번호를 입력하세요 (0: 취소): ");
             Console.Write(">> ");
-            if (!int.TryParse(Console.ReadLine(), out int choice) || choice <= 0 || choice > allShopItems.Count)
+            if (!int.TryParse(Console.ReadLine(), out int choice) || choice <= 0 || choice > items.Count)
             {
                 Console.WriteLine("잘못된 입력입니다.");
                 Console.ReadKey();
                 return;
             }
 
-            var selected = allShopItems[choice - 1];
-            int playerGold = gameManager.Player.Gold;
+            var selectedItem = items[choice - 1];
+            bool success = shop.BuyItem(selectedItem);
 
-            // 아이템 변환
-            if (selected is ItemDataBase itemData)
+            if (success)
             {
-                if (playerGold >= itemData.price)
-                {
-                    // ItemDatabase를 통해 실제 게임용 아이템(Items)으로 변환
-                    Items gameItem = ItemDatabase.GetItemByName(itemData.name);
-
-                    if (gameItem != null)
-                    {
-                        gameManager.inventory.AddItem(gameItem);
-                        gameManager.Player.Gold -= itemData.price;
-                        Console.WriteLine($"\n'{itemData.name}' 구매 완료! (남은 골드: {gameManager.Player.Gold}G)");
-                    }
-                    else
-                    {
-                        Console.WriteLine("아이템 데이터 변환 실패!");
-                    }
-                }
-                else
-                {
-                    Console.WriteLine("골드가 부족합니다!");
-                }
+                Console.ForegroundColor = ConsoleColor.Green;
+                Console.WriteLine($"\n'{selectedItem.Name}' 구매 완료! (남은 골드: {gameManager.Player.Gold}G)");
+            }
+            else
+            {
+                Console.ForegroundColor = ConsoleColor.Red;
+                Console.WriteLine("\n구매에 실패했습니다.");
             }
 
+            Console.ResetColor();
             Console.ReadKey();
         }
 
-        private void HandleShopSell()
+        private void HandleShopSell(Shop shop)
         {
             var inventory = gameManager.inventory.Items;
+
             if (inventory.Count == 0)
             {
                 Console.WriteLine("판매할 아이템이 없습니다.");
@@ -1134,9 +1124,20 @@ namespace Text_RPG_11
             }
 
             var selectedItem = inventory[choice - 1];
-            gameManager.Player.Gold += selectedItem.Price / 2;
-            inventory.Remove(selectedItem);
-            Console.WriteLine($"\n'{selectedItem.Name}' 판매 완료! (+{selectedItem.Price / 2}G)");
+            bool success = shop.SellItem(selectedItem);
+
+            if (success)
+            {
+                Console.ForegroundColor = ConsoleColor.Green;
+                Console.WriteLine($"\n'{selectedItem.Name}' 판매 완료! (+{selectedItem.Price / 2}G)");
+            }
+            else
+            {
+                Console.ForegroundColor = ConsoleColor.Red;
+                Console.WriteLine("\n판매에 실패했습니다.");
+            }
+
+            Console.ResetColor();
             Console.WriteLine($"현재 골드: {gameManager.Player.Gold}G");
             Console.ReadKey();
         }
