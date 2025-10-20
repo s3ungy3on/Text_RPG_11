@@ -19,12 +19,12 @@ namespace Text_RPG_11
         public Shop shop;
         private Dungeon dungeon;
         public Skill skill;
-        public Quest quest;
+        //public Quest quest;
         public Monster monster;
         public UIManager uiManager;
         private Battle battle;
         public RewardManager rewardManager;
-        public QuestManager questManager;
+        //public QuestManager questManager;
 
         public Player Player => player;
 
@@ -33,9 +33,9 @@ namespace Text_RPG_11
             inventory = new Inventory(this);
             shop = new Shop(this);
             dungeon = new Dungeon(this);
-            skill = new Skill(this);
-            questManager = new QuestManager(this);
-            monster = new Monster(this);
+            //skill = new Skill(this);
+            //questManager = new QuestManager(this);
+            //monster = new Monster(this);
             uiManager = new UIManager(this);
             battle = new Battle(this);
 
@@ -64,17 +64,20 @@ namespace Text_RPG_11
                 case 0:
                     Environment.Exit(0); //종료
                     break;
-                case 1://상태보기
+                case 1:
+                    uiManager.ViewStatus();//상태보기
                     break;
                 case 2://인벤토리
-                    uiManager.ShowInventoryDisplay(inventory);
+                    uiManager.ShowInventory();
                     break;
                 case 3://탐험하기
+                    dungeon.DungeonBattle();
                     break;
-                case 4:
-                    uiManager.ShowShopDisplay();
+                case 4: //상점가기
+                    uiManager.ShowShop();
                     break;
                 case 5://휴식하기
+                    uiManager.Rest();
                     break;
             }
         }
