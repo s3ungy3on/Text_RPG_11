@@ -1029,7 +1029,7 @@ namespace Text_RPG_11
             {
                 var item = shopItems[i];
                 SetRarityColor(item.Rarity);
-                Console.WriteLine($"{i + 1}. {item.Name,-15} | {item.Price,5}G | {item.ItemType(),-5} | {item.ItemStats()} | {item.Rarity}");
+                Console.WriteLine($"{i + 1}. {gameManager.messages.PaddingKorean_Right(item.Name, 20)} | {gameManager.messages.PaddingKorean_Right(item.ItemType(),10)} | {gameManager.messages.PaddingKorean_Right(item.ItemStats(), 50)} | {gameManager.messages.PaddingKorean_Right(item.Rarity, 10)} | {item.Price}G");
                 Console.ResetColor();
             }
 

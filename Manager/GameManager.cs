@@ -25,6 +25,7 @@ namespace Text_RPG_11
         private Battle battle;
         public RewardManager rewardManager;
         //public QuestManager questManager;
+        public Messages messages;
 
         public Player Player => player;
 
@@ -38,6 +39,7 @@ namespace Text_RPG_11
             //monster = new Monster(this);
             uiManager = new UIManager(this);
             battle = new Battle(this);
+            messages = new Messages(this);
 
         }
 

@@ -6,8 +6,13 @@ using System.Threading.Tasks;
 
 namespace Text_RPG_11
 {
-    internal class Messages
+    public class Messages
     {
+        private GameManager gameManager;
+        public Messages(GameManager manager)
+        {
+            gameManager = manager;
+        }
         public static void TextTitleHlight(string text)
         {
             Console.ForegroundColor = ConsoleColor.DarkYellow;
@@ -56,6 +61,20 @@ namespace Text_RPG_11
 
                 return number;
             }
+        }
+
+        public string PaddingKorean_Right(string str, int width)
+        {
+            int curWidth = 0;
+
+            foreach (char c in str)
+            {
+                curWidth += c <= 127 ? 1 : 2;
+            }
+
+            int padding = width - curWidth;
+
+            return str + new string(' ', Math.Max(0, padding));
         }
     }
 }
