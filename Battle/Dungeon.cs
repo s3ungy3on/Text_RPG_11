@@ -27,6 +27,9 @@ namespace Text_RPG_11
 
         public void DungeonBattle()
         {
+           // 던전 상태 초기화
+            _battle.BattleState = Battle.BattleResult.InProgress;
+            
             Console.WriteLine($"[던전 {_battle.Stage}층]");
             
             while (_battle.BattleState == Battle.BattleResult.InProgress)

@@ -20,7 +20,7 @@ namespace Text_RPG_11
         // 담은 몬스터에 관련된 변수명은 enemy로 통일, 담기 전 몬스터에 관련된 변수명은 monster로 통일
         // 변경 사항 + 추가 기능에 따라 수정해야 할 사항은 "추가 수정 필요" 로 주석 달아둠
         
-        public int Stage = 1; // 던전 층
+        public int Stage = 1; // 던전 층 
         
         public int PlayerInitialHP; // 플레이어 던전 진입 시 체력
         public int PlayerHP; // 플레이어 던전 진입 이후 턴 별 체력(에너미에게 공격 당하기 전)
@@ -37,7 +37,7 @@ namespace Text_RPG_11
         public int RewardExp; // 총 보상 계산
         public int RewardGold; // 총 보상 계산
         
-        public BattleResult BattleState { get; private set; }
+        public BattleResult BattleState { get; set; }
         
         public List<Monster> Monsters = new List<Monster>() // 모든 몬스터 객체를 담을 리스트 생성(임시: 차후 Monster 클래스로 옮기거나, 더 좋은 방법을 찾아볼 예정)
         {
