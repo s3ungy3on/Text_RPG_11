@@ -1,0 +1,441 @@
+{
+  "dungeonRewards": [
+    {
+      "stageRange": [ 1, 29 ], //스테이지 범위
+      "rewardGroups": [ //보상 아이템
+        {
+          "groupName": "아이템", //아이템 드랍 그룹 이름
+          "groupChance": 20, //아이템 드랍 확률
+          "items": [
+            {
+              "itemId": 18, //아이템 id
+              "dropChance": 12.5 //아이템 드랍 확률
+            },
+            {
+              "itemId": 19,
+              "dropChance": 12.5
+            },
+            {
+              "itemId": 20,
+              "dropChance": 12.5
+            },
+            {
+              "itemId": 21,
+              "dropChance": 12.5
+            },
+            {
+              "itemId": 45,
+              "dropChance": 12.5
+            },
+            {
+              "itemId": 49,
+              "dropChance": 12.5
+            },
+            {
+              "itemId": 51,
+              "dropChance": 12.5
+            },
+            {
+              "itemId": 52,
+              "dropChance": 12.5
+            }
+          ]
+        },
+        {
+          "groupName": "포션", //포션 드랍 그룹
+          "groupChance": 40, //포션 드랍 확률
+          "items": [
+            {
+              "itemId": 201, //포션 id
+              "dropChance": 100 //그룹 걸리면 100%로 획득
+            }
+          ]
+        },
+        {
+          "groutName": "꽝",
+          "groupChance": 40,
+          "items": null
+        }
+      ]
+    },
+    {
+      "stageRange": [ 30, 59 ],
+      "rewardGroups": [
+        {
+          "groupName": "아이템",
+          "groupChance": 20,
+          "items": [
+            {
+              "itemId": 18,
+              "dropChance": 10
+            },
+            {
+              "itemId": 19,
+              "dropChance": 10
+            },
+            {
+              "itemId": 20,
+              "dropChance": 10
+            },
+            {
+              "itemId": 21,
+              "dropChance": 10
+            },
+            {
+              "itemId": 45,
+              "dropChance": 10
+            },
+            {
+              "itemId": 49,
+              "dropChance": 10
+            },
+            {
+              "itemId": 51,
+              "dropChance": 10
+            },
+            {
+              "itemId": 52,
+              "dropChance": 10
+            },
+            {
+              "itemId": 58,
+              "dropChance": 5
+            },
+            {
+              "itemId": 59,
+              "dropChance": 5
+            },
+            {
+              "itemId": 61,
+              "dropChance": 5
+            },
+            {
+              "itemId": 62,
+              "dropChance": 5
+            }
+          ]
+        },
+        {
+          "groupName": "포션",
+          "groupChance": 40,
+          "items": [
+            {
+              "itemId": 201,
+              "dropChance": 100
+            }
+          ]
+        },
+        {
+          "groutName": "꽝",
+          "groupChance": 40,
+          "items": null
+        }
+      ]
+    },
+    {
+      "stageRange": [ 60, 89 ],
+      "rewardGroups": [
+        {
+          "groupName": "아이템",
+          "groupChance": 20,
+          "items": [
+            {
+              "itemId": 18,
+              "dropChance": 8.75
+            },
+            {
+              "itemId": 19,
+              "dropChance": 8.75
+            },
+            {
+              "itemId": 20,
+              "dropChance": 8.75
+            },
+            {
+              "itemId": 21,
+              "dropChance": 8.75
+            },
+            {
+              "itemId": 45,
+              "dropChance": 8.75
+            },
+            {
+              "itemId": 49,
+              "dropChance": 8.75
+            },
+            {
+              "itemId": 51,
+              "dropChance": 8.75
+            },
+            {
+              "itemId": 52,
+              "dropChance": 8.75
+            },
+            {
+              "itemId": 58,
+              "dropChance": 7
+            },
+            {
+              "itemId": 59,
+              "dropChance": 7
+            },
+            {
+              "itemId": 61,
+              "dropChance": 7
+            },
+            {
+              "itemId": 62,
+              "dropChance": 7
+            },
+            {
+              "itemId": 73,
+              "dropChance": 1
+            },
+            {
+              "itemId": 75,
+              "dropChance": 1
+            }
+          ]
+        },
+        {
+          "groupName": "포션",
+          "groupChance": 40,
+          "items": [
+            {
+              "itemId": 201,
+              "dropChance": 100
+            }
+          ]
+        },
+        {
+          "groutName": "꽝",
+          "groupChance": 40,
+          "items": null
+        }
+      ]
+    },
+    {
+      "stageRange": [ 90, 95 ],
+      "rewardGroups": [
+        {
+          "groupName": "아이템",
+          "groupChance": 20,
+          "items": [
+            {
+              "itemId": 18,
+              "dropChance": 8.25
+            },
+            {
+              "itemId": 19,
+              "dropChance": 8.25
+            },
+            {
+              "itemId": 20,
+              "dropChance": 8.25
+            },
+            {
+              "itemId": 21,
+              "dropChance": 8.25
+            },
+            {
+              "itemId": 45,
+              "dropChance": 8.25
+            },
+            {
+              "itemId": 49,
+              "dropChance": 8.25
+            },
+            {
+              "itemId": 51,
+              "dropChance": 8.25
+            },
+            {
+              "itemId": 52,
+              "dropChance": 8.25
+            },
+            {
+              "itemId": 58,
+              "dropChance": 7.5
+            },
+            {
+              "itemId": 59,
+              "dropChance": 7.5
+            },
+            {
+              "itemId": 61,
+              "dropChance": 7.5
+            },
+            {
+              "itemId": 62,
+              "dropChance": 7.5
+            },
+            {
+              "itemId": 73,
+              "dropChance": 1.5
+            },
+            {
+              "itemId": 75,
+              "dropChance": 1.5
+            },
+            {
+              "itemId": 83,
+              "dropChance": 0.5
+            },
+            {
+              "itemId": 85,
+              "dropChance": 0.5
+            }
+          ]
+        },
+        {
+          "groupName": "포션",
+          "groupChance": 40,
+          "items": [
+            {
+              "itemId": 201,
+              "dropChance": 100
+            }
+          ]
+        },
+        {
+          "groutName": "꽝",
+          "groupChance": 40,
+          "items": null
+        }
+      ]
+    },
+    {
+      "stageRange": [ 96, 100 ],
+      "rewardGroups": [
+        {
+          "groupName": "아이템",
+          "groupChance": 20,
+          "items": [
+            {
+              "itemId": 18,
+              "dropChance": 10.7375
+            },
+            {
+              "itemId": 19,
+              "dropChance": 10.7375
+            },
+            {
+              "itemId": 20,
+              "dropChance": 10.7375
+            },
+            {
+              "itemId": 21,
+              "dropChance": 10.7375
+            },
+            {
+              "itemId": 45,
+              "dropChance": 10.7375
+            },
+            {
+              "itemId": 49,
+              "dropChance": 10.7375
+            },
+            {
+              "itemId": 51,
+              "dropChance": 10.7375
+            },
+            {
+              "itemId": 52,
+              "dropChance": 10.7375
+            },
+            {
+              "itemId": 58,
+              "dropChance": 2
+            },
+            {
+              "itemId": 59,
+              "dropChance": 2
+            },
+            {
+              "itemId": 61,
+              "dropChance": 2
+            },
+            {
+              "itemId": 62,
+              "dropChance": 2
+            },
+            {
+              "itemId": 73,
+              "dropChance": 2
+            },
+            {
+              "itemId": 75,
+              "dropChance": 2
+            },
+            {
+              "itemId": 83,
+              "dropChance": 1
+            },
+            {
+              "itemId": 85,
+              "dropChance": 1
+            },
+            {
+              "itemId": 93,
+              "dropChance": 0.05
+            },
+            {
+              "itemId": 98,
+              "dropChance": 0.05
+            }
+          ]
+        },
+        {
+          "groupName": "포션",
+          "groupChance": 40,
+          "items": [
+            {
+              "itemId": 201,
+              "dropChance": 100
+            }
+          ]
+        },
+        {
+          "groutName": "꽝",
+          "groupChance": 40,
+          "items": null
+        }
+      ]
+    }
+  ],
+
+  "questRewards": [
+    {
+      "questId": 301,
+      "questName": "마을을 위협하는 미니언 처치",
+      "description": "마을 근처 미니언 5마리를 처치하시오.",
+      "requirement": "미니언 5 처치",
+      "expReward": 50,
+      "goldReward": 500,
+      "potionReward": 2,
+      "itemRewards": {
+        "전사": "롱소드",
+        "마법사": "증폭의 고서",
+        "도적": "단검",
+        "궁수": "롱소드"
+      },
+      "type": "KillMonster"
+        },
+         {
+      "questId": 302,
+      "questName": "전투 준비 태세",
+      "description": "장비를 착용하여 전투 준비를 마치시오.",
+      "requirement": "장비 착용 완료",
+      "expReward": 30,
+      "goldReward": 300,
+      "potionReward": 1,
+      "itemReward": {
+        "전사": "루비 수정",
+        "마법사": "루비 수정",
+        "도적": "루비 수정",
+        "궁수": "루비 수정"
+      },
+      "type": "EquipItem"
+    }
+      ]
+    }

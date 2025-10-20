@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Text_RPG_11
 {
-    internal sealed class DropItem                          //몬스터가 사망시 드랍하는 아이템을 식별하는 Id와 드롭확률입니다
+    public sealed class DropItem                          //몬스터가 사망시 드랍하는 아이템을 식별하는 Id와 드롭확률입니다
                                                             //sealed->상속금지, 다른 클래스에서의 상속을 막아두었습니다.
     {
         public int ItemId { get; set; }                     //드랍하는 아이템의 식별자
@@ -15,7 +15,7 @@ namespace Text_RPG_11
         { ItemId = itemId; DropChance = dropChance; }       //생성자: 필수값 두 개를 받아 필드 초기화 
     }
 
-    internal sealed class Rewards                           //몬스터 사망시 경험치와 골드 획득량입니다.
+    public sealed class Rewards                           //몬스터 사망시 경험치와 골드 획득량입니다.
     {
         public int Exp { get; set; }                        // 처치 시 주는 경험치
         public int Gold { get; set; }                       // 처치 시 주는 골드
@@ -24,7 +24,7 @@ namespace Text_RPG_11
         public Rewards(int exp, int gold) { Exp = exp; Gold = gold; }   // 생성자: 경험치/골드  
     }
 
-    internal class Monster
+    public class Monster
     {
         public int Id { get; set; }                             //몬스터 식별자(식별ID)
         public string Name { get; set; }                        //이름
@@ -111,8 +111,8 @@ namespace Text_RPG_11
         //몬스터 피격시 데미지만큼 체력이 감소
         public void TakeDamage(int dmg)
         {
-            int taken = Math.Max(0, dmg);       //0과 dmg중 큰것을 반환합니다 ->피해량이 음수인 경우 방지
-            HP = Math.Max(0, HP - dmg);         //0과 HP-dmg중 큰것을 반환합니다 ->Hp가 음수인 경우 방지
+            int taken = Math.Max(0, dmg);         //dmg가 음수인 경우 방지
+            HP = Math.Max(0, HP - taken);         //0과 HP-taken중 큰것을 반환합니다 ->Hp가 음수인 경우 방지
         }
 
         //전투 종료시 Temp의 값 리셋
@@ -122,7 +122,7 @@ namespace Text_RPG_11
             TempDefense = 0;
         }
 
-        public bool isDead => HP <= 0; //몬스터 사망 여부
+        public bool IsDead => HP <= 0; //몬스터 사망 여부
 
 
         //이하 몬스터 팩토리 메서드
@@ -156,7 +156,7 @@ namespace Text_RPG_11
                 spawnLocations: new[] { "미드 라인", "탑 라인", "바텀 라인" }  // 스폰 위치 문자열 배열
             );
 
-        public static Monster CanonMinion() =>
+        public static Monster CannonMinion() =>
             new Monster(
                 id: 4,
                 name: "대포 미니언",

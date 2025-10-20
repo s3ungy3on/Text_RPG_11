@@ -1,0 +1,46 @@
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+
+namespace Text_RPG_11
+{
+    public class RewardDataContainer // JSON 전체 구조
+    {
+        public List<DungeonRewardData> dungeonRewards { get; set; }
+        public List<QuestRewardData> questRewards { get; set; }
+    }
+
+    public class DungeonRewardData // 던전 보상 데이터
+    {
+        public List<int> stageRange { get; set; }
+        public List<RewardGroup> rewardGroups { get; set; }
+    }
+
+    public class RewardGroup // 보상 그룹 (아이템/포션/꽝)
+    {
+        public string groupName { get; set; } // "아이템", "포션", "꽝"
+        public int groupChance { get; set; }  // 그룹 선택 확률
+        public List<DungeonRewardItem> items { get; set; }  // 그룹 내 아이템들 (null 가능)
+    }
+
+    public class DungeonRewardItem // 던전 보상 아이템
+    {
+        public int itemId { get; set; }
+        public float dropChance { get; set; }
+    }
+
+    public class QuestRewardData // 퀘스트 보상 데이터
+    {
+        public int questId { get; set; }
+        public string questName { get; set; }
+        public string description { get; set; }
+        public string requirement { get; set; }
+        public int expReward { get; set; }
+        public int goldReward { get; set; }
+        public int potionReward { get; set; }
+        public Dictionary<string, string> itemRewards { get; set; }
+        public string type { get; set; }
+    }
+}
