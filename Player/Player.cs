@@ -91,10 +91,12 @@ namespace Text_RPG_11
             Attack += 1;                                                            //레벨업시 기본 공격력 증가
             Defense += 0.5f;                                                        //레벨업시 기본 방어력 증가
 
+            StatUpdate();
+
             HP = MaxHP;                                                         //레벨업시 체력회복
             MP = MaxMP; //레벨업시 마나회복
 
-            StatUpdate();
+            
         }
         // 아이템 장착
         public void EquipItem(Items item)
