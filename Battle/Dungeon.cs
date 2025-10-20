@@ -101,6 +101,8 @@ namespace Text_RPG_11
         // 공격 / 스킬 사용 선택
         public void PlayerTurn()
         {
+            Console.Clear();
+            
             // 1. 턴 시작 전 배틀 종료 조건 확인
             if (BattleEndCheck()) return;
             
@@ -146,6 +148,7 @@ namespace Text_RPG_11
         {
             while (true)
             {
+                Console.Clear();
                 Console.WriteLine("\nBattle!!\n");   
                 EnemyInfo();
                 Console.WriteLine();
@@ -190,6 +193,7 @@ namespace Text_RPG_11
         {
             while (true)
             {
+                Console.Clear();
                 Console.WriteLine("\nBattle!!\n");   
                 EnemyInfo();
                 Console.WriteLine();
@@ -262,6 +266,7 @@ namespace Text_RPG_11
         {
             while (true)
             {
+                Console.Clear();
                 Console.WriteLine("\nBattle!!\n");   
                 EnemyInfo();
                 Console.WriteLine();
@@ -307,6 +312,7 @@ namespace Text_RPG_11
         {
             while (true)
             {
+                Console.Clear();
                 EnemyInfo();
                 Console.WriteLine("\nBattle!!\n");
             
@@ -349,6 +355,7 @@ namespace Text_RPG_11
                         {
                             while (true)
                             {
+                                Console.Clear();
                                 EnemyInfo();
                                 Console.WriteLine("\nBattle!!\n");
             
@@ -382,6 +389,7 @@ namespace Text_RPG_11
                         {
                             while (true)
                             {
+                                Console.Clear();
                                 EnemyInfo();
                                 Console.WriteLine("\nBattle!!\n");
                                 
@@ -422,6 +430,7 @@ namespace Text_RPG_11
                 case SkillType.Heal:
                     while (true)
                     {
+                        Console.Clear();
                         Console.WriteLine("\nBattle!!\n");
                         
                         // 1. 플레이어 회복량 출력
@@ -445,6 +454,7 @@ namespace Text_RPG_11
                 case SkillType.Buff:
                     while (true)
                     {
+                        Console.Clear();
                         Console.WriteLine("\nBattle!!\n");
                         
                         // 1. 플레이어 버프량 출력
@@ -478,6 +488,7 @@ namespace Text_RPG_11
                 case SkillType.Debuff:
                     while (true)
                     {
+                        Console.Clear();
                         EnemyInfo();
                         
                         Console.WriteLine("\nBattle!!\n");
@@ -528,6 +539,7 @@ namespace Text_RPG_11
             
             while (true)
             {
+                Console.Clear();
                 EnemyInfo();
                 Console.WriteLine("\nBattle!!\n");
                 // 2. 공격 전, 플레이어의 체력을 저장
@@ -608,6 +620,7 @@ namespace Text_RPG_11
             
             while (true)
             {
+                Console.Clear();
                 Console.WriteLine("Battle!! - Result\n");
                 Console.WriteLine("Victory\n");
                 Console.WriteLine($"던전에서 몬스터 {_battle.Enemies.Count}마리를 잡았습니다.\n");
@@ -652,6 +665,7 @@ namespace Text_RPG_11
         {
             while (true)
             {
+                Console.Clear();
                 Console.WriteLine("Battle!! - Result\n");
                 Console.WriteLine("You Lose\n");
             
