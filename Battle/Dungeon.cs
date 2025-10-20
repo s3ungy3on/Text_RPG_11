@@ -637,7 +637,7 @@ namespace Text_RPG_11
 
                 if (isWorked || result== 0)
                 {
-                    // 돌아가기
+                    _gameManager.GameMain(); // 돌아가기
                 }
                 else
                     Console.WriteLine("잘못된 입력입니다.");
@@ -664,7 +664,7 @@ namespace Text_RPG_11
 
                 if (isWorked || result== 0)
                 {
-                    // 돌아가기
+                    _gameManager.GameMain(); // 돌아가기
                 }
                 else
                     Console.WriteLine("잘못된 입력입니다.");

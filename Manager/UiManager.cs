@@ -16,10 +16,7 @@ namespace Text_RPG_11
         public string job; // 플레이어 직업
 
         private readonly GameManager gameManager;
-        private ItemDataContainer itemData;
-        private JobDataContainer jobData;
-        private string itemsPath = "items.json";
-        private string jobsPath = "jobs.json";
+
 
         // 로고
         public List<string> logo1 = new List<string>(); // 로고1 0~14 -> 1차제목, 15~18 -> 1차 소제목
@@ -69,6 +66,10 @@ namespace Text_RPG_11
         #region 인트로
         public void Intro() // 시작시 초기 설정 및 스토리 화면
         {
+            string name = "";
+            string act = "";
+            Job selectedJob = null;
+
             // 1차 제목
             logo1.Add("      ...                                                                                                     ...                                                         ..          .x+=:.   \r\n");
             logo1.Add("  .zf\"` `\"tu                                                                                  oec :       .zf\"` `\"tu                                                    dF           z`    ^%  \r\n");
@@ -353,6 +354,7 @@ namespace Text_RPG_11
             {
                 if (i == 0)
                 {
+                    Console.Clear();
                     Console.WriteLine($"{introArt[0],50}");
                     Console.ForegroundColor = ConsoleColor.Green;
                 }
@@ -497,9 +499,10 @@ namespace Text_RPG_11
                 }
 
                 Console.Write($"{story[i],130}");
-                Thread.Sleep(1000);
+                Thread.Sleep(3000);
                 if (Console.KeyAvailable)
                 {
+                    Console.ReadLine();
                     break;
                 }
                 int currentLine = Console.CursorLeft;
@@ -519,7 +522,6 @@ namespace Text_RPG_11
             Console.WriteLine("소환사의 협곡에 오신것을 환영합니다." +
                 "\n소환사님의 이름은 무엇인가요.\n");
             Console.Write(">>");
-            Console.ReadLine();
             name = Console.ReadLine(); // 이름 입력 
             Console.Clear();
             Console.WriteLine($"{name} (이)라는 이름이 맞으십니까?\n\n1. 맞습니다\n2. 아닙니다\n\n");
@@ -559,25 +561,25 @@ namespace Text_RPG_11
                 if (act == "1")
                 {
                     Console.Clear();
-                    job = "가렌";
+                    selectedJob = JobDatabase.GetJobByName("전사");
                     break;
                 }
                 else if (act == "2")
                 {
                     Console.Clear();
-                    job = "럭스";
+                    selectedJob = JobDatabase.GetJobByName("마법사");
                     break;
                 }
                 else if (act == "3")
                 {
                     Console.Clear();
-                    job = "제드";
+                    selectedJob = JobDatabase.GetJobByName("도적");
                     break;
                 }
                 else if (act == "4")
                 {
                     Console.Clear();
-                    job = "애쉬";
+                    selectedJob = JobDatabase.GetJobByName("궁수");
                     break;
                 }
                 else
@@ -588,17 +590,10 @@ namespace Text_RPG_11
                     act = Console.ReadLine();
                 }
             }
-            Console.WriteLine($"{job}을(를) 고르시다니 기대가 되는군요.");
-            // JobDatabase에서 직업 객체를 불러와 Player 생성
-            var selectedJob = JobDatabase.GetJobByName(job);
-            if (selectedJob != null)
-            {
-                gameManager.CreatdPlayer(name, selectedJob);
-            }
-            else
-            {
-                Console.WriteLine("이거 뜨면 안 됨 PLZ.....");
-            }
+            string jobDisplayName = selectedJob.DisplayName ?? selectedJob.Name;
+            Console.WriteLine($"{jobDisplayName}을(를) 고르시다니 기대가 되는군요.");
+            Console.ReadKey();
+            gameManager.CreatdPlayer(name, selectedJob);
         }
         #endregion
 
@@ -617,9 +612,11 @@ namespace Text_RPG_11
             Console.Clear();
             Console.WriteLine("지친 피로를 충분히 풀고 있습니다\n챔피언의 체력과 마나가 모두 찹니다.");
             gameManager.Player.Restore();
+            Console.ReadKey(true);
+            gameManager.GameMain();
         }
 
-        public void ViewStatus()
+        public void ViewStatus() // 상태창
         {
             var player = gameManager.Player;
 
@@ -629,7 +626,7 @@ namespace Text_RPG_11
             PrintColoredLine("═══════════════════════════════════════════════", ConsoleColor.Cyan);
             Console.WriteLine();
 
-            PrintColoredLine($"이름 : {player.Name,-15} 직업 : {player.Job}", ConsoleColor.Magenta);
+            PrintColoredLine($"이름 : {player.Name,-15} 직업 : {player.Job.DisplayName}", ConsoleColor.Magenta);
             Console.WriteLine($"레벨 : {player.Level,-15} 경험치 : {player.Exp}");
             Console.WriteLine();
 
@@ -638,8 +635,8 @@ namespace Text_RPG_11
             PrintStatusBar("마나", player.MP, player.MaxMP, ConsoleColor.Blue, ShowMPBarInline);
             Console.WriteLine("───────────────────────────────");
 
-            PrintColoredLine($"공격력 : {player.Attack}", ConsoleColor.Red);
-            PrintColoredLine($"방어력 : {player.Defense}", ConsoleColor.DarkGreen);
+            PrintColoredLine($"공격력 : {player.MaxAttack}", ConsoleColor.Red);
+            PrintColoredLine($"방어력 : {player.MaxDefense}", ConsoleColor.DarkGreen);
             PrintColoredLine($"골드   : {player.Gold} G", ConsoleColor.Yellow);
             Console.WriteLine();
 
@@ -1076,6 +1073,7 @@ namespace Text_RPG_11
                 success ? ConsoleColor.Green : ConsoleColor.Red
             );
             Console.ReadKey();
+            HandleShopPurchase(shop);
         }
 
         private void HandleShopSell(Shop shop)
