@@ -45,6 +45,7 @@ namespace Text_RPG_11
         {
             ItemDatabase.GetShopItems();
             uiManager.Intro();
+            player.GainExp(2000);
             GameMain();
         }
 
