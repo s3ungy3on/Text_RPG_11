@@ -6,8 +6,7 @@ using System.Threading.Tasks;
 
 namespace Text_RPG_11
 {
-    // JSON 전체 구조
-    public class ItemDataContainer
+    public class ItemDataContainer // JSON 전체 구조
     {
         public CraftingConfig craftingConfig { get; set; }
         public List<ItemDataBase> items { get; set; }
@@ -15,8 +14,7 @@ namespace Text_RPG_11
         public Dictionary<string, RarityInfo> rarityInfo { get; set; }
     }
 
-    // 아이템 공통 정보
-    public class ItemDataBase
+    public class ItemDataBase // 아이템 공통 정보
     {
         public int id { get; set; }
         public string name { get; set; }
@@ -33,8 +31,7 @@ namespace Text_RPG_11
         public CraftingRecipe craftingRecipe { get; set; } //사용X
     }
 
-    // 물약 데이터
-    public class PotionData
+    public class PotionData // 물약 데이터
     {
         public int id { get; set; }
         public string name { get; set; }
@@ -44,27 +41,23 @@ namespace Text_RPG_11
         public List<string> obtainMethods { get; set; }
     }
 
-    // 합성 기본 설정, 사용X
-    public class CraftingConfig
+    public class CraftingConfig // 합성 기본 설정, 사용X
     {
         public bool alwaysSuccess { get; set; }
     }
 
-    // 합성 레시피 리스트, 사용X
-    public class CraftingRecipe
+    public class CraftingRecipe // 합성 레시피 리스트, 사용X
     {
         public List<RequiredItem> requiredItems { get; set; }
     }
 
-    // 레시피 필요 아이템, 사용X
-    public class RequiredItem
+    public class RequiredItem // 레시피 필요 아이템, 사용X
     {
         public int itemId { get; set; }
         public int quantity { get; set; }
     }
 
-    // 등급 정보
-    public class RarityInfo
+    public class RarityInfo // 등급 정보
     {
         public string displayName { get; set; }
         public string color { get; set; }
