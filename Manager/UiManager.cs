@@ -1047,6 +1047,7 @@ namespace Text_RPG_11
 
         private void HandleShopPurchase(Shop shop)
         {
+            Console.Clear();
             var items = shop.GetShopInventory();
             foreach (var item in items)
             {
@@ -1078,6 +1079,7 @@ namespace Text_RPG_11
 
         private void HandleShopSell(Shop shop)
         {
+            Console.Clear();
             var inventory = gameManager.inventory.Items;
 
             if (inventory.Count == 0)
