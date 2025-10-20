@@ -556,6 +556,8 @@ namespace Text_RPG_11
         
                 if (itemPercent <= cumulativeItemChance)
                 {
+                    var itemtoinventory = ItemDatabase.GetItemById(item.itemId)
+                    _gameManager.inventory.AddItem(itemtoinventory);
                     RewardItems.Add(item);
                     break; // 하나만 선택!
                 }
