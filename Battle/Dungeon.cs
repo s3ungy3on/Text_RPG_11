@@ -440,8 +440,6 @@ namespace Text_RPG_11
                     }
 
                 case SkillType.Buff:
-                    // 공격이었을 시 
-                    // 일반 타격 스크립트
                     while (true)
                     {
                         Console.WriteLine("\nBattle!!\n");
