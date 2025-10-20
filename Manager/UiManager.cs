@@ -616,8 +616,7 @@ namespace Text_RPG_11
         {
             Console.Clear();
             Console.WriteLine("지친 피로를 충분히 풀고 있습니다\n챔피언의 체력과 마나가 모두 찹니다.");
-            gameManager.Player.HP = gameManager.Player.MaxHP;
-            gameManager.Player.MP = gameManager.Player.MaxMP;
+            gameManager.Player.Restore();
         }
 
         public void ViewStatus()
@@ -915,13 +914,13 @@ namespace Text_RPG_11
             // 장착 여부 표시 포함
             ShowItemCategory("무기", weapons, w =>
             {
-                Equipped(w.IsEquipped); // ← 장착되어 있으면 [E] 표시
+                Messages.Equipped(w.IsEquipped); // ← 장착되어 있으면 [E] 표시
                 return $"  - {w.Name} | {w.ItemStats()} | 희귀도: {w.Rarity}";
             });
 
             ShowItemCategory("방어구", armors, a =>
             {
-                Equipped(a.IsEquipped);
+                Messages.Equipped(a.IsEquipped);
                 return $"  - {a.Name} | {a.ItemStats()} | 희귀도: {a.Rarity}";
             });
 
@@ -936,7 +935,7 @@ namespace Text_RPG_11
             switch (choice)
             {
                 case 0:
-                    gameManager.GameMain(); // Environment.Exit(0)은 제거 (게임 종료 아님)
+                    gameManager.GameMain(); // 메인 복귀
                     break;
                 case 1:
                     // 포션 사용 로직
