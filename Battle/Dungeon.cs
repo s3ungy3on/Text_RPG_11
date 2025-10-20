@@ -45,7 +45,7 @@ namespace Text_RPG_11
                 
                 // 4. 내 정보 출력
                 Console.WriteLine("[내 정보]");
-                Console.WriteLine($"Lv.{_gameManager.Player.Level} Chad ({_gameManager.Player.Job})\n\nHP {_gameManager.Player.HP} / {_gameManager.Player.MaxHP}\nMP {_gameManager.Player.MP} / {_gameManager.Player.MaxMP}\n");
+                Console.WriteLine($"Lv.{_gameManager.Player.Level} {_gameManager.Player.Job.Name}\n\nHP {_gameManager.Player.HP} / {_gameManager.Player.MaxHP}\nMP {_gameManager.Player.MP} / {_gameManager.Player.MaxMP}\n");
                 
                 // 5. 행동 입력
                 Console.WriteLine("1. 공격\n");
@@ -112,7 +112,7 @@ namespace Text_RPG_11
                 Console.WriteLine();
                 
                 Console.WriteLine("[내 정보]");
-                Console.WriteLine($"Lv.{_gameManager.Player.Level} Chad ({_gameManager.Player.Job})\n\nHP {_gameManager.Player.HP} / {_gameManager.Player.MaxHP}\nMP {_gameManager.Player.MP} / {_gameManager.Player.MaxMP}\n");
+                Console.WriteLine($"Lv.{_gameManager.Player.Level} {_gameManager.Player.Job}\n\nHP {_gameManager.Player.HP} / {_gameManager.Player.MaxHP}\nMP {_gameManager.Player.MP} / {_gameManager.Player.MaxMP}\n");
             
                 // 3. 플레이어 행동 선택
                 Console.WriteLine("1. 공격");
@@ -148,7 +148,7 @@ namespace Text_RPG_11
                 Console.WriteLine();
             
                 Console.WriteLine("[내 정보]");
-                Console.WriteLine($"Lv.{_gameManager.Player.Level} Chad ({_gameManager.Player.Job})\nHP {_gameManager.Player.HP} / {_gameManager.Player.MaxHP}\n");
+                Console.WriteLine($"Lv.{_gameManager.Player.Level} {_gameManager.Player.Job.Name}\nHP {_gameManager.Player.HP} / {_gameManager.Player.MaxHP}\n");
                 
                 // 1. 공격할 몬스터 입력
                 Console.WriteLine("몬스터 숫자. 공격");
@@ -192,7 +192,7 @@ namespace Text_RPG_11
                 Console.WriteLine();
             
                 Console.WriteLine("[내 정보]");
-                Console.WriteLine($"Lv.{_gameManager.Player.Level} Chad ({_gameManager.Player.Job})\nHP {_gameManager.Player.HP} / {_gameManager.Player.MaxHP}\n");
+                Console.WriteLine($"Lv.{_gameManager.Player.Level} {_gameManager.Player.Job.Name}\nHP {_gameManager.Player.HP} / {_gameManager.Player.MaxHP}\n");
                 
                 // 1. 사용하고 싶은 스킬 확인
                 
@@ -264,7 +264,7 @@ namespace Text_RPG_11
                 Console.WriteLine();
             
                 Console.WriteLine("[내 정보]");
-                Console.WriteLine($"Lv.{_gameManager.Player.Level} Chad ({_gameManager.Player.Job})\nHP {_gameManager.Player.HP} / {_gameManager.Player.MaxHP}\n");
+                Console.WriteLine($"Lv.{_gameManager.Player.Level} {_gameManager.Player.Job.Name}\nHP {_gameManager.Player.HP} / {_gameManager.Player.MaxHP}\n");
                 
                 // 1. 공격할 몬스터 입력
                 Console.WriteLine("몬스터 숫자. 공격");
@@ -555,7 +555,7 @@ namespace Text_RPG_11
                 }
                 
                 // 4. 결과
-                Console.WriteLine($"Lv.{_gameManager.Player.Level} Chad ({_gameManager.Player.Job})");
+                Console.WriteLine($"Lv.{_gameManager.Player.Level} {_gameManager.Player.Job.Name}");
                 Console.WriteLine($"HP {_battle.PlayerHP} -> {_gameManager.Player.HP}\n");
                 
                 // 5. 플레이어 턴 진행
@@ -610,7 +610,7 @@ namespace Text_RPG_11
                 Console.WriteLine($"던전에서 몬스터 {_battle.Enemies.Count}마리를 잡았습니다.\n");
             
                 Console.WriteLine("[캐릭터 정보]");
-                Console.WriteLine($"Lv.{_gameManager.Player.Level} Chad ({_gameManager.Player.Job})");
+                Console.WriteLine($"Lv.{_gameManager.Player.Level} {_gameManager.Player.Job.Name}");
                 Console.WriteLine($"HP {_battle.PlayerInitialHP} -> {_gameManager.Player.HP}\n");
                 
                 Console.WriteLine("[획득 아이템]");
@@ -653,7 +653,7 @@ namespace Text_RPG_11
                 Console.WriteLine("You Lose\n");
             
                 Console.WriteLine("[캐릭터 정보]");
-                Console.WriteLine($"Lv.{_gameManager.Player.Level} Chad ({_gameManager.Player.Job})");
+                Console.WriteLine($"Lv.{_gameManager.Player.Level} {_gameManager.Player.Job.Name}");
                 Console.WriteLine($"HP {_battle.PlayerInitialHP} -> {_gameManager.Player.HP}\n");
             
                 Console.WriteLine($"0. 다음\n");
@@ -669,6 +669,18 @@ namespace Text_RPG_11
                 else
                     Console.WriteLine("잘못된 입력입니다.");
             }
+        }
+        
+        private void PrintColoredLine(string text, ConsoleColor color) // 색상 있는 텍스트 출력
+        {
+            Console.ForegroundColor = color;
+            Console.WriteLine(text);
+            Console.ResetColor();
+        }
+
+        private void WriteLineDivider(char c = '-', int repeat = 40) // 선 구분선 출력
+        {
+            Console.WriteLine(new string(c, repeat));
         }
     }
 }
