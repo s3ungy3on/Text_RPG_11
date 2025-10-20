@@ -16,10 +16,7 @@ namespace Text_RPG_11
         public string job; // 플레이어 직업
 
         private readonly GameManager gameManager;
-        private ItemDataContainer itemData;
-        private JobDataContainer jobData;
-        private string itemsPath = "items.json";
-        private string jobsPath = "jobs.json";
+
 
         // 로고
         public List<string> logo1 = new List<string>(); // 로고1 0~14 -> 1차제목, 15~18 -> 1차 소제목
