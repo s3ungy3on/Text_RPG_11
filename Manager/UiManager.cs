@@ -906,7 +906,6 @@ namespace Text_RPG_11
             Console.Clear();
             PrintColoredLine("============ [ 🎒 인벤토리 ] ============", ConsoleColor.Cyan);
 
-            // Inventory 클래스의 메서드 활용
             var weapons = gameManager.inventory.GetWeapons();
             var armors = gameManager.inventory.GetArmors();
             var potions = gameManager.inventory.GetPotions();
@@ -914,7 +913,7 @@ namespace Text_RPG_11
             // 장착 여부 표시 포함
             ShowItemCategory("무기", weapons, w =>
             {
-                Messages.Equipped(w.IsEquipped); // ← 장착되어 있으면 [E] 표시
+                Messages.Equipped(w.IsEquipped);
                 return $"  - {w.Name} | {w.ItemStats()} | 희귀도: {w.Rarity}";
             });
 
@@ -935,15 +934,58 @@ namespace Text_RPG_11
             switch (choice)
             {
                 case 0:
-                    gameManager.GameMain(); // 메인 복귀
+                    gameManager.GameMain();
                     break;
                 case 1:
-                    // 포션 사용 로직
+                    gameManager.Player.UsePotion();
+                    Console.WriteLine("\n포션을 사용했습니다!");
+                    Console.ReadKey();
+                    ShowInventory();
                     break;
                 case 2:
-                    // 아이템 장착 로직 (별도 함수로 구현 권장)
+                    HandleEquipItem();
                     break;
             }
+        }
+
+        private void HandleEquipItem()
+        {
+            var items = gameManager.inventory.Items;
+
+            if (items.Count == 0)
+            {
+                Console.WriteLine("장착할 아이템이 없습니다.");
+                Console.ReadKey();
+                ShowInventory();
+                return;
+            }
+
+            Console.Clear();
+            Console.WriteLine("========= [ 장착 가능한 아이템 ] =========");
+            for (int i = 0; i < items.Count; i++)
+            {
+                var item = items[i];
+                Messages.Equipped(item.IsEquipped);
+                Console.WriteLine($"{i + 1}. {item.Name,-15} | {item.ItemStats()} | {item.Rarity}");
+            }
+
+            Console.WriteLine("=====================================");
+            Console.WriteLine("장착할 아이템 번호를 입력하세요 (0: 돌아가기)");
+            Console.Write(">> ");
+            int choice = Messages.ReadInput(0, items.Count);
+
+            if (choice == 0)
+            {
+                ShowInventory();
+                return;
+            }
+
+            var selectedItem = items[choice - 1];
+            gameManager.Player.EquipItem(selectedItem);
+            Console.WriteLine($"\n{selectedItem.Name} 장착 완료!");
+            Console.ReadKey();
+
+            ShowInventory(); // 장착 후 다시 인벤토리로
         }
 
         private void ShowItemCategory<T>(string categoryName, List<T> items, Func<T, string> formatter) where T : Items
