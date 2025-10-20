@@ -27,12 +27,6 @@ namespace Text_RPG_11
         public int DefaultMP { get; private set; }                                          //기본 마나
 
 
-        //현재 던전 스테이지
-        private int currentStage = 1;
-        public int CurrentStage => currentStage;
-        public void ClearDungeon() => currentStage++;                                       //던전 클리어시 스테이지 상승
-
-
         private int itemHP = 0, itemMP = 0, itemAttack = 0;                                 //장착 아이템을 얻는 능력치
         private float itemDefense = 0;
 
