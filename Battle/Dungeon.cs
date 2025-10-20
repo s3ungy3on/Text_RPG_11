@@ -54,6 +54,7 @@ namespace Text_RPG_11
                 Console.WriteLine($"Lv.{_gameManager.Player.Level} {_gameManager.Player.Job.Name}\n\nHP {_gameManager.Player.HP} / {_gameManager.Player.MaxHP}\nMP {_gameManager.Player.MP} / {_gameManager.Player.MaxMP}\n");
                 PrintStatusBar("체력", _gameManager.Player.HP, _gameManager.Player.MaxHP, ConsoleColor.Green, ShowHPBarInline);
                 PrintStatusBar("마나", _gameManager.Player.MP, _gameManager.Player.MaxMP, ConsoleColor.Blue, ShowMPBarInline);
+                Console.WriteLine();
                 
                 
                 // 5. 행동 입력
@@ -319,7 +320,6 @@ namespace Text_RPG_11
             while (true)
             {
                 Console.Clear();
-                EnemyInfo();
                 Console.WriteLine("\nBattle!!\n");
             
                 Console.WriteLine($"{_gameManager.Player.Name}의 공격!");
