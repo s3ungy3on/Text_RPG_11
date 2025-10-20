@@ -354,6 +354,7 @@ namespace Text_RPG_11
             {
                 if (i == 0)
                 {
+                    Console.Clear();
                     Console.WriteLine($"{introArt[0],50}");
                     Console.ForegroundColor = ConsoleColor.Green;
                 }
@@ -611,9 +612,11 @@ namespace Text_RPG_11
             Console.Clear();
             Console.WriteLine("지친 피로를 충분히 풀고 있습니다\n챔피언의 체력과 마나가 모두 찹니다.");
             gameManager.Player.Restore();
+            Console.ReadKey(true);
+            gameManager.GameMain();
         }
 
-        public void ViewStatus()
+        public void ViewStatus() // 상태창
         {
             var player = gameManager.Player;
 
@@ -623,7 +626,7 @@ namespace Text_RPG_11
             PrintColoredLine("═══════════════════════════════════════════════", ConsoleColor.Cyan);
             Console.WriteLine();
 
-            PrintColoredLine($"이름 : {player.Name,-15} 직업 : {player.Job}", ConsoleColor.Magenta);
+            PrintColoredLine($"이름 : {player.Name,-15} 직업 : {player.Job.DisplayName}", ConsoleColor.Magenta);
             Console.WriteLine($"레벨 : {player.Level,-15} 경험치 : {player.Exp}");
             Console.WriteLine();
 
@@ -632,8 +635,8 @@ namespace Text_RPG_11
             PrintStatusBar("마나", player.MP, player.MaxMP, ConsoleColor.Blue, ShowMPBarInline);
             Console.WriteLine("───────────────────────────────");
 
-            PrintColoredLine($"공격력 : {player.Attack}", ConsoleColor.Red);
-            PrintColoredLine($"방어력 : {player.Defense}", ConsoleColor.DarkGreen);
+            PrintColoredLine($"공격력 : {player.MaxAttack}", ConsoleColor.Red);
+            PrintColoredLine($"방어력 : {player.MaxDefense}", ConsoleColor.DarkGreen);
             PrintColoredLine($"골드   : {player.Gold} G", ConsoleColor.Yellow);
             Console.WriteLine();
 
@@ -1070,6 +1073,7 @@ namespace Text_RPG_11
                 success ? ConsoleColor.Green : ConsoleColor.Red
             );
             Console.ReadKey();
+            HandleShopPurchase(shop);
         }
 
         private void HandleShopSell(Shop shop)

@@ -62,6 +62,7 @@ namespace Text_RPG_11
             Exp = 0;
 
             _inventory = inventory;
+            StatUpdate();                                                          //초기 스탯 계산
         }
 
 
