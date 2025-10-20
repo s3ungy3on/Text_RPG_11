@@ -986,13 +986,16 @@ namespace Text_RPG_11
             Console.WriteLine("1) 구매   2) 판매   0) 뒤로가기");
             Console.Write(">> ");
 
-            string input = Console.ReadLine();
-            switch (input)
+            int choice = Messages.ReadInput(0, 5);
+            switch (choice)
             {
-                case "1":
+                case 0:
+                    gameManager.GameMain();
+                    break;
+                case 1:
                     HandleShopPurchase(gameManager.shop);
                     break;
-                case "2":
+                case 2:
                     HandleShopSell(gameManager.shop);
                     break;
             }
@@ -1001,14 +1004,19 @@ namespace Text_RPG_11
         private void HandleShopPurchase(Shop shop)
         {
             var items = shop.GetShopInventory();
-            Console.WriteLine("\n구매할 아이템 번호를 입력하세요 (0: 취소): ");
-            Console.Write(">> ");
-
-            if (!int.TryParse(Console.ReadLine(), out int choice) || choice <= 0 || choice > items.Count)
+            foreach (var item in items)
             {
-                Console.WriteLine("잘못된 입력입니다.");
-                Console.ReadKey();
-                return;
+                SetRarityColor(item.Rarity);
+                Console.WriteLine($"{items.IndexOf(item) + 1}. {item.Name,-15} | {item.Price,5}G | {item.ItemType(),-5} | {item.ItemStats()} | {item.Rarity}");
+                Console.ResetColor();
+            }
+
+            Console.WriteLine("\n구매할 아이템 번호를 입력하세요 (0: 돌아가기): ");
+            int choice = Messages.ReadInput(0, items.Count);
+
+            if (choice == 0)
+            {
+                ShowShop();
             }
 
             var selectedItem = items[choice - 1];
@@ -1031,7 +1039,7 @@ namespace Text_RPG_11
             {
                 Console.WriteLine("판매할 아이템이 없습니다.");
                 Console.ReadKey();
-                return;
+                ShowShop();
             }
 
             Console.Clear();
@@ -1043,14 +1051,13 @@ namespace Text_RPG_11
             }
 
             Console.WriteLine("===================================");
-            Console.WriteLine("판매할 아이템 번호를 입력하세요 (0: 취소): ");
+            Console.WriteLine("판매할 아이템 번호를 입력하세요 (0: 돌아가기): ");
             Console.Write(">> ");
+            int choice = Messages.ReadInput(0, inventory.Count);
 
-            if (!int.TryParse(Console.ReadLine(), out int choice) || choice <= 0 || choice > inventory.Count)
+            if (choice == 0)
             {
-                Console.WriteLine("잘못된 입력입니다.");
-                Console.ReadKey();
-                return;
+                ShowShop();
             }
 
             var selectedItem = inventory[choice - 1];
