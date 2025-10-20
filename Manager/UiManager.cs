@@ -1070,6 +1070,7 @@ namespace Text_RPG_11
             if (choice == 0)
             {
                 ShowShop();
+                return;
             }
 
             var selectedItem = items[choice - 1];
@@ -1082,6 +1083,7 @@ namespace Text_RPG_11
                 success ? ConsoleColor.Green : ConsoleColor.Red
             );
             Console.ReadKey();
+
             HandleShopPurchase(shop);
         }
 
@@ -1113,6 +1115,7 @@ namespace Text_RPG_11
             if (choice == 0)
             {
                 ShowShop();
+                return;
             }
 
             var selectedItem = inventory[choice - 1];
@@ -1126,6 +1129,7 @@ namespace Text_RPG_11
             );
             Console.WriteLine($"현재 골드: {gameManager.Player.Gold}G");
             Console.ReadKey();
+            HandleShopSell(shop);
         }
         #endregion
 
