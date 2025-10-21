@@ -255,7 +255,6 @@ namespace Text_RPG_11
                     // Duration이 없다고 가정
                     FinalDamage = (int)Math.Round(AtkRand * skillForAttack.PowerMultiplier);
                     
-                    
                     // hits가 1 이상 일 시 랜덤 에너미 타격
                     // enemyIndex
                     if (skillForAttack.Hits > 1)

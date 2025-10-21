@@ -648,7 +648,7 @@ namespace Text_RPG_11
                     var item = ItemDatabase.GetItemById(rewardItem.itemId);
                     
                     if (item != null) 
-                        Console.WriteLine($"{item.Name}");
+                        Console.WriteLine($"{item.Name}\n");
                 }
                 
                 // 배틀 종료
