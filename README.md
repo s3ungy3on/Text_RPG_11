@@ -78,6 +78,7 @@ transcended	🔴 Red
 ---
 
 ## 🗂️ 프로젝트 구조
+```
 Text_RPG_11/
 │
 ├── Battle/
@@ -120,7 +121,7 @@ Text_RPG_11/
 │   └── Skill.cs            # 스킬 시스템
 │
 └── play.gif					# 🎬 실행 영상 (README 표시용)
-
+```
 ---
 
 ## 🎬 실행 영상
